@@ -56,12 +56,13 @@
 
     <div class="container">
         <h1 style="margin-top: 0;">Uhrentraining</h1>
-        <p class="subtitle">Wie spät ist es? Lies die Uhr und geben Sie die Antwort auf Deutsch ein.</p>
+        <p class="subtitle">Wie spät ist es? Lies die Uhr und gib die Antwort auf Deutsch ein.</p>
 
         <div class="quiz-section">
-            <div class="clock-wrapper">
-                <div class="time-indicator" id="timeIndicator">☀️</div>
-                <div class="clock-container">
+            <div style="display: flex; gap: 30px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+                <div class="clock-wrapper">
+                    <div class="time-indicator" id="timeIndicator">☀️</div>
+                    <div class="clock-container">
                     <svg viewBox="0 0 200 200" id="clockSvg">
                         <!-- Cercle de l'horloge -->
                         <circle cx="100" cy="100" r="95" fill="white" stroke="#c41e3a" stroke-width="3"/>
@@ -99,10 +100,19 @@
                         
                         <!-- Aiguille des minutes -->
                         <line id="minuteHand" x1="100" y1="100" x2="100" y2="30" stroke="#4ecdc4" stroke-width="3" stroke-linecap="round" transform="rotate(0 100 100)"/>
-                    </svg>
+                    </div>
                 </div>
-            </div>
 
+                <!-- Horloge Numérique -->
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <div id="digitalClock" style="font-size: 3.5em; font-weight: 700; font-family: 'Space Mono', monospace; color: var(--primary); background: var(--bg-light-gray); padding: 20px 30px; border-radius: 12px; border: 2px solid var(--secondary); min-width: 200px; text-align: center;">
+                        --:--Wie spät ist es? (z.B.: "fünf vor sieben")</label>
+                    <input type="text" id="heureInput" placeholder="Gib die Antwort auf Deutsch ein..." onkeypress="if(event.key==='Enter') validerReponse()">
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-validate" onclick="validerReponse()">✓ Überprüfen</button>
+                    <button class="btn btn-next" onclick="nouvelleHeure()" style="grid-column: 1 / -1;">🔄 Neue Uhrzeit
             <div class="controls">
                 <div class="control-group">
                     <label for="heureInput">Quelle heure est-il ? (ex: "vijf voor zeven")</label>
@@ -135,48 +145,52 @@
                     let heureAffichage = h === 0 ? 12 : (h > 12 ? h - 12 : h);
                     let minutes = m;
                     
-                    let texteNL = '';
+                    let texteDE = '';
                     
                     if (m === 0) {
-                        // Heure juste : ajouter "uur"
-                        texteNL = `${heureAffichage} uur`;
+                        const nombresMots = {
+                            1: 'eins', 2: 'zwei', 3: 'drei', 4: 'vier', 5: 'fünf',
+                            6: 'sechs', 7: 'sieben', 8: 'acht', 9: 'neun', 10: 'zehn',
+                            11: 'elf', 12: 'zwölf'
+                        };
+                        texteDE = `${nombresMots[heureAffichage]} Uhr`;
                     } else if (m === 5) {
-                        texteNL = `vijf over ${heureAffichage}`;
+                        texteDE = `fünf nach ${heureAffichage}`;
                     } else if (m === 10) {
-                        texteNL = `tien over ${heureAffichage}`;
+                        texteDE = `zehn nach ${heureAffichage}`;
                     } else if (m === 15) {
-                        texteNL = `kwart over ${heureAffichage}`;
+                        texteDE = `viertel nach ${heureAffichage}`;
                     } else if (m === 20) {
-                        texteNL = `twintig over ${heureAffichage}`;
+                        texteDE = `zwanzig nach ${heureAffichage}`;
                     } else if (m === 25) {
-                        texteNL = `vijfentwintig over ${heureAffichage}`;
+                        texteDE = `fünfundzwanzig nach ${heureAffichage}`;
                     } else if (m === 30) {
                         let heureNext = heureAffichage + 1;
-                        if (heureNext > 12) heureNext = 1;  // 13 devient 1
-                        texteNL = `half ${heureNext}`;
+                        if (heureNext > 12) heureNext = 1;
+                        texteDE = `halb ${heureNext}`;
                     } else if (m === 35) {
                         let heureNext = heureAffichage + 1;
                         if (heureNext > 12) heureNext = 1;
-                        texteNL = `vijf over half ${heureNext}`;  // CORRECTION: "over" au lieu de "voor"
+                        texteDE = `fünfunddreißig nach ${heureAffichage}`;
                     } else if (m === 40) {
                         let heureNext = heureAffichage + 1;
                         if (heureNext > 12) heureNext = 1;
-                        texteNL = `twintig voor ${heureNext}`;
+                        texteDE = `zwanzig vor ${heureNext}`;
                     } else if (m === 45) {
                         let heureNext = heureAffichage + 1;
                         if (heureNext > 12) heureNext = 1;
-                        texteNL = `kwart voor ${heureNext}`;
+                        texteDE = `viertel vor ${heureNext}`;
                     } else if (m === 50) {
                         let heureNext = heureAffichage + 1;
                         if (heureNext > 12) heureNext = 1;
-                        texteNL = `tien voor ${heureNext}`;
+                        texteDE = `zehn vor ${heureNext}`;
                     } else if (m === 55) {
                         let heureNext = heureAffichage + 1;
                         if (heureNext > 12) heureNext = 1;
-                        texteNL = `vijf voor ${heureNext}`;
+                        texteDE = `fünf vor ${heureNext}`;
                     }
                     
-                    heures.push({ heure24, heureAffichage, minutes, texteNL, index: heures.length });
+                    heures.push({ heure24, heureAffichage, minutes, texteDE, index: heures.length });
                 }
             }
             return heures;
@@ -215,6 +229,11 @@
 
             document.getElementById('hourHand').setAttribute('transform', `rotate(${heuresRotation} 100 100)`);
             document.getElementById('minuteHand').setAttribute('transform', `rotate(${minutesRotation} 100 100)`);
+            
+            // Afficher aussi l'horloge numérique
+            let h = heure < 10 ? '0' + heure : heure;
+            let min = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('digitalClock').textContent = `${h}:${min}`;
         }
 
         function normaliserTexte(texte) {
@@ -237,90 +256,40 @@
 
         function validerReponse() {
             const input = document.getElementById('heureInput');
-            const reponse = normaliserTexte(input.value);
-            const resultDiv = document.getElementById('result');
-            const hintDiv = document.getElementById('hint');
-
-            if (reponse === '') {
-                resultDiv.textContent = '⚠️ Tape une réponse !';
+            const reponse = normaliserTexte(Gib eine Antwort ein!';
                 resultDiv.className = 'result incorrect';
                 hintDiv.style.display = 'none';
                 return;
             }
 
-            const correctAnswer = normaliserTexte(bonneReponse.texteNL);
-            const reponseWithNumbers = convertirNombresEnChiffres(reponse);
-            const correctAnswerWithNumbers = convertirNombresEnChiffres(correctAnswer);
+            const correctAnswer = normaliserTexte(bonneReponse.texteDE);
             
-            // Générer les équivalents pour les formes "half" et "voor half"
-            let equivalents = [correctAnswer, correctAnswerWithNumbers];
+            // Variantes acceptées (avec nombres en chiffres ou en lettres)
+            let equivalents = [correctAnswer];
             
-            // Si la bonne réponse contient "uur", ajouter la version avec le mot du nombre
-            if (correctAnswer.includes('uur')) {
-                const match = correctAnswer.match(/(\d+) uur/);
+            // Générer les équivalences pour différentes formulations
+            if (correctAnswer.includes('uhr')) {
+                // Variantes pour les heures justes
+                const match = correctAnswer.match(/(\w+) uhr/);
                 if (match) {
-                    const heureNum = parseInt(match[1]);
-                    const nombresMots = {
-                        '0': 'nul', '1': 'een', '2': 'twee', '3': 'drie', '4': 'vier', '5': 'vijf',
-                        '6': 'zes', '7': 'zeven', '8': 'acht', '9': 'negen', '10': 'tien', '11': 'elf', '12': 'twaalf'
-                    };
-                    if (nombresMots[heureNum]) {
-                        equivalents.push(`${nombresMots[heureNum]} uur`);
-                    }
+                    equivalents.push(correctAnswer.replace(/\s+/g, ' '));
                 }
             }
             
-            // Si c'est "X voor half Y", ajouter l'équivalent "Z over Y"
-            if (correctAnswer.includes('voor half')) {
-                const match = correctAnswer.match(/(.+?) voor half (\d+)/);
-                if (match) {
-                    const minutesAvant = match[1];
-                    const heureNext = parseInt(match[2]);
-                    const heureCurrent = heureNext - 1 > 0 ? heureNext - 1 : 12;
-                    
-                    // Mapper les équivalences
-                    if (minutesAvant === 'vijf') {
-                        equivalents.push(`twintig over ${heureCurrent}`);
-                    } else if (minutesAvant === 'tien') {
-                        equivalents.push(`twintig over ${heureCurrent}`);
-                    } else if (minutesAvant === 'twintig') {
-                        equivalents.push(`veertig over ${heureCurrent}`);
-                    }
-                }
-            }
-            
-            // Si c'est "X over Y", ajouter l'équivalent "Z voor half Y+1"
-            if (correctAnswer.includes(' over ')) {
-                const match = correctAnswer.match(/(.+?) over (\d+)/);
-                if (match) {
-                    const minutesOver = match[1];
-                    const heure = parseInt(match[2]);
-                    const heureNext = heure + 1 > 12 ? heure + 1 - 12 : heure + 1;
-                    
-                    if (minutesOver === 'twintig') {
-                        equivalents.push(`tien voor half ${heureNext}`);
-                    } else if (minutesOver === 'veertig') {
-                        equivalents.push(`twintig voor half ${heureNext}`);
-                    }
-                }
-            }
-
             // Vérifier si la réponse correspond à l'une des formes équivalentes
             const isCorrect = equivalents.some(eq => {
-                const eqNormalized = normaliserTexte(convertirNombresEnChiffres(eq));
+                const eqNormalized = normaliserTexte(eq);
                 const reponseNormalized = normaliserTexte(reponse);
-                const reponseWithNumbersNormalized = normaliserTexte(reponseWithNumbers);
                 
-                return reponseNormalized === normaliserTexte(eq) || 
-                       reponseNormalized === eqNormalized || 
-                       reponseWithNumbersNormalized === eqNormalized;
+                return reponseNormalized === eqNormalized || 
+                       reponseNormalized === normaliserTexte(eq);
             });
 
             if (isCorrect) {
                 resultDiv.innerHTML = `
                     <div class="result correct">
-                        ✓ Correct !
-                        <div class="result-text">${bonneReponse.texteNL}</div>
+                        ✓ Richtig!
+                        <div class="result-text">${bonneReponse.texteDE}</div>
                     </div>
                 `;
                 hintDiv.style.display = 'none';
@@ -328,11 +297,16 @@
             } else {
                 resultDiv.innerHTML = `
                     <div class="result incorrect">
-                        ✗ Incorrect.
-                        <div class="result-text">La bonne réponse : ${bonneReponse.texteNL}</div>
+                        ✗ Falsch.
+                        <div class="result-text">Richtige Antwort: ${bonneReponse.texteDE}</div>
                     </div>
                 `;
                 input.style.borderColor = '#c62828';
+                
+                // Afficher un indice
+                const words = correctAnswer.split(' ');
+                const firstWord = words[0];
+                hintDiv.textContent = `💡 Tipp: Beginnt mit
                 
                 // Afficher un indice
                 const words = correctAnswer.split(' ');
