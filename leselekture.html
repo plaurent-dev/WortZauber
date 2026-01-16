@@ -572,6 +572,30 @@
             font-weight: 600;
         }
 
+        /* AFFICHAGE DU TEXTE */
+        .text-display-section {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.8;
+        }
+
+        .text-display-section h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .text-display-section p {
+            color: var(--text);
+            font-size: 1.05em;
+            margin: 0;
+        }
+
         @media (max-width: 768px) {
             .parameters-section > div {
                 grid-template-columns: 1fr;
@@ -580,6 +604,21 @@
             .quiz-header {
                 flex-direction: column;
                 align-items: stretch;
+            }
+
+            .text-display-section {
+                max-height: 300px;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .text-display-section h3 {
+                font-size: 1em;
+                margin-bottom: 15px;
+            }
+
+            .text-display-section p {
+                font-size: 0.95em;
             }
         }
     </style>
@@ -643,6 +682,12 @@
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                 </div>
+            </div>
+
+            <!-- AFFICHAGE DU TEXTE -->
+            <div class="text-display-section">
+                <h3>📖 Der Text:</h3>
+                <p id="textContent">Der Text wird geladen...</p>
             </div>
 
             <div class="question-section">
@@ -810,6 +855,9 @@
             currentAnswers = [];
             correctAnswers = 0;
             submitted = false;
+
+            // Afficher le texte
+            document.getElementById('textContent').textContent = text.text;
 
             document.getElementById('textSelection').style.display = 'none';
             document.getElementById('quiz').classList.add('show');
