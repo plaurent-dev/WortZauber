@@ -52,6 +52,24 @@
                 font-size: 0.9em;
             }
         }
+
+        .style-toggle-btn {
+            padding: 8px 16px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .style-toggle-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -60,6 +78,7 @@
         <div class="navbar-content">
             <h1>✨ Wortzauber</h1>
             <div class="navbar-buttons">
+                <button id="styleToggle" class="style-toggle-btn" title="Design-Stil wechseln">🎨 Soft</button>
             </div>
         </div>
     </nav>
@@ -352,7 +371,38 @@
         window.addEventListener('load', () => {
             genererCrans();
             nouvelleHeure();
+            initThemeToggle();
         });
+
+        // ====== THEME TOGGLE ======
+        function initThemeToggle() {
+            const toggleBtn = document.getElementById('styleToggle');
+            const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+            
+            applyTheme(savedTheme);
+            
+            toggleBtn.addEventListener('click', function() {
+                const currentTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+                const newTheme = currentTheme === 'modern' ? 'soft' : 'modern';
+                applyTheme(newTheme);
+                localStorage.setItem('wortzauber-theme', newTheme);
+            });
+        }
+
+        function applyTheme(themeName) {
+            const styleLink = document.getElementById('styleLink');
+            const toggleBtn = document.getElementById('styleToggle');
+            
+            if (themeName === 'soft') {
+                styleLink.href = 'styles-soft.css';
+                toggleBtn.textContent = '🎨 Modern';
+                toggleBtn.setAttribute('title', 'Wechsel zu modernem Design');
+            } else {
+                styleLink.href = 'styles.css';
+                toggleBtn.textContent = '🎨 Soft';
+                toggleBtn.setAttribute('title', 'Wechsel zu weichem Design');
+            }
+        }
     </script>
 </body>
 </html>
