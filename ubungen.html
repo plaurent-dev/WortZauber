@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Übungen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="styleLink" rel="stylesheet" href="styles.css">
+    <script>
+        // Appliquer le thème sauvegardé dès le chargement
+        const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+        const styleLink = document.getElementById('styleLink');
+        if (savedTheme === 'soft') {
+            styleLink.href = 'styles-soft.css';
+        } else {
+            styleLink.href = 'styles.css';
+        }
+    </script>
+    <style>
+        /* BOUTON DE RETOUR */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* BOUTON STYLE TOGGLE */
+        .style-toggle-btn {
+            padding: 8px 16px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .style-toggle-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* SÉLECTION */
+        #selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            padding: 40px 20px;
+            min-height: 600px;
+        }
+
+        #selection h1 {
+            font-size: 2.5em;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        #selection p {
+            font-size: 1.2em;
+            color: var(--text-medium);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* CARROUSEL */
+        .carousel-container {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .carousel-wrapper {
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .exercise-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            border: 3px solid transparent;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .exercise-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            border-color: white;
+        }
+
+        .exercise-card:active {
+            transform: scale(0.98);
+        }
+
+        .exercise-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .exercise-emoji {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .exercise-description {
+            font-size: 0.95em;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        /* CONTRÔLES CARROUSEL */
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .carousel-btn {
+            padding: 12px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .carousel-btn:active {
+            transform: scale(0.95);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--primary);
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* BOUTON DÉMARRER */
+        .start-btn {
+            padding: 15px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .start-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .start-btn:active {
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 768px) {
+            #selection {
+                gap: 20px;
+                padding: 30px 15px;
+            }
+
+            #selection h1 {
+                font-size: 2em;
+            }
+
+            #selection p {
+                font-size: 1em;
+            }
+
+            .exercise-card {
+                padding: 30px 25px;
+            }
+
+            .exercise-title {
+                font-size: 1.4em;
+            }
+
+            .exercise-emoji {
+                font-size: 2em;
+            }
+
+            .carousel-btn {
+                padding: 10px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #selection {
+                gap: 15px;
+                padding: 20px 10px;
+            }
+
+            #selection h1 {
+                font-size: 1.6em;
+            }
+
+            #selection p {
+                font-size: 0.95em;
+            }
+
+            .exercise-card {
+                padding: 20px 15px;
+                max-width: 100%;
+            }
+
+            .exercise-title {
+                font-size: 1.2em;
+            }
+
+            .exercise-emoji {
+                font-size: 1.8em;
+            }
+
+            .carousel-btn {
+                padding: 8px 12px;
+                font-size: 1em;
+            }
+
+            .carousel-controls {
+                gap: 10px;
+            }
+
+            .start-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Zurück</a>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>⚡ Übungen</h1>
+            <div style="flex: 1; text-align: center;">
+                <span id="navTitle" style="font-size: 1.1em; font-weight: 600; color: white;">Wähle eine Übung</span>
+            </div>
+            <div class="navbar-buttons">
+                <button id="styleToggle" class="style-toggle-btn" title="Design-Stil wechseln">🎨 Soft</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="selection">
+            <h1>⚡ Übungen</h1>
+            <p>Wähle eine Übung zum Trainieren:</p>
+            
+            <div class="carousel-container">
+                <div class="carousel-wrapper">
+                    <div class="carousel-track" id="carouselTrack"></div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn" onclick="prevExercise()">← Vorher</button>
+                    <div class="carousel-dots" id="dotsContainer"></div>
+                    <button class="carousel-btn" onclick="nextExercise()">Nachher →</button>
+                </div>
+            </div>
+
+            <button class="start-btn" onclick="startSelectedExercise()">🚀 Beginnen</button>
+        </div>
+    </div>
+
+    <script>
+        let exercises = [
+            {
+                id: 1,
+                title: 'Leselektüre',
+                emoji: '📖',
+                description: 'Wähle einen Text und beantworte Fragen zum Verständnis',
+                url: 'leselekture.html'
+            },
+            {
+                id: 2,
+                title: 'Vokabeltraining',
+                emoji: '📚',
+                description: 'Trainiere dein Wortschatz mit verschiedenen Themen',
+                url: 'revision_vocabulaire.html'
+            },
+            {
+                id: 3,
+                title: 'Räumliche Positionen',
+                emoji: '🗺️',
+                description: 'Lerne deutsche Städte mit räumlichen Ausdrücken kennen',
+                url: 'revision_positions.html'
+            },
+            {
+                id: 4,
+                title: 'Uhrzeit',
+                emoji: '🕐',
+                description: 'Trainiere das Lesen und Verstehen der Uhrzeit auf Deutsch',
+                url: 'revision_heures.html'
+            }
+        ];
+
+        let currentExerciseIndex = 0;
+
+        // ====== THEME TOGGLE ======
+        function initThemeToggle() {
+            const toggleBtn = document.getElementById('styleToggle');
+            const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+            
+            applyTheme(savedTheme);
+            
+            toggleBtn.addEventListener('click', function() {
+                const currentTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+                const newTheme = currentTheme === 'modern' ? 'soft' : 'modern';
+                applyTheme(newTheme);
+                localStorage.setItem('wortzauber-theme', newTheme);
+            });
+        }
+
+        function applyTheme(themeName) {
+            const styleLink = document.getElementById('styleLink');
+            const toggleBtn = document.getElementById('styleToggle');
+            
+            if (themeName === 'soft') {
+                styleLink.href = 'styles-soft.css';
+                toggleBtn.textContent = '🎨 Modern';
+            } else {
+                styleLink.href = 'styles.css';
+                toggleBtn.textContent = '🎨 Soft';
+            }
+        }
+
+        // ====== CARROUSEL ======
+        function displayCarousel() {
+            const track = document.getElementById('carouselTrack');
+            const dots = document.getElementById('dotsContainer');
+
+            track.innerHTML = exercises.map((exercise, index) => `
+                <div class="carousel-slide">
+                    <div class="exercise-card" onclick="selectExercise(${index})">
+                        <div class="exercise-emoji">${exercise.emoji}</div>
+                        <div class="exercise-title">${exercise.title}</div>
+                        <div class="exercise-description">${exercise.description}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            dots.innerHTML = exercises.map((_, index) => `
+                <div class="dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
+            `).join('');
+
+            currentExerciseIndex = 0;
+        }
+
+        function selectExercise(index) {
+            currentExerciseIndex = index;
+            updateCarousel();
+        }
+
+        function nextExercise() {
+            currentExerciseIndex = (currentExerciseIndex + 1) % exercises.length;
+            updateCarousel();
+        }
+
+        function prevExercise() {
+            currentExerciseIndex = (currentExerciseIndex - 1 + exercises.length) % exercises.length;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentExerciseIndex = index;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const track = document.getElementById('carouselTrack');
+            track.style.transform = `translateX(-${currentExerciseIndex * 100}%)`;
+
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentExerciseIndex);
+            });
+
+            document.getElementById('navTitle').textContent = exercises[currentExerciseIndex].title;
+        }
+
+        function startSelectedExercise() {
+            const exercise = exercises[currentExerciseIndex];
+            window.location.href = exercise.url;
+        }
+
+        // ====== INITIALISATION ======
+        window.addEventListener('load', function() {
+            displayCarousel();
+            initThemeToggle();
+            updateCarousel();
+        });
+    </script>
+</body>
+</html>

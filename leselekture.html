@@ -948,7 +948,25 @@
         }
 
         // Charger les données au démarrage
-        window.addEventListener('load', loadTexts);
+        window.addEventListener('load', function() {
+            loadTexts();
+            
+            // Vérifier si un ID a été passé en paramètre
+            const urlParams = new URLSearchParams(window.location.search);
+            const textId = urlParams.get('id');
+            
+            if (textId) {
+                // Attendre que les textes soient chargés
+                setTimeout(() => {
+                    const index = parseInt(textId) - 1; // Les IDs commencent à 1
+                    if (index >= 0 && index < texts.length) {
+                        currentTextIndex = index;
+                        updateCarousel();
+                        startQuiz();
+                    }
+                }, 100);
+            }
+        });
     </script>
 </body>
 </html>
