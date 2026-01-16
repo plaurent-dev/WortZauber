@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Räumliche Positionen Übung</title>
+    <title>Räumliche Positionen - Deutsche Städte</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYnaelzF3AanXmOGDG8j9kv3GyETYf1Js"></script>
@@ -286,40 +286,40 @@
     <a href="index.html" class="back-btn">← Zurück</a>
     <nav class="navbar">
         <div class="navbar-content">
-            <h1>📚 FR/NL</h1>
+            <h1>📚 DE</h1>
             <div class="navbar-buttons">
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <h1 style="margin-top: 0;">Exercice : Positions spatiales (ten X van)</h1>
-        <p class="subtitle">Localise les deux villes choisies au hasard en utilisant les expressions spatiales néerlandaises !</p>
+        <h1 style="margin-top: 0;">Übung: Räumliche Positionen</h1>
+        <p class="subtitle">Lokalisiere zwei zufällig ausgewählte deutsche Städte mit Hilfe von räumlichen Ausdrücken!</p>
 
         <div class="memory">
-            <strong>📝 Rappel :</strong> <br>
-            <b>ten noorden van</b> = au nord de | 
-            <b>ten zuiden van</b> = au sud de |
-            <b>ten westen van</b> = à l'ouest de | 
-            <b>ten oosten van</b> = à l'est de | 
-            <b>ten noordwesten van</b> = au nord-ouest de | 
-            <b>ten zuidwesten van</b> = au sud-ouest de |
-            <b>ten noordoosten van</b> = au nord-est de | 
-            <b>ten zuidoosten van</b> = au sud-est de
+            <strong>📝 Erinnerung :</strong> <br>
+            <b>nördlich von</b> = Nord von | 
+            <b>südlich von</b> = Süd von |
+            <b>westlich von</b> = West von | 
+            <b>östlich von</b> = Ost von | 
+            <b>nordwestlich von</b> = Nordwest von | 
+            <b>südwestlich von</b> = Südwest von |
+            <b>nordöstlich von</b> = Nordost von | 
+            <b>südöstlich von</b> = Südost von
         </div>
 
         <div class="positions-container">
             <div>
                 <div id="map"></div>
                 <div class="score">
-                    Réponses correctes : <span id="scoreValue">0</span> / <span id="totalValue">0</span>
+                    Korrekte Antworten: <span id="scoreValue">0</span> / <span id="totalValue">0</span>
                 </div>
             </div>
 
             <div class="exercise-box">
                 <div class="city-display">
-                    <div class="city-name" id="cityName">Chargement...</div>
-                    <div class="direction-question" id="questionText">Attente du chargement...</div>
+                    <div class="city-name" id="cityName">Wird geladen...</div>
+                    <div class="direction-question" id="questionText">Warte auf das Laden...</div>
                 </div>
 
                 <div class="options" id="optionsContainer"></div>
@@ -327,17 +327,17 @@
                 <div class="feedback" id="feedback"></div>
 
                 <div class="button-group">
-                    <button class="btn btn-primary" id="validateBtn" onclick="validerReponse()" disabled>Valider</button>
-                    <button class="btn btn-secondary" id="nextBtn" onclick="nouvelleQuestion()" style="display: none;">Question suivante</button>
+                    <button class="btn btn-primary" id="validateBtn" onclick="validerReponse()" disabled>Bestätigen</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nouvelleQuestion()" style="display: none;">Nächste Frage</button>
                 </div>
 
                 <div class="stats">
                     <div class="stat-box">
-                        <div class="stat-label">Bonnes réponses</div>
+                        <div class="stat-label">Richtige Antworten</div>
                         <div class="stat-value" id="correctCount">0</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-label">Taux de réussite</div>
+                        <div class="stat-label">Erfolgsquote</div>
                         <div class="stat-value" id="percentage">0%</div>
                     </div>
                 </div>
@@ -346,70 +346,70 @@
     </div>
 
     <script>
-        // Liste des 50+ villes néerlandaises avec leurs coordonnées GPS
+        // Liste der 50+ deutschen Städte mit ihren GPS-Koordinaten
         const villes = [
-            { nom: 'Amsterdam', lat: 52.3676, lng: 4.9041 },
-            { nom: 'Rotterdam', lat: 51.9225, lng: 4.4792 },
-            { nom: 'La Haye', lat: 52.0705, lng: 4.2566 },
-            { nom: 'Utrecht', lat: 52.0907, lng: 5.1214 },
-            { nom: 'Eindhoven', lat: 51.4416, lng: 5.4697 },
-            { nom: 'Groningen', lat: 53.2190, lng: 6.5669 },
-            { nom: 'Tilburg', lat: 51.5588, lng: 5.0852 },
-            { nom: 'Almere', lat: 52.3702, lng: 5.2215 },
-            { nom: 'Maastricht', lat: 50.8503, lng: 5.6898 },
-            { nom: 'Arnhem', lat: 51.9851, lng: 5.8987 },
-            { nom: 'Haarlem', lat: 52.3894, lng: 4.6369 },
-            { nom: 'Leeuwarden', lat: 53.2011, lng: 5.7896 },
-            { nom: 'Dordrecht', lat: 51.8133, lng: 4.6704 },
-            { nom: 'Enschede', lat: 52.2215, lng: 6.8937 },
-            { nom: 'Leyde', lat: 52.1601, lng: 4.4817 },
-            { nom: 'Berg-op-Zoom', lat: 51.4874, lng: 4.2889 },
-            { nom: 'Breda', lat: 51.5897, lng: 4.7789 },
-            { nom: 'Nimègue', lat: 51.8425, lng: 5.8520 },
-            { nom: 'Apeldoorn', lat: 52.2129, lng: 5.9699 },
-            { nom: 'Zwolle', lat: 52.5092, lng: 6.0933 },
-            { nom: 'Amersfoort', lat: 52.1601, lng: 5.3878 },
-            { nom: 'Delft', lat: 52.0116, lng: 4.3571 },
-            { nom: 'Leiden', lat: 52.1601, lng: 4.4817 },
-            { nom: 'Gouda', lat: 52.0159, lng: 4.7114 },
-            { nom: 'Zaandijk', lat: 52.4478, lng: 4.8309 },
-            { nom: 'Alkmaar', lat: 52.6340, lng: 4.7403 },
-            { nom: 'Hoorn', lat: 52.6426, lng: 5.0534 },
-            { nom: 'Edam', lat: 52.5293, lng: 5.0535 },
-            { nom: 'Volendam', lat: 52.4787, lng: 5.0683 },
-            { nom: 'Marken', lat: 52.4550, lng: 5.1075 },
-            { nom: 'Zaanstad', lat: 52.4478, lng: 4.8309 },
-            { nom: 'Emmen', lat: 52.7806, lng: 6.8930 },
-            { nom: 'Hengelo', lat: 52.2630, lng: 6.7917 },
-            { nom: 'Oss', lat: 51.7677, lng: 5.5262 },
-            { nom: 'Sittard-Geleen', lat: 50.9963, lng: 5.8556 },
-            { nom: 'Helmond', lat: 51.4742, lng: 5.6615 },
-            { nom: 'Middelburg', lat: 51.4988, lng: 3.6109 },
-            { nom: 'Vlissingen', lat: 51.4422, lng: 3.5625 },
-            { nom: 'Goes', lat: 51.5320, lng: 3.8844 },
-            { nom: 'Terneuzen', lat: 51.3359, lng: 3.8320 },
-            { nom: 'Weert', lat: 51.2482, lng: 5.7147 },
-            { nom: 'Roermond', lat: 51.1925, lng: 5.9847 },
-            { nom: 'Renkum', lat: 51.9885, lng: 5.7233 },
-            { nom: 'Oegstgeest', lat: 52.1766, lng: 4.4959 },
-            { nom: 'Voorschoten', lat: 52.1479, lng: 4.4631 },
-            { nom: 'Lisse', lat: 52.2519, lng: 4.5591 },
-            { nom: 'Hillegom', lat: 52.2707, lng: 4.5891 },
-            { nom: 'Katwijk', lat: 52.2111, lng: 4.4119 },
-            { nom: 'Oudewater', lat: 52.0083, lng: 4.9191 },
-            { nom: 'Montfoort', lat: 52.0613, lng: 5.1341 }
+            { nom: 'Berlin', lat: 52.5200, lng: 13.4050 },
+            { nom: 'München', lat: 48.1351, lng: 11.5820 },
+            { nom: 'Hamburg', lat: 53.5511, lng: 9.9937 },
+            { nom: 'Köln', lat: 50.9375, lng: 6.9603 },
+            { nom: 'Frankfurt', lat: 50.1109, lng: 8.6821 },
+            { nom: 'Stuttgart', lat: 48.7758, lng: 9.1829 },
+            { nom: 'Düsseldorf', lat: 51.2277, lng: 6.7735 },
+            { nom: 'Dortmund', lat: 51.5136, lng: 7.4653 },
+            { nom: 'Essen', lat: 51.4556, lng: 7.0116 },
+            { nom: 'Leipzig', lat: 51.3397, lng: 12.3731 },
+            { nom: 'Dresden', lat: 51.0504, lng: 13.7373 },
+            { nom: 'Hannover', lat: 52.3759, lng: 9.7320 },
+            { nom: 'Nürnberg', lat: 49.4521, lng: 11.0767 },
+            { nom: 'Duisburg', lat: 51.4344, lng: 6.7573 },
+            { nom: 'Bochum', lat: 51.4819, lng: 7.2147 },
+            { nom: 'Wuppertal', lat: 51.2629, lng: 7.1496 },
+            { nom: 'Bielefeld', lat: 52.0302, lng: 8.5325 },
+            { nom: 'Bonn', lat: 50.7365, lng: 7.0998 },
+            { nom: 'Mannheim', lat: 49.4891, lng: 8.4673 },
+            { nom: 'Karlsruhe', lat: 49.0134, lng: 8.4043 },
+            { nom: 'Augsburg', lat: 48.3705, lng: 10.8978 },
+            { nom: 'Wiesbaden', lat: 50.0829, lng: 8.2430 },
+            { nom: 'Mönchengladbach', lat: 51.1629, lng: 6.3925 },
+            { nom: 'Gelsenkirchen', lat: 51.4555, lng: 7.0956 },
+            { nom: 'Aachen', lat: 50.7766, lng: 6.0840 },
+            { nom: 'Kiel', lat: 54.3233, lng: 10.1348 },
+            { nom: 'Magdeburg', lat: 52.1205, lng: 11.6281 },
+            { nom: 'Ulm', lat: 48.3985, lng: 9.9937 },
+            { nom: 'Heidelberg', lat: 49.4124, lng: 8.7129 },
+            { nom: 'Würzburg', lat: 49.8047, lng: 9.9377 },
+            { nom: 'Freiburg', lat: 48.0021, lng: 7.8421 },
+            { nom: 'Rostock', lat: 54.0887, lng: 12.0977 },
+            { nom: 'Erfurt', lat: 50.9848, lng: 11.0268 },
+            { nom: 'Saarbrücken', lat: 49.2392, lng: 6.9965 },
+            { nom: 'Potsdam', lat: 52.3906, lng: 13.0645 },
+            { nom: 'Mainz', lat: 50.0049, lng: 8.2784 },
+            { nom: 'Remscheid', lat: 51.1797, lng: 7.1968 },
+            { nom: 'Solingen', lat: 51.1708, lng: 7.0892 },
+            { nom: 'Hagen', lat: 51.3599, lng: 7.4455 },
+            { nom: 'Salzgitter', lat: 52.1438, lng: 10.3240 },
+            { nom: 'Osnabrück', lat: 52.2799, lng: 8.0432 },
+            { nom: 'Ludwigshafen', lat: 49.4778, lng: 8.4427 },
+            { nom: 'Heilbronn', lat: 49.1386, lng: 9.2200 },
+            { nom: 'Pforzheim', lat: 48.8936, lng: 8.7048 },
+            { nom: 'Oldenburg', lat: 53.1437, lng: 8.2156 },
+            { nom: 'Wolfsburg', lat: 52.4220, lng: 10.7757 },
+            { nom: 'Göttingen', lat: 51.5340, lng: 9.9356 },
+            { nom: 'Gera', lat: 50.8677, lng: 12.0828 },
+            { nom: 'Passau', lat: 48.5726, lng: 13.4662 },
+            { nom: 'Bayreuth', lat: 49.9447, lng: 11.5791 }
         ];
 
         // Directions possibles (en ordre: N, NE, E, SE, S, SW, W, NW)
         const directions = [
-            { nl: 'ten noorden van', fr: 'au nord de', angle: 0 },
-            { nl: 'ten noordoosten van', fr: 'au nord-est de', angle: 45 },
-            { nl: 'ten oosten van', fr: 'à l\'est de', angle: 90 },
-            { nl: 'ten zuidoosten van', fr: 'au sud-est de', angle: 135 },
-            { nl: 'ten zuiden van', fr: 'au sud de', angle: 180 },
-            { nl: 'ten zuidwesten van', fr: 'au sud-ouest de', angle: 225 },
-            { nl: 'ten westen van', fr: 'à l\'ouest de', angle: 270 },
-            { nl: 'ten noordwesten van', fr: 'au nord-ouest de', angle: 315 }
+            { de: 'nördlich von', angle: 0 },
+            { de: 'nordöstlich von', angle: 45 },
+            { de: 'östlich von', angle: 90 },
+            { de: 'südöstlich von', angle: 135 },
+            { de: 'südlich von', angle: 180 },
+            { de: 'südwestlich von', angle: 225 },
+            { de: 'westlich von', angle: 270 },
+            { de: 'nordwestlich von', angle: 315 }
         ];
 
         let map;
@@ -423,10 +423,10 @@
         const MAX_QUESTIONS = 10;
 
         function initMap() {
-            const centerNl = { lat: 52.1326, lng: 5.2913 };
+            const centerDe = { lat: 51.1657, lng: 10.4515 };
             map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 7,
-                center: centerNl,
+                zoom: 6,
+                center: centerDe,
                 mapTypeControl: false,
                 fullscreenControl: false,
                 streetViewControl: false
@@ -459,7 +459,7 @@
         }
 
         function genererOptionsAleatoires(correctAnswer) {
-            const allOptions = directions.filter(d => d.nl !== correctAnswer.nl);
+            const allOptions = directions.filter(d => d.de !== correctAnswer.de);
             const shuffled = allOptions.sort(() => Math.random() - 0.5);
             const options = [correctAnswer, ...shuffled.slice(0, 3)];
             return options.sort(() => Math.random() - 0.5);
@@ -534,7 +534,7 @@
             currentQuestion = { city1, city2, bearing };
             document.getElementById('cityName').textContent = '';
             document.getElementById('questionText').innerHTML = 
-                `<strong>${city2.nom}</strong> (2 🔴) ligt <span style="font-size: 1.3em; font-weight: bold; color: var(--primary);">........................</span> <strong>${city1.nom}</strong> (1) 🔵. ?`;
+                `<strong>${city2.nom}</strong> (2 🔴) liegt <span style="font-size: 1.3em; font-weight: bold; color: var(--primary);">........................</span> <strong>${city1.nom}</strong> (1 🔵). ?`;
 
             // Afficher les options
             const optionsContainer = document.getElementById('optionsContainer');
@@ -542,7 +542,7 @@
             options.forEach((option, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.textContent = option.nl;
+                btn.textContent = option.de;
                 btn.onclick = () => selectionnerOption(btn, option);
                 optionsContainer.appendChild(btn);
             });
@@ -567,28 +567,28 @@
             if (!selectedOption || questionAnswered) return;
 
             questionAnswered = true;
-            const isCorrect = selectedOption.nl === correctAnswer.nl;
+            const isCorrect = selectedOption.de === correctAnswer.de;
 
             if (isCorrect) {
                 correctCount++;
                 document.getElementById('feedback').className = 'feedback correct';
-                const sentenceCorrect = `${currentQuestion.city2.nom} ligt ${correctAnswer.nl} ${currentQuestion.city1.nom}`;
+                const sentenceCorrect = `${currentQuestion.city2.nom} liegt ${correctAnswer.de} ${currentQuestion.city1.nom}`;
                 document.getElementById('feedback').innerHTML = 
-                    `✅ <strong>Correct !</strong> ${sentenceCorrect}.<br><button class="listen-btn" onclick="ecouter('${sentenceCorrect}')">🔊 Luister naar de zin</button>`;
+                    `✅ <strong>Richtig !</strong> ${sentenceCorrect}.<br><button class="listen-btn" onclick="ecouter('${sentenceCorrect}')">🔊 Satz anhören</button>`;
                 document.querySelectorAll('.option-btn').forEach(btn => {
-                    if (btn.textContent === correctAnswer.nl) {
+                    if (btn.textContent === correctAnswer.de) {
                         btn.classList.add('correct');
                     }
                 });
             } else {
                 document.getElementById('feedback').className = 'feedback incorrect';
-                const sentenceIncorrect = `${currentQuestion.city2.nom} ligt ${correctAnswer.nl} ${currentQuestion.city1.nom}`;
+                const sentenceIncorrect = `${currentQuestion.city2.nom} liegt ${correctAnswer.de} ${currentQuestion.city1.nom}`;
                 document.getElementById('feedback').innerHTML = 
-                    `❌ <strong>Incorrect !</strong> ${sentenceIncorrect}.<br><button class="listen-btn" onclick="ecouter('${sentenceIncorrect}')">🔊 Luister naar de zin</button>`;
+                    `❌ <strong>Falsch !</strong> ${sentenceIncorrect}.<br><button class="listen-btn" onclick="ecouter('${sentenceIncorrect}')">🔊 Satz anhören</button>`;
                 document.querySelectorAll('.option-btn').forEach(btn => {
-                    if (btn.textContent === correctAnswer.nl) {
+                    if (btn.textContent === correctAnswer.de) {
                         btn.classList.add('correct');
-                    } else if (btn.textContent === selectedOption.nl) {
+                    } else if (btn.textContent === selectedOption.de) {
                         btn.classList.add('incorrect');
                     }
                 });
@@ -599,14 +599,14 @@
             updateScore();
         }
 
-        // Fonction pour prononcer une phrase en néerlandais
+        // Funktion zum Aussprechen eines Satzes auf Deutsch
         function ecouter(texte) {
-            // Arrêter la parole en cours si elle existe
+            // Aktuelle Sprachausgabe stoppen, falls vorhanden
             window.speechSynthesis.cancel();
             
             const utterance = new SpeechSynthesisUtterance(texte);
-            utterance.lang = 'nl-NL';  // Néerlandais
-            utterance.rate = 0.9;      // Vitesse légèrement réduite pour clarté
+            utterance.lang = 'de-DE';  // Deutsch
+            utterance.rate = 0.9;      // Leicht verlangsamte Sprechgeschwindigkeit für Klarheit
             utterance.pitch = 1;
             
             window.speechSynthesis.speak(utterance);
@@ -629,16 +629,16 @@
             let emoji = '😊';
             
             if (percentage === 100) {
-                message = 'Parfait ! 🌟 Vous maîtrisez les positions spatiales !';
+                message = 'Perfekt! 🌟 Du beherrschst räumliche Positionen!';
                 emoji = '🌟';
             } else if (percentage >= 80) {
-                message = 'Très bien ! 👏 Vous êtes presque parfait !';
+                message = 'Sehr gut! 👏 Du bist fast perfekt!';
                 emoji = '👏';
             } else if (percentage >= 60) {
-                message = 'Bien ! 👍 Continuez vos révisions !';
+                message = 'Gut! 👍 Weiterhin üben!';
                 emoji = '👍';
             } else {
-                message = 'À revoir ! 📚 Réessayez pour vous améliorer !';
+                message = 'Zu überarbeiten! 📚 Versuche es erneut um dich zu verbessern!';
                 emoji = '📚';
             }
 
@@ -646,22 +646,22 @@
             exerciseBox.innerHTML = `
                 <div style="text-align: center; padding: 40px 20px;">
                     <div style="font-size: 4em; margin-bottom: 20px;">${emoji}</div>
-                    <h2 style="color: var(--primary); font-size: 1.8em; margin-bottom: 15px;">Exercice terminé !</h2>
+                    <h2 style="color: var(--primary); font-size: 1.8em; margin-bottom: 15px;">Übung beendet!</h2>
                     <p style="font-size: 1.2em; margin-bottom: 30px;">${message}</p>
                     
                     <div class="stats" style="margin: 30px 0;">
                         <div class="stat-box">
-                            <div class="stat-label">Score final</div>
+                            <div class="stat-label">Endergebnis</div>
                             <div class="stat-value">${correctCount}/${MAX_QUESTIONS}</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-label">Pourcentage</div>
+                            <div class="stat-label">Prozentsatz</div>
                             <div class="stat-value">${percentage}%</div>
                         </div>
                     </div>
                     
                     <button class="btn btn-secondary" onclick="location.reload()" style="margin-top: 30px; padding: 15px 30px; font-size: 1.1em;">
-                        🔄 Recommencer
+                        🔄 Neustarten
                     </button>
                 </div>
             `;

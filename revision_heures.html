@@ -60,72 +60,70 @@
 
         <div class="quiz-section">
             <div style="display: flex; gap: 30px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+                <!-- Horloge Analogique et Numérique -->
                 <div class="clock-wrapper">
                     <div class="time-indicator" id="timeIndicator">☀️</div>
                     <div class="clock-container">
-                    <svg viewBox="0 0 200 200" id="clockSvg">
-                        <!-- Cercle de l'horloge -->
-                        <circle cx="100" cy="100" r="95" fill="white" stroke="#c41e3a" stroke-width="3"/>
-                        
-                        <!-- Crans pour les minutes (60 petits traits) -->
-                        <g stroke="#999" stroke-width="1">
-                            <line x1="100" y1="8" x2="100" y2="12" />
-                            <line x1="100" y1="188" x2="100" y2="192" />
-                            <line x1="8" y1="100" x2="12" y2="100" />
-                            <line x1="188" y1="100" x2="192" y2="100" />
+                        <svg viewBox="0 0 200 200" id="clockSvg">
+                            <!-- Cercle de l'horloge -->
+                            <circle cx="100" cy="100" r="95" fill="white" stroke="#c41e3a" stroke-width="3"/>
                             
-                            <!-- Crans pour chaque minute -->
-                            <g id="minuteMarks" />
-                        </g>
+                            <!-- Crans pour les minutes (60 petits traits) -->
+                            <g stroke="#999" stroke-width="1">
+                                <line x1="100" y1="8" x2="100" y2="12" />
+                                <line x1="100" y1="188" x2="100" y2="192" />
+                                <line x1="8" y1="100" x2="12" y2="100" />
+                                <line x1="188" y1="100" x2="192" y2="100" />
+                                
+                                <!-- Crans pour chaque minute -->
+                                <g id="minuteMarks" />
+                            </g>
 
-                        <!-- Chiffres -->
-                        <text x="100" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">12</text>
-                        <text x="175" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">3</text>
-                        <text x="100" y="185" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">6</text>
-                        <text x="25" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">9</text>
+                            <!-- Chiffres -->
+                            <text x="100" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">12</text>
+                            <text x="175" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">3</text>
+                            <text x="100" y="185" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">6</text>
+                            <text x="25" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">9</text>
 
-                        <!-- Traits horaires (plus épais pour les heures) -->
-                        <g stroke="#c41e3a" stroke-width="2">
-                            <line x1="100" y1="10" x2="100" y2="20"/>
-                            <line x1="100" y1="180" x2="100" y2="190"/>
-                            <line x1="10" y1="100" x2="20" y2="100"/>
-                            <line x1="180" y1="100" x2="190" y2="100"/>
-                        </g>
+                            <!-- Traits horaires (plus épais pour les heures) -->
+                            <g stroke="#c41e3a" stroke-width="2">
+                                <line x1="100" y1="10" x2="100" y2="20"/>
+                                <line x1="100" y1="180" x2="100" y2="190"/>
+                                <line x1="10" y1="100" x2="20" y2="100"/>
+                                <line x1="180" y1="100" x2="190" y2="100"/>
+                            </g>
 
-                        <!-- Centre -->
-                        <circle cx="100" cy="100" r="5" fill="#c41e3a"/>
-                        
-                        <!-- Aiguille des heures -->
-                        <line id="hourHand" x1="100" y1="100" x2="100" y2="60" stroke="#c41e3a" stroke-width="4" stroke-linecap="round" transform="rotate(0 100 100)"/>
-                        
-                        <!-- Aiguille des minutes -->
-                        <line id="minuteHand" x1="100" y1="100" x2="100" y2="30" stroke="#4ecdc4" stroke-width="3" stroke-linecap="round" transform="rotate(0 100 100)"/>
+                            <!-- Centre -->
+                            <circle cx="100" cy="100" r="5" fill="#c41e3a"/>
+                            
+                            <!-- Aiguille des heures -->
+                            <line id="hourHand" x1="100" y1="100" x2="100" y2="60" stroke="#c41e3a" stroke-width="4" stroke-linecap="round" transform="rotate(0 100 100)"/>
+                            
+                            <!-- Aiguille des minutes -->
+                            <line id="minuteHand" x1="100" y1="100" x2="100" y2="30" stroke="#4ecdc4" stroke-width="3" stroke-linecap="round" transform="rotate(0 100 100)"/>
+                        </svg>
+                    </div>
+                    <!-- Horloge Numérique -->
+                    <div id="digitalClock" style="font-size: 3em; font-weight: 700; font-family: 'Courier New', monospace; color: var(--primary); background: var(--gris-clair); padding: 15px 25px; border-radius: 8px; border: 2px solid var(--rouge-brique); min-width: 160px; text-align: center; margin-top: 15px;">
+                        --:--
                     </div>
                 </div>
 
-                <!-- Horloge Numérique -->
-                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <div id="digitalClock" style="font-size: 3.5em; font-weight: 700; font-family: 'Space Mono', monospace; color: var(--primary); background: var(--bg-light-gray); padding: 20px 30px; border-radius: 12px; border: 2px solid var(--secondary); min-width: 200px; text-align: center;">
-                        --:--Wie spät ist es? (z.B.: "fünf vor sieben")</label>
-                    <input type="text" id="heureInput" placeholder="Gib die Antwort auf Deutsch ein..." onkeypress="if(event.key==='Enter') validerReponse()">
-                </div>
+                <!-- Formulaire -->
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="heureInput">Wie spät ist es? (z.B.: "fünf vor sieben")</label>
+                        <input type="text" id="heureInput" placeholder="Gib die Antwort auf Deutsch ein..." onkeypress="if(event.key==='Enter') validerReponse()">
+                    </div>
 
-                <div class="buttons">
-                    <button class="btn btn-validate" onclick="validerReponse()">✓ Überprüfen</button>
-                    <button class="btn btn-next" onclick="nouvelleHeure()" style="grid-column: 1 / -1;">🔄 Neue Uhrzeit
-            <div class="controls">
-                <div class="control-group">
-                    <label for="heureInput">Quelle heure est-il ? (ex: "vijf voor zeven")</label>
-                    <input type="text" id="heureInput" placeholder="Tape la réponse en néerlandais..." onkeypress="if(event.key==='Enter') validerReponse()">
-                </div>
+                    <div class="buttons">
+                        <button class="btn btn-validate" onclick="validerReponse()">✓ Überprüfen</button>
+                        <button class="btn btn-next" onclick="nouvelleHeure()" style="grid-column: 1 / -1;">🔄 Neue Uhrzeit</button>
+                    </div>
 
-                <div class="buttons">
-                    <button class="btn btn-validate" onclick="validerReponse()">✓ Valider</button>
-                    <button class="btn btn-next" onclick="nouvelleHeure()" style="grid-column: 1 / -1;">🔄 Nouvelle heure</button>
+                    <div class="result" id="result"></div>
+                    <div class="hint" id="hint" style="display: none;"></div>
                 </div>
-
-                <div class="result" id="result"></div>
-                <div class="hint" id="hint" style="display: none;"></div>
             </div>
         </div>
     </div>
@@ -242,8 +240,8 @@
 
         function convertirNombresEnChiffres(texte) {
             const nombresMots = {
-                'nul': '0', 'een': '1', 'twee': '2', 'drie': '3', 'vier': '4', 'vijf': '5',
-                'zes': '6', 'zeven': '7', 'acht': '8', 'negen': '9', 'tien': '10', 'elf': '11', 'twaalf': '12'
+                'null': '0', 'eins': '1', 'zwei': '2', 'drei': '3', 'vier': '4', 'fünf': '5',
+                'sechs': '6', 'sieben': '7', 'acht': '8', 'neun': '9', 'zehn': '10', 'elf': '11', 'zwölf': '12'
             };
             
             let resultat = texte;
@@ -256,7 +254,12 @@
 
         function validerReponse() {
             const input = document.getElementById('heureInput');
-            const reponse = normaliserTexte(Gib eine Antwort ein!';
+            const reponse = normaliserTexte(input.value);
+            const resultDiv = document.getElementById('result');
+            const hintDiv = document.getElementById('hint');
+            
+            if (!bonneReponse) {
+                resultDiv.innerHTML = '<div class="result incorrect">✗ Gib eine Antwort ein!</div>';
                 resultDiv.className = 'result incorrect';
                 hintDiv.style.display = 'none';
                 return;
@@ -306,12 +309,7 @@
                 // Afficher un indice
                 const words = correctAnswer.split(' ');
                 const firstWord = words[0];
-                hintDiv.textContent = `💡 Tipp: Beginnt mit
-                
-                // Afficher un indice
-                const words = correctAnswer.split(' ');
-                const firstWord = words[0];
-                hintDiv.textContent = `💡 Indice : Commence par "${firstWord}"`;
+                hintDiv.textContent = `💡 Tipp: Beginnt mit "${firstWord}"`;
                 hintDiv.style.display = 'block';
             }
         }
