@@ -50,9 +50,13 @@
     <!-- Section Fiches Récentes -->
     <div class="section">
         <h2>📚 Neueste Lektionen</h2>
-        <div class="fiches-grid" id="fichesRecentes">
-            <div class="empty-state">Keine Lektionen vorhanden. <a href="generateur.html">Neue Lektion erstellen</a></div>
-        </div>
+        <div class="fiches-grid" id="fichesRecentes"></div>
+    </div>
+
+    <!-- Section Leselektüre -->
+    <div class="section">
+        <h2>📖 Leselektüre</h2>
+        <div class="fiches-grid" id="leselektureContainer"></div>
     </div>
 </div>
 
@@ -74,7 +78,6 @@
         const container = document.getElementById('fichesRecentes');
 
         if (fiches.length === 0) {
-            container.innerHTML = '<div class="empty-state">Keine Lektionen vorhanden. <a href="generateur.html">Neue Lektion erstellen</a></div>';
             return;
         }
 
@@ -287,6 +290,7 @@
     window.onload = function() {
         updateNavbar();
         afficherFichesRecentes();
+        afficherLeselekturen();
         afficherMarqueursGoogleMap();
         initThemeToggle();
     };
@@ -323,6 +327,34 @@
             styleLink.href = 'styles.css';
             toggleBtn.textContent = '🎨 Soft';
             toggleBtn.setAttribute('title', 'Wechsel zu weichem Design');
+        }
+    }
+
+    // ====== LESELEKTÜRE ======
+    async function afficherLeselekturen() {
+        try {
+            const response = await fetch('leselekture.json');
+            const data = await response.json();
+            const container = document.getElementById('leselektureContainer');
+
+            if (!data.leselekturen || data.leselekturen.length === 0) {
+                return;
+            }
+
+            const leselekturen = data.leselekturen;
+
+            container.innerHTML = leselekturen.map(text => `
+                <div class="fiche-card" onclick="window.location.href='leselekture.html'">
+                    <h3>${text.titel}</h3>
+                    <p class="date">📖 ${text.fragen.length} Fragen</p>
+                    <p style="font-size: 0.9em; color: var(--text-medium); line-height: 1.4; height: 60px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                        ${text.text.substring(0, 120)}...
+                    </p>
+                    <button onclick="window.location.href='leselekture.html'">📚 Öffnen</button>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Erreur lors du chargement des leselekturen:', error);
         }
     }
 </script>
