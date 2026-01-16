@@ -7,8 +7,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link id="styleLink" rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -29,6 +29,7 @@
                     <a href="visualiseur_verbes.html" class="dropdown-item">Alle Verben</a>
                     </div>
             </div>
+            <button id="styleToggle" class="style-toggle-btn" title="Design-Stil wechseln">🎨 Soft</button>
             <a href="admin.html" class="navbar-link" id="loginBtn" style="background: #ffc107; color: #333;">🔐 Anmelden</a>
             <a href="admin.html" class="navbar-link admin" id="adminLink" style="display: none;">⚙️ Admin</a>
             
@@ -287,7 +288,43 @@
         updateNavbar();
         afficherFichesRecentes();
         afficherMarqueursGoogleMap();
+        initThemeToggle();
     };
+
+    // ============================================
+    // THEME SWITCHER
+    // ============================================
+    function initThemeToggle() {
+        const styleLink = document.getElementById('styleLink');
+        const toggleBtn = document.getElementById('styleToggle');
+        const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+        
+        // Appliquer le thème sauvegardé
+        applyTheme(savedTheme);
+        
+        // Event listener pour le bouton
+        toggleBtn.addEventListener('click', function() {
+            const currentTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+            const newTheme = currentTheme === 'modern' ? 'soft' : 'modern';
+            applyTheme(newTheme);
+            localStorage.setItem('wortzauber-theme', newTheme);
+        });
+    }
+
+    function applyTheme(themeName) {
+        const styleLink = document.getElementById('styleLink');
+        const toggleBtn = document.getElementById('styleToggle');
+        
+        if (themeName === 'soft') {
+            styleLink.href = 'styles-soft.css';
+            toggleBtn.textContent = '🎨 Modern';
+            toggleBtn.setAttribute('title', 'Wechsel zu modernem Design');
+        } else {
+            styleLink.href = 'styles.css';
+            toggleBtn.textContent = '🎨 Soft';
+            toggleBtn.setAttribute('title', 'Wechsel zu weichem Design');
+        }
+    }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYnaelzF3AanXmOGDG8j9kv3GyETYf1Js"></script>
 </body>
