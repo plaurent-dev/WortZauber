@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Vergangenheit Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .imparfait-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .imparfait-reminders {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .imparfait-exercise {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .imparfait-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .imparfait-reminders {
+                max-height: none;
+                overflow-y: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>✨ Wortzauber</h1>
+            <div class="navbar-buttons">
+                <a href="index.html" class="navbar-link">🏠 Startseite</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-top: 0;">Vergangenheit Training</h1>
+        <p class="subtitle">Entraîne-toi à retrouver le radical et l'imparfait des verbes néerlandais</p>
+        
+        <div class="imparfait-wrapper">
+            <!-- COLONNE GAUCHE: RAPPELS -->
+            <div class="imparfait-reminders">
+                <div class="aide-memoire">
+                    <strong>On distingue :</strong><br>
+                    <b>VERBES RÉGULIERS (faibles)</b> : <i>Pas de changement de voyelle du radical au présent et à l'imparfait.</i><br>
+                    Exemples : werken → ik werk → ik werkte, wij werkten<br>
+                    leven → ik leef → ik leefde, wij leefden<br>
+                    horen → ik hoor → ik hoorde, wij hoorden
+                    <br><br>
+                    <b>VERBES IRRÉGULIERS (forts)</b> : <i>Changement de voyelle du radical au présent et à l'imparfait.</i><br>
+                    Exemples : denken → ik denk → ik dacht, wij dachten<br>
+                    nemen → ik neem → ik nam, wij namen<br>
+                    gaan → ik ga → ik ging, wij gingen
+                    <br><br>
+                    <b>Pour savoir si un verbe est régulier ou irrégulier :</b> il faut l'apprendre par cœur ou consulter le dictionnaire.
+                    <br><br>
+                    <b>Conjugaison de l'imparfait :</b><br>
+                    - Deux formes : singulier (ik werkte) et pluriel (wij werkten)<br>
+                    - L'imparfait des verbes réguliers se termine par <b>-te(n)</b> ou <b>-de(n)</b> :<br>
+                    ik werkTE / wij werkTEN — ik leefDE / wij leefDEN
+                    <br><br>
+                    <b>Comment choisir -te(n) ou -de(n) ?</b><br>
+                    - Prends le <b>radical brut</b> (infinitif sans -en ou -n).<br>
+                    - Si la dernière lettre du radical est dans <b>T K F S CH P + X</b> (mnémo : <b>'t Kofschip + X</b> ou <b>SoFT KeTCHuP + X</b>), c'est <b>-te(n)</b>.<br>
+                    - Sinon, c'est <b>-de(n)</b>.<br>
+                    Ex : werken → werkte, leven → leefde
+                    <br><br>
+                    <b>Remarques orthographiques :</b><br>
+                    - Pour la 1ère personne du présent, attention aux changements de consonnes (v → f, z → s).<br>
+                    - Ex : reizen → ik reis ; durven → ik durf ; leven → ik leef.<br>
+                    - Syllabe fermée : voyelle brève (pen/nen), voyelle longue (boom, deux « o »).<br>
+                    - Syllabe ouverte : voyelle longue, une seule lettre (nemen).
+                </div>
+            </div>
+
+            <!-- COLONNE DROITE: EXERCICE -->
+            <div class="imparfait-exercise">
+                <form id="setupForm">
+                    <div class="control-group">
+                        <label>Nombre de verbes à réviser :</label>
+                        <input type="number" id="nbVerbes" min="1" max="20" value="5">
+                    </div>
+                    <br>
+                    <label><input type="checkbox" id="reguliers" checked> Réguliers</label>
+                    <label style="margin-left: 20px;"><input type="checkbox" id="irreguliers" checked> Irréguliers</label>
+                    <br><br>
+                    <button class="btn btn-primary" type="submit">Commencer</button>
+                </form>
+
+                <div id="quiz" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let verbes = [];
+        let current = 0;
+
+        document.getElementById('setupForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const nb = parseInt(document.getElementById('nbVerbes').value, 10);
+            const useReg = document.getElementById('reguliers').checked;
+            const useIrreg = document.getElementById('irreguliers').checked;
+            let all = [];
+            if (useReg) {
+                const reg = await fetch('imparfait_regulier.json').then(r=>r.json());
+                all = all.concat(reg.verbes_reguliers.map(v => ({...v, type: "regulier"})));
+            }
+            if (useIrreg) {
+                const irreg = await fetch('imparfait_irregulier.json').then(r=>r.json());
+                all = all.concat(irreg.verbes_irreguliers.map(v => ({...v, type: "irregulier"})));
+            }
+            all = all.sort(()=>Math.random()-0.5).slice(0, nb);
+            verbes = all;
+            current = 0;
+            document.getElementById('setupForm').style.display = 'none';
+            document.getElementById('quiz').style.display = '';
+            showQuestion();
+        };
+
+        function showQuestion() {
+            if (current >= verbes.length) {
+                document.getElementById('quiz').innerHTML = `
+                    <div class="completion-message">
+                        <p>✅ Révision terminée !</p>
+                        <p><strong>Bravo !</strong></p>
+                    </div>
+                    <button class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="location.reload()">🔄 Recommencer</button>
+                `;
+                return;
+            }
+            const v = verbes[current];
+            let type = '';
+            let conseil = '';
+            if (v.type === "regulier") {
+                type = '<span style="color:var(--secondary);font-weight:bold;">(régulier)</span>';
+                conseil = `
+                    <div style="margin:10px 0 18px 0; background:var(--bg-light); border-left:4px solid var(--secondary); padding:12px; border-radius:6px;">
+                        <b style="color:var(--secondary);">Conseil :</b> Pour ce verbe régulier, choisis <b>-te(n)</b> ou <b>-de(n)</b> selon la dernière lettre du radical travaillé.<br>
+                        Si elle est dans <b>T K F S CH P + X</b> (<b>'t Kofschip + X</b>), c'est <b>-te(n)</b>.<br>
+                        Sinon, c'est <b>-de(n)</b>.
+                    </div>
+                `;
+            } else if (v.type === "irregulier") {
+                type = '<span style="color:var(--accent);font-weight:bold;">(irrégulier)</span>';
+                conseil = `
+                    <div style="margin:10px 0 18px 0; background:var(--bg-light); border-left:4px solid var(--accent); padding:12px; border-radius:6px;">
+                        <b style="color:var(--accent);">Conseil :</b> Verbe irrégulier : il faut apprendre ses formes par cœur.<br>
+                        (Changement de voyelle du radical à l'imparfait)
+                    </div>
+                `;
+            }
+            document.getElementById('quiz').innerHTML = `
+                <div style="background:var(--bg-white); padding:25px; border-radius:8px; border:2px solid var(--border);">
+                    <div style="font-size:1.3em; font-weight:bold; margin-bottom:15px;">
+                        ${v.infinitif} ${type}
+                    </div>
+                    ${conseil}
+                    <div style="margin:15px 0; color:var(--text-dark);">
+                        Pouvez-vous donner le radical brut, le radical travaillé (forme "ik" du présent), choisir <b>te(n)</b> ou <b>de(n)</b> et deviner l'imparfait ?
+                    </div>
+                    <button class="btn btn-primary" onclick="showAnswer()">Afficher la solution</button>
+                </div>
+            `;
+        }
+
+        function showAnswer() {
+            const v = verbes[current];
+            document.getElementById('quiz').innerHTML += `
+                <div style="background:linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border:2px solid var(--success); border-radius:8px; padding:15px; margin:15px 0; color:#065f46;">
+                    <b>Radical brut :</b> ${v.radical_brut}<br>
+                    <b>Radical travaillé :</b> ${v.radical_travaille}<br>
+                    <b>Imparfait singulier :</b> ${v.imparfait_singulier}<br>
+                    <b>Imparfait pluriel :</b> ${v.imparfait_pluriel}
+                </div>
+                <button class="btn btn-primary" onclick="nextStep()">Suivant</button>
+            `;
+        }
+
+        function nextStep() {
+            current++;
+            showQuestion();
+        }
+    </script>
+</body>
+</html>

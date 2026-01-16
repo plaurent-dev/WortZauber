@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Räumliche Positionen Übung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYnaelzF3AanXmOGDG8j9kv3GyETYf1Js"></script>
+    <style>
+        /* BOUTON DE RETOUR */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .back-btn {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+        }
+
+        
+        .positions-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+            margin-top: 30px;
+        }
+
+        #map {
+            width: 100%;
+            height: 500px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .exercise-box {
+            background: var(--bg-light-gray);
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .city-display {
+            margin-bottom: 25px;
+        }
+
+        .city-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .direction-question {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            font-weight: 600;
+            text-align: left;
+            color: var(--text-dark);
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: var(--info);
+            transform: translateX(5px);
+        }
+
+        .option-btn.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .option-btn.correct {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: white;
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #D1FAE5;
+            color: #065F46;
+            border-left: 4px solid var(--success);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #FEE2E2;
+            color: #7F1D1D;
+            border-left: 4px solid var(--accent);
+            display: block;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .listen-btn {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .listen-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .listen-btn:active {
+            transform: translateY(0);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        .score {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--info);
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.1em;
+        }
+
+        .memory {
+            background: #FEF3C7;
+            border-left: 4px solid var(--warning);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            color: #92400E;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .positions-container {
+                grid-template-columns: 1fr;
+            }
+
+            #map {
+                height: 400px;
+            }
+        }
+
+        .marker-title {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: var(--text-medium);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Zurück</a>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>📚 FR/NL</h1>
+            <div class="navbar-buttons">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-top: 0;">Exercice : Positions spatiales (ten X van)</h1>
+        <p class="subtitle">Localise les deux villes choisies au hasard en utilisant les expressions spatiales néerlandaises !</p>
+
+        <div class="memory">
+            <strong>📝 Rappel :</strong> <br>
+            <b>ten noorden van</b> = au nord de | 
+            <b>ten zuiden van</b> = au sud de |
+            <b>ten westen van</b> = à l'ouest de | 
+            <b>ten oosten van</b> = à l'est de | 
+            <b>ten noordwesten van</b> = au nord-ouest de | 
+            <b>ten zuidwesten van</b> = au sud-ouest de |
+            <b>ten noordoosten van</b> = au nord-est de | 
+            <b>ten zuidoosten van</b> = au sud-est de
+        </div>
+
+        <div class="positions-container">
+            <div>
+                <div id="map"></div>
+                <div class="score">
+                    Réponses correctes : <span id="scoreValue">0</span> / <span id="totalValue">0</span>
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <div class="city-display">
+                    <div class="city-name" id="cityName">Chargement...</div>
+                    <div class="direction-question" id="questionText">Attente du chargement...</div>
+                </div>
+
+                <div class="options" id="optionsContainer"></div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" id="validateBtn" onclick="validerReponse()" disabled>Valider</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nouvelleQuestion()" style="display: none;">Question suivante</button>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Bonnes réponses</div>
+                        <div class="stat-value" id="correctCount">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Taux de réussite</div>
+                        <div class="stat-value" id="percentage">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Liste des 50+ villes néerlandaises avec leurs coordonnées GPS
+        const villes = [
+            { nom: 'Amsterdam', lat: 52.3676, lng: 4.9041 },
+            { nom: 'Rotterdam', lat: 51.9225, lng: 4.4792 },
+            { nom: 'La Haye', lat: 52.0705, lng: 4.2566 },
+            { nom: 'Utrecht', lat: 52.0907, lng: 5.1214 },
+            { nom: 'Eindhoven', lat: 51.4416, lng: 5.4697 },
+            { nom: 'Groningen', lat: 53.2190, lng: 6.5669 },
+            { nom: 'Tilburg', lat: 51.5588, lng: 5.0852 },
+            { nom: 'Almere', lat: 52.3702, lng: 5.2215 },
+            { nom: 'Maastricht', lat: 50.8503, lng: 5.6898 },
+            { nom: 'Arnhem', lat: 51.9851, lng: 5.8987 },
+            { nom: 'Haarlem', lat: 52.3894, lng: 4.6369 },
+            { nom: 'Leeuwarden', lat: 53.2011, lng: 5.7896 },
+            { nom: 'Dordrecht', lat: 51.8133, lng: 4.6704 },
+            { nom: 'Enschede', lat: 52.2215, lng: 6.8937 },
+            { nom: 'Leyde', lat: 52.1601, lng: 4.4817 },
+            { nom: 'Berg-op-Zoom', lat: 51.4874, lng: 4.2889 },
+            { nom: 'Breda', lat: 51.5897, lng: 4.7789 },
+            { nom: 'Nimègue', lat: 51.8425, lng: 5.8520 },
+            { nom: 'Apeldoorn', lat: 52.2129, lng: 5.9699 },
+            { nom: 'Zwolle', lat: 52.5092, lng: 6.0933 },
+            { nom: 'Amersfoort', lat: 52.1601, lng: 5.3878 },
+            { nom: 'Delft', lat: 52.0116, lng: 4.3571 },
+            { nom: 'Leiden', lat: 52.1601, lng: 4.4817 },
+            { nom: 'Gouda', lat: 52.0159, lng: 4.7114 },
+            { nom: 'Zaandijk', lat: 52.4478, lng: 4.8309 },
+            { nom: 'Alkmaar', lat: 52.6340, lng: 4.7403 },
+            { nom: 'Hoorn', lat: 52.6426, lng: 5.0534 },
+            { nom: 'Edam', lat: 52.5293, lng: 5.0535 },
+            { nom: 'Volendam', lat: 52.4787, lng: 5.0683 },
+            { nom: 'Marken', lat: 52.4550, lng: 5.1075 },
+            { nom: 'Zaanstad', lat: 52.4478, lng: 4.8309 },
+            { nom: 'Emmen', lat: 52.7806, lng: 6.8930 },
+            { nom: 'Hengelo', lat: 52.2630, lng: 6.7917 },
+            { nom: 'Oss', lat: 51.7677, lng: 5.5262 },
+            { nom: 'Sittard-Geleen', lat: 50.9963, lng: 5.8556 },
+            { nom: 'Helmond', lat: 51.4742, lng: 5.6615 },
+            { nom: 'Middelburg', lat: 51.4988, lng: 3.6109 },
+            { nom: 'Vlissingen', lat: 51.4422, lng: 3.5625 },
+            { nom: 'Goes', lat: 51.5320, lng: 3.8844 },
+            { nom: 'Terneuzen', lat: 51.3359, lng: 3.8320 },
+            { nom: 'Weert', lat: 51.2482, lng: 5.7147 },
+            { nom: 'Roermond', lat: 51.1925, lng: 5.9847 },
+            { nom: 'Renkum', lat: 51.9885, lng: 5.7233 },
+            { nom: 'Oegstgeest', lat: 52.1766, lng: 4.4959 },
+            { nom: 'Voorschoten', lat: 52.1479, lng: 4.4631 },
+            { nom: 'Lisse', lat: 52.2519, lng: 4.5591 },
+            { nom: 'Hillegom', lat: 52.2707, lng: 4.5891 },
+            { nom: 'Katwijk', lat: 52.2111, lng: 4.4119 },
+            { nom: 'Oudewater', lat: 52.0083, lng: 4.9191 },
+            { nom: 'Montfoort', lat: 52.0613, lng: 5.1341 }
+        ];
+
+        // Directions possibles (en ordre: N, NE, E, SE, S, SW, W, NW)
+        const directions = [
+            { nl: 'ten noorden van', fr: 'au nord de', angle: 0 },
+            { nl: 'ten noordoosten van', fr: 'au nord-est de', angle: 45 },
+            { nl: 'ten oosten van', fr: 'à l\'est de', angle: 90 },
+            { nl: 'ten zuidoosten van', fr: 'au sud-est de', angle: 135 },
+            { nl: 'ten zuiden van', fr: 'au sud de', angle: 180 },
+            { nl: 'ten zuidwesten van', fr: 'au sud-ouest de', angle: 225 },
+            { nl: 'ten westen van', fr: 'à l\'ouest de', angle: 270 },
+            { nl: 'ten noordwesten van', fr: 'au nord-ouest de', angle: 315 }
+        ];
+
+        let map;
+        let markers = [];
+        let currentQuestion = null;
+        let selectedOption = null;
+        let correctAnswer = null;
+        let questionAnswered = false;
+        let correctCount = 0;
+        let totalCount = 0;
+        const MAX_QUESTIONS = 10;
+
+        function initMap() {
+            const centerNl = { lat: 52.1326, lng: 5.2913 };
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 7,
+                center: centerNl,
+                mapTypeControl: false,
+                fullscreenControl: false,
+                streetViewControl: false
+            });
+        }
+
+        function calculerDirection(city1, city2) {
+            const lat1 = city1.lat * Math.PI / 180;
+            const lon1 = city1.lng * Math.PI / 180;
+            const lat2 = city2.lat * Math.PI / 180;
+            const lon2 = city2.lng * Math.PI / 180;
+
+            const dLon = lon2 - lon1;
+            const y = Math.sin(dLon) * Math.cos(lat2);
+            const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+            let bearing = Math.atan2(y, x) * 180 / Math.PI;
+            bearing = (bearing + 360) % 360;
+
+            return bearing;
+        }
+
+        function obtenirDirectionCorrecte(bearing) {
+            // Trouver la direction la plus proche
+            const directions_sorted = [...directions].sort((a, b) => {
+                const diffA = Math.abs(a.angle - bearing);
+                const diffB = Math.abs(b.angle - bearing);
+                return diffA - diffB;
+            });
+            return directions_sorted[0];
+        }
+
+        function genererOptionsAleatoires(correctAnswer) {
+            const allOptions = directions.filter(d => d.nl !== correctAnswer.nl);
+            const shuffled = allOptions.sort(() => Math.random() - 0.5);
+            const options = [correctAnswer, ...shuffled.slice(0, 3)];
+            return options.sort(() => Math.random() - 0.5);
+        }
+
+        function afficherMarkers(city1, city2) {
+            // Effacer les anciens marqueurs
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+
+            // Ajouter les deux villes
+            const marker1 = new google.maps.Marker({
+                position: { lat: city1.lat, lng: city1.lng },
+                map: map,
+                title: city1.nom,
+                label: '1',
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            });
+
+            const marker2 = new google.maps.Marker({
+                position: { lat: city2.lat, lng: city2.lng },
+                map: map,
+                title: city2.nom,
+                label: '2',
+                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            });
+
+            markers.push(marker1, marker2);
+
+            // Ajuster la vue pour voir les deux marqueurs
+            const bounds = new google.maps.LatLngBounds();
+            bounds.extend(marker1.getPosition());
+            bounds.extend(marker2.getPosition());
+            map.fitBounds(bounds);
+            setTimeout(() => map.fitBounds(bounds), 100);
+        }
+
+        function nouvelleQuestion() {
+            // Vérifier si l'exercice est terminé
+            if (totalCount >= MAX_QUESTIONS) {
+                afficherEcranFin();
+                return;
+            }
+
+            questionAnswered = false;
+            selectedOption = null;
+            document.getElementById('validateBtn').style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('validateBtn').disabled = false;
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').textContent = '';
+
+            // Choisir deux villes aléatoires différentes
+            const city1 = villes[Math.floor(Math.random() * villes.length)];
+            let city2 = villes[Math.floor(Math.random() * villes.length)];
+            while (city2.nom === city1.nom) {
+                city2 = villes[Math.floor(Math.random() * villes.length)];
+            }
+
+            // Calculer la direction correcte
+            const bearing = calculerDirection(city1, city2);
+            const correctDir = obtenirDirectionCorrecte(bearing);
+            correctAnswer = correctDir;
+
+            // Générer les options
+            const options = genererOptionsAleatoires(correctDir);
+
+            // Afficher les marqueurs
+            afficherMarkers(city1, city2);
+
+            // Mettre à jour l'interface
+            currentQuestion = { city1, city2, bearing };
+            document.getElementById('cityName').textContent = '';
+            document.getElementById('questionText').innerHTML = 
+                `<strong>${city2.nom}</strong> (2 🔴) ligt <span style="font-size: 1.3em; font-weight: bold; color: var(--primary);">........................</span> <strong>${city1.nom}</strong> (1) 🔵. ?`;
+
+            // Afficher les options
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option.nl;
+                btn.onclick = () => selectionnerOption(btn, option);
+                optionsContainer.appendChild(btn);
+            });
+
+            totalCount++;
+            updateScore();
+        }
+
+        function selectionnerOption(btn, option) {
+            if (questionAnswered) return;
+
+            // Désélectionner l'option précédente
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            
+            // Sélectionner la nouvelle option
+            btn.classList.add('selected');
+            selectedOption = option;
+            document.getElementById('validateBtn').disabled = false;
+        }
+
+        function validerReponse() {
+            if (!selectedOption || questionAnswered) return;
+
+            questionAnswered = true;
+            const isCorrect = selectedOption.nl === correctAnswer.nl;
+
+            if (isCorrect) {
+                correctCount++;
+                document.getElementById('feedback').className = 'feedback correct';
+                const sentenceCorrect = `${currentQuestion.city2.nom} ligt ${correctAnswer.nl} ${currentQuestion.city1.nom}`;
+                document.getElementById('feedback').innerHTML = 
+                    `✅ <strong>Correct !</strong> ${sentenceCorrect}.<br><button class="listen-btn" onclick="ecouter('${sentenceCorrect}')">🔊 Luister naar de zin</button>`;
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    if (btn.textContent === correctAnswer.nl) {
+                        btn.classList.add('correct');
+                    }
+                });
+            } else {
+                document.getElementById('feedback').className = 'feedback incorrect';
+                const sentenceIncorrect = `${currentQuestion.city2.nom} ligt ${correctAnswer.nl} ${currentQuestion.city1.nom}`;
+                document.getElementById('feedback').innerHTML = 
+                    `❌ <strong>Incorrect !</strong> ${sentenceIncorrect}.<br><button class="listen-btn" onclick="ecouter('${sentenceIncorrect}')">🔊 Luister naar de zin</button>`;
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    if (btn.textContent === correctAnswer.nl) {
+                        btn.classList.add('correct');
+                    } else if (btn.textContent === selectedOption.nl) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+            }
+
+            document.getElementById('validateBtn').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'block';
+            updateScore();
+        }
+
+        // Fonction pour prononcer une phrase en néerlandais
+        function ecouter(texte) {
+            // Arrêter la parole en cours si elle existe
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(texte);
+            utterance.lang = 'nl-NL';  // Néerlandais
+            utterance.rate = 0.9;      // Vitesse légèrement réduite pour clarté
+            utterance.pitch = 1;
+            
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function updateScore() {
+            document.getElementById('scoreValue').textContent = correctCount;
+            document.getElementById('totalValue').textContent = totalCount;
+            document.getElementById('correctCount').textContent = correctCount;
+            
+            if (totalCount > 0) {
+                const percentage = Math.round((correctCount / totalCount) * 100);
+                document.getElementById('percentage').textContent = percentage + '%';
+            }
+        }
+
+        function afficherEcranFin() {
+            const percentage = Math.round((correctCount / MAX_QUESTIONS) * 100);
+            let message = '';
+            let emoji = '😊';
+            
+            if (percentage === 100) {
+                message = 'Parfait ! 🌟 Vous maîtrisez les positions spatiales !';
+                emoji = '🌟';
+            } else if (percentage >= 80) {
+                message = 'Très bien ! 👏 Vous êtes presque parfait !';
+                emoji = '👏';
+            } else if (percentage >= 60) {
+                message = 'Bien ! 👍 Continuez vos révisions !';
+                emoji = '👍';
+            } else {
+                message = 'À revoir ! 📚 Réessayez pour vous améliorer !';
+                emoji = '📚';
+            }
+
+            const exerciseBox = document.querySelector('.exercise-box');
+            exerciseBox.innerHTML = `
+                <div style="text-align: center; padding: 40px 20px;">
+                    <div style="font-size: 4em; margin-bottom: 20px;">${emoji}</div>
+                    <h2 style="color: var(--primary); font-size: 1.8em; margin-bottom: 15px;">Exercice terminé !</h2>
+                    <p style="font-size: 1.2em; margin-bottom: 30px;">${message}</p>
+                    
+                    <div class="stats" style="margin: 30px 0;">
+                        <div class="stat-box">
+                            <div class="stat-label">Score final</div>
+                            <div class="stat-value">${correctCount}/${MAX_QUESTIONS}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Pourcentage</div>
+                            <div class="stat-value">${percentage}%</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-secondary" onclick="location.reload()" style="margin-top: 30px; padding: 15px 30px; font-size: 1.1em;">
+                        🔄 Recommencer
+                    </button>
+                </div>
+            `;
+
+            // Cacher la carte
+            document.getElementById('map').style.display = 'none';
+            document.querySelector('.score').style.display = 'none';
+        }
+
+        // Initialisation
+        window.addEventListener('load', () => {
+            initMap();
+            nouvelleQuestion();
+        });
+    </script>
+</body>
+</html>

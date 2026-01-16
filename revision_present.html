@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Präsens Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>✨ Wortzauber</h1>
+            <div class="navbar-buttons">
+                <a href="index.html" class="navbar-link">🏠 Startseite</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-top: 0;">Präsens Training</h1>
+        <p class="subtitle">Übe die Konjugation deutscher Verben im Präsens. Gib die richtige Form für jedes Pronomen an.</p>
+        
+        <div class="memory">
+            <strong>Tipp:</strong> <br>
+            <u>Regelmäßig</u>: <b>ich</b> = Stamm, <b>du/er/sie</b> = Stamm + st, <b>wir/ihr/sie</b> = Infinitiv.<br>
+            <u>Unregelmäßig</u>: Aufpassen, der Stamm oder die Endung kann sich ändern. Auswendig lernen!
+        </div>
+
+        <div class="quiz-box" id="quizBox">
+            Chargement...
+        </div>
+
+        <button class="btn btn-primary" id="nextBtn" onclick="voirReponse()">Antwort anzeigen</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        let verbesReguliers = [];
+        let verbesIrreguliers = [];
+        let courant = null;
+        let typeCourant = '';
+        let reponseMontree = false;
+
+        async function chargerVerbes() {
+            try {
+                const [resReg, resIrreg] = await Promise.all([
+                    fetch('present_regulier.json?t=' + Date.now()),
+                    fetch('present_irregulier.json?t=' + Date.now())
+                ]);
+
+                if (!resReg.ok) {
+                    console.error('Erreur chargement présent régulier:', resReg.status);
+                    throw new Error('Impossible de charger present_regulier.json');
+                }
+                if (!resIrreg.ok) {
+                    console.error('Erreur chargement présent irrégulier:', resIrreg.status);
+                    throw new Error('Impossible de charger present_irregulier.json');
+                }
+
+                const reg = await resReg.json();
+                const irreg = await resIrreg.json();
+
+                console.log('Réguliers chargés:', reg);
+                console.log('Irréguliers chargés:', irreg);
+
+                verbesReguliers = reg.verbes_reguliers_present || [];
+                verbesIrreguliers = irreg.verbes_irreguliers_present || [];
+
+                console.log('Nombre réguliers:', verbesReguliers.length);
+                console.log('Nombre irréguliers:', verbesIrreguliers.length);
+
+                if (verbesReguliers.length === 0 || verbesIrreguliers.length === 0) {
+                    document.getElementById('quizBox').innerHTML = `
+                        <div style="color: red;">
+                            <strong>Erreur :</strong> Les fichiers JSON ne sont pas correctement chargés.<br>
+                            Réguliers: ${verbesReguliers.length} | Irréguliers: ${verbesIrreguliers.length}
+                        </div>
+                    `;
+                    return;
+                }
+
+                nouvelleQuestion();
+            } catch (e) {
+                console.error('Erreur:', e);
+                document.getElementById('quizBox').innerHTML = `<div style="color: red;"><strong>Erreur:</strong> ${e.message}</div>`;
+            }
+        }
+
+        function nouvelleQuestion() {
+            reponseMontree = false;
+            document.getElementById('result').textContent = '';
+            
+            let isIrregulier = Math.random() < 0.5;
+            let verbe;
+
+            if (isIrregulier && verbesIrreguliers.length > 0) {
+                verbe = verbesIrreguliers[Math.floor(Math.random() * verbesIrreguliers.length)];
+                typeCourant = 'irrégulier';
+            } else if (verbesReguliers.length > 0) {
+                verbe = verbesReguliers[Math.floor(Math.random() * verbesReguliers.length)];
+                typeCourant = 'régulier';
+            } else {
+                document.getElementById('quizBox').textContent = 'Aucun verbe trouvé.';
+                return;
+            }
+
+            courant = verbe;
+            afficherQuestion();
+            document.getElementById('nextBtn').textContent = "Voir la réponse";
+        }
+
+        function afficherQuestion() {
+            document.getElementById('quizBox').innerHTML = `
+                <div>
+                    <span class="type-label">${typeCourant.toUpperCase()}</span>
+                </div>
+              <div style="font-size: 1.5em; font-weight: bold; color: var(--primary); margin: 20px 0; padding: 15px; background-color: var(--bg-light); border-left: 4px solid var(--primary); border-radius: 4px;">
+    ${courant.infinitif}
+</div>
+                <ul>
+                    <li><b>ik</b> : <span id="rep_ik">______</span></li>
+                    <li><b>jij/hij/ze</b> : <span id="rep_jij">______</span></li>
+                    <li><b>wij/jullie/ze</b> : <span id="rep_wij">______</span></li>
+                </ul>
+            `;
+        }
+
+        function voirReponse() {
+            if (!reponseMontree) {
+                document.getElementById('rep_ik').textContent = courant.present_ik;
+                document.getElementById('rep_jij').textContent = courant.present_jij_hij_ze;
+                document.getElementById('rep_wij').textContent = courant.present_wij_jullie_ze;
+
+                let conseil = '';
+                if (typeCourant === 'régulier') {
+                    conseil = "✓ Rappel régulier : ik = radical travaillé, jij/hij/ze = radical travaillé + t, wij/jullie/ze = infinitif.";
+                } else {
+                    conseil = "⚠️ Verbe irrégulier : il faut apprendre ses formes par cœur.";
+                }
+
+                document.getElementById('result').innerHTML = `<div class="advice">${conseil}</div>`;
+                document.getElementById('nextBtn').textContent = "Nouvelle question";
+                reponseMontree = true;
+            } else {
+                nouvelleQuestion();
+            }
+        }
+
+        window.addEventListener('load', chargerVerbes);
+    </script>
+</body>
+</html>

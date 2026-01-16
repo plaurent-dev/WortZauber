@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Vokabelverwaltung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>✨ Wortzauber</h1>
+            <div class="navbar-buttons">
+                <a href="index.html" class="navbar-link">🏠 Startseite</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>📖 Vokabelverwaltung</h1>
+
+        <div class="auth-guard" id="authGuard">
+            <h2>🔒 Eingeschränkter Zugang</h2>
+            <p>Diese Seite ist nur für Administratoren verfügbar.</p>
+            <div class="login-message">
+                ℹ️ Melden Sie sich von der Startseite an, um auf diese Oberfläche zuzugreifen.
+            </div>
+            <a href="index.html" class="btn btn-add">← Zurück zur Startseite</a>
+        </div>
+
+        <div id="adminContent" style="display: none;">
+            <div class="form-section">
+                <h2 style="color: #c41e3a; margin-bottom: 20px;">Wörter hinzufügen</h2>
+                
+                <div id="message"></div>
+
+                <div class="info-box">
+                    📝 Format: Eine Zeile = ein Wort<br>
+                    <strong>deutsch | singular | plural | artikel</strong><br>
+                    Beispiel: der Stift | der Stift | die Stifte | der
+                </div>
+
+                <div class="form-group">
+                    <label for="motsEnMasse">Geben Sie Ihre Wörter ein:</label>
+                    <textarea id="motsEnMasse" placeholder="der Stift | der Stift | die Stifte | der&#10;der Stuhl | der Stuhl | die Stühle | der"></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-add" onclick="ajouterMots()">➕ Wörter hinzufügen</button>
+                    <button class="btn btn-download" id="btnTelechargement" onclick="telechargerJSON()" disabled>⬇️ JSON herunterladen</button>
+                </div>
+            </div>
+
+            <div class="vocabulary-list">
+                <h2>Vocabulaire actuel (total : <span id="compteurMots">0</span> mots)</h2>
+                <div id="vocabularyContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let vocabulaire = [];
+
+        // Vérifier l'authentification au chargement
+        function verifierAuthentification() {
+            const userEmail = sessionStorage.getItem('userEmail');
+            const authGuard = document.getElementById('authGuard');
+            const adminContent = document.getElementById('adminContent');
+
+            if (userEmail) {
+                authGuard.style.display = 'none';
+                adminContent.style.display = 'block';
+                chargerVocabulaire();
+            } else {
+                authGuard.style.display = 'block';
+                adminContent.style.display = 'none';
+            }
+        }
+
+        async function chargerVocabulaire() {
+            try {
+                const response = await fetch('vocabulaire.json?t=' + Date.now());
+                if (!response.ok) throw new Error('Erreur de chargement');
+                const data = await response.json();
+                vocabulaire = data.vocabulaire_A1_A2 || [];
+                afficherVocabulaire();
+                mettreAJourCompteur();
+            } catch (error) {
+                console.error('Erreur:', error);
+                afficherMessage('Erreur de chargement du vocabulaire', 'error');
+            }
+        }
+
+        function afficherVocabulaire() {
+            const container = document.getElementById('vocabularyContainer');
+            
+            if (vocabulaire.length === 0) {
+                container.innerHTML = '<div class="empty-state">Aucun mot dans la liste</div>';
+                return;
+            }
+
+            container.innerHTML = vocabulaire.map((mot, index) => `
+                <div class="vocab-item">
+                    <div class="vocab-nl">${mot.neerlandais_singulier}</div>
+                    <div class="vocab-fr">${mot.francais}</div>
+                    ${mot.neerlandais_pluriel !== '—' ? `<div class="vocab-fr">Pluriel: ${mot.neerlandais_pluriel}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function mettreAJourCompteur() {
+            document.getElementById('compteurMots').textContent = vocabulaire.length;
+        }
+
+        function afficherMessage(texte, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="message ${type}">${texte}</div>`;
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 4000);
+        }
+
+        function ajouterMots() {
+            const texte = document.getElementById('motsEnMasse').value.trim();
+            if (!texte) {
+                afficherMessage('⚠️ Veuillez entrer des mots', 'error');
+                return;
+            }
+
+            const lignes = texte.split('\n').filter(l => l.trim());
+            let compteur = 0;
+            let erreurs = 0;
+
+            lignes.forEach((ligne, index) => {
+                const parties = ligne.split('|').map(p => p.trim());
+                if (parties.length === 4 && parties.every(p => p)) {
+                    const [francais, neerlandais_singulier, neerlandais_pluriel, article] = parties;
+                    vocabulaire.push({
+                        francais,
+                        neerlandais_singulier,
+                        neerlandais_pluriel: neerlandais_pluriel || '—',
+                        de_of_het: article
+                    });
+                    compteur++;
+                } else {
+                    erreurs++;
+                }
+            });
+
+            if (erreurs > 0) {
+                afficherMessage(`⚠️ ${compteur} mot(s) ajouté(s), ${erreurs} ligne(s) invalide(s)`, 'error');
+            } else {
+                afficherMessage(`✓ ${compteur} mot(s) ajouté(s) ! Cliquez sur "Télécharger le JSON" pour sauvegarder`, 'success');
+            }
+
+            document.getElementById('motsEnMasse').value = '';
+            document.getElementById('btnTelechargement').disabled = false;
+            afficherVocabulaire();
+            mettreAJourCompteur();
+        }
+
+        function telechargerJSON() {
+            const data = { vocabulaire_A1_A2: vocabulaire };
+            const json = JSON.stringify(data, null, 2);
+            
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'vocabulaire.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            afficherMessage('✓ Fichier téléchargé ! Remplacez vocabulaire.json avec ce fichier', 'success');
+        }
+
+        window.addEventListener('load', () => {
+            verifierAuthentification();
+        });
+    </script>
+</body>
+</html>

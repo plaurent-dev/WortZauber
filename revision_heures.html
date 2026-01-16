@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Uhrentraining</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* BOUTON DE RETOUR */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .back-btn {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Zurück</a>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>✨ Wortzauber</h1>
+            <div class="navbar-buttons">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-top: 0;">Uhrentraining</h1>
+        <p class="subtitle">Wie spät ist es? Lies die Uhr und geben Sie die Antwort auf Deutsch ein.</p>
+
+        <div class="quiz-section">
+            <div class="clock-wrapper">
+                <div class="time-indicator" id="timeIndicator">☀️</div>
+                <div class="clock-container">
+                    <svg viewBox="0 0 200 200" id="clockSvg">
+                        <!-- Cercle de l'horloge -->
+                        <circle cx="100" cy="100" r="95" fill="white" stroke="#c41e3a" stroke-width="3"/>
+                        
+                        <!-- Crans pour les minutes (60 petits traits) -->
+                        <g stroke="#999" stroke-width="1">
+                            <line x1="100" y1="8" x2="100" y2="12" />
+                            <line x1="100" y1="188" x2="100" y2="192" />
+                            <line x1="8" y1="100" x2="12" y2="100" />
+                            <line x1="188" y1="100" x2="192" y2="100" />
+                            
+                            <!-- Crans pour chaque minute -->
+                            <g id="minuteMarks" />
+                        </g>
+
+                        <!-- Chiffres -->
+                        <text x="100" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">12</text>
+                        <text x="175" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">3</text>
+                        <text x="100" y="185" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">6</text>
+                        <text x="25" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="#c41e3a">9</text>
+
+                        <!-- Traits horaires (plus épais pour les heures) -->
+                        <g stroke="#c41e3a" stroke-width="2">
+                            <line x1="100" y1="10" x2="100" y2="20"/>
+                            <line x1="100" y1="180" x2="100" y2="190"/>
+                            <line x1="10" y1="100" x2="20" y2="100"/>
+                            <line x1="180" y1="100" x2="190" y2="100"/>
+                        </g>
+
+                        <!-- Centre -->
+                        <circle cx="100" cy="100" r="5" fill="#c41e3a"/>
+                        
+                        <!-- Aiguille des heures -->
+                        <line id="hourHand" x1="100" y1="100" x2="100" y2="60" stroke="#c41e3a" stroke-width="4" stroke-linecap="round" transform="rotate(0 100 100)"/>
+                        
+                        <!-- Aiguille des minutes -->
+                        <line id="minuteHand" x1="100" y1="100" x2="100" y2="30" stroke="#4ecdc4" stroke-width="3" stroke-linecap="round" transform="rotate(0 100 100)"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="heureInput">Quelle heure est-il ? (ex: "vijf voor zeven")</label>
+                    <input type="text" id="heureInput" placeholder="Tape la réponse en néerlandais..." onkeypress="if(event.key==='Enter') validerReponse()">
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-validate" onclick="validerReponse()">✓ Valider</button>
+                    <button class="btn btn-next" onclick="nouvelleHeure()" style="grid-column: 1 / -1;">🔄 Nouvelle heure</button>
+                </div>
+
+                <div class="result" id="result"></div>
+                <div class="hint" id="hint" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let heureActuelle = null;
+        let minutesActuelles = null;
+        let bonneReponse = null;
+
+        // Générer les heures avec minutes
+        function genererHeures() {
+            const heures = [];
+            
+            for (let h = 0; h < 24; h++) {
+                for (let m = 0; m < 60; m += 5) {
+                    let heure24 = h;
+                    let heureAffichage = h === 0 ? 12 : (h > 12 ? h - 12 : h);
+                    let minutes = m;
+                    
+                    let texteNL = '';
+                    
+                    if (m === 0) {
+                        // Heure juste : ajouter "uur"
+                        texteNL = `${heureAffichage} uur`;
+                    } else if (m === 5) {
+                        texteNL = `vijf over ${heureAffichage}`;
+                    } else if (m === 10) {
+                        texteNL = `tien over ${heureAffichage}`;
+                    } else if (m === 15) {
+                        texteNL = `kwart over ${heureAffichage}`;
+                    } else if (m === 20) {
+                        texteNL = `twintig over ${heureAffichage}`;
+                    } else if (m === 25) {
+                        texteNL = `vijfentwintig over ${heureAffichage}`;
+                    } else if (m === 30) {
+                        let heureNext = heureAffichage + 1;
+                        if (heureNext > 12) heureNext = 1;  // 13 devient 1
+                        texteNL = `half ${heureNext}`;
+                    } else if (m === 35) {
+                        let heureNext = heureAffichage + 1;
+                        if (heureNext > 12) heureNext = 1;
+                        texteNL = `vijf over half ${heureNext}`;  // CORRECTION: "over" au lieu de "voor"
+                    } else if (m === 40) {
+                        let heureNext = heureAffichage + 1;
+                        if (heureNext > 12) heureNext = 1;
+                        texteNL = `twintig voor ${heureNext}`;
+                    } else if (m === 45) {
+                        let heureNext = heureAffichage + 1;
+                        if (heureNext > 12) heureNext = 1;
+                        texteNL = `kwart voor ${heureNext}`;
+                    } else if (m === 50) {
+                        let heureNext = heureAffichage + 1;
+                        if (heureNext > 12) heureNext = 1;
+                        texteNL = `tien voor ${heureNext}`;
+                    } else if (m === 55) {
+                        let heureNext = heureAffichage + 1;
+                        if (heureNext > 12) heureNext = 1;
+                        texteNL = `vijf voor ${heureNext}`;
+                    }
+                    
+                    heures.push({ heure24, heureAffichage, minutes, texteNL, index: heures.length });
+                }
+            }
+            return heures;
+        }
+
+        const toutesHeures = genererHeures();
+
+        function nouvelleHeure() {
+            document.getElementById('result').textContent = '';
+            document.getElementById('hint').style.display = 'none';
+            document.getElementById('heureInput').value = '';
+            document.getElementById('heureInput').focus();
+
+            const randomIndex = Math.floor(Math.random() * toutesHeures.length);
+            const heure = toutesHeures[randomIndex];
+            heureActuelle = heure.heure24;
+            minutesActuelles = heure.minutes;
+            bonneReponse = heure;
+            
+            afficherHorloge(heureActuelle, minutesActuelles);
+            afficherIndicateurTemps(heureActuelle);
+        }
+
+        function afficherIndicateurTemps(heure) {
+            const indicator = document.getElementById('timeIndicator');
+            if (heure >= 6 && heure < 18) {
+                indicator.textContent = '☀️';
+            } else {
+                indicator.textContent = '🌙';
+            }
+        }
+
+        function afficherHorloge(heure, minutes) {
+            const minutesRotation = (minutes / 60) * 360;
+            const heuresRotation = ((heure % 12) * 30) + (minutes / 60) * 30;
+
+            document.getElementById('hourHand').setAttribute('transform', `rotate(${heuresRotation} 100 100)`);
+            document.getElementById('minuteHand').setAttribute('transform', `rotate(${minutesRotation} 100 100)`);
+        }
+
+        function normaliserTexte(texte) {
+            return texte.toLowerCase().trim().replace(/\s+/g, ' ');
+        }
+
+        function convertirNombresEnChiffres(texte) {
+            const nombresMots = {
+                'nul': '0', 'een': '1', 'twee': '2', 'drie': '3', 'vier': '4', 'vijf': '5',
+                'zes': '6', 'zeven': '7', 'acht': '8', 'negen': '9', 'tien': '10', 'elf': '11', 'twaalf': '12'
+            };
+            
+            let resultat = texte;
+            Object.keys(nombresMots).forEach(mot => {
+                const regex = new RegExp(`\\b${mot}\\b`, 'g');
+                resultat = resultat.replace(regex, nombresMots[mot]);
+            });
+            return resultat;
+        }
+
+        function validerReponse() {
+            const input = document.getElementById('heureInput');
+            const reponse = normaliserTexte(input.value);
+            const resultDiv = document.getElementById('result');
+            const hintDiv = document.getElementById('hint');
+
+            if (reponse === '') {
+                resultDiv.textContent = '⚠️ Tape une réponse !';
+                resultDiv.className = 'result incorrect';
+                hintDiv.style.display = 'none';
+                return;
+            }
+
+            const correctAnswer = normaliserTexte(bonneReponse.texteNL);
+            const reponseWithNumbers = convertirNombresEnChiffres(reponse);
+            const correctAnswerWithNumbers = convertirNombresEnChiffres(correctAnswer);
+            
+            // Générer les équivalents pour les formes "half" et "voor half"
+            let equivalents = [correctAnswer, correctAnswerWithNumbers];
+            
+            // Si la bonne réponse contient "uur", ajouter la version avec le mot du nombre
+            if (correctAnswer.includes('uur')) {
+                const match = correctAnswer.match(/(\d+) uur/);
+                if (match) {
+                    const heureNum = parseInt(match[1]);
+                    const nombresMots = {
+                        '0': 'nul', '1': 'een', '2': 'twee', '3': 'drie', '4': 'vier', '5': 'vijf',
+                        '6': 'zes', '7': 'zeven', '8': 'acht', '9': 'negen', '10': 'tien', '11': 'elf', '12': 'twaalf'
+                    };
+                    if (nombresMots[heureNum]) {
+                        equivalents.push(`${nombresMots[heureNum]} uur`);
+                    }
+                }
+            }
+            
+            // Si c'est "X voor half Y", ajouter l'équivalent "Z over Y"
+            if (correctAnswer.includes('voor half')) {
+                const match = correctAnswer.match(/(.+?) voor half (\d+)/);
+                if (match) {
+                    const minutesAvant = match[1];
+                    const heureNext = parseInt(match[2]);
+                    const heureCurrent = heureNext - 1 > 0 ? heureNext - 1 : 12;
+                    
+                    // Mapper les équivalences
+                    if (minutesAvant === 'vijf') {
+                        equivalents.push(`twintig over ${heureCurrent}`);
+                    } else if (minutesAvant === 'tien') {
+                        equivalents.push(`twintig over ${heureCurrent}`);
+                    } else if (minutesAvant === 'twintig') {
+                        equivalents.push(`veertig over ${heureCurrent}`);
+                    }
+                }
+            }
+            
+            // Si c'est "X over Y", ajouter l'équivalent "Z voor half Y+1"
+            if (correctAnswer.includes(' over ')) {
+                const match = correctAnswer.match(/(.+?) over (\d+)/);
+                if (match) {
+                    const minutesOver = match[1];
+                    const heure = parseInt(match[2]);
+                    const heureNext = heure + 1 > 12 ? heure + 1 - 12 : heure + 1;
+                    
+                    if (minutesOver === 'twintig') {
+                        equivalents.push(`tien voor half ${heureNext}`);
+                    } else if (minutesOver === 'veertig') {
+                        equivalents.push(`twintig voor half ${heureNext}`);
+                    }
+                }
+            }
+
+            // Vérifier si la réponse correspond à l'une des formes équivalentes
+            const isCorrect = equivalents.some(eq => {
+                const eqNormalized = normaliserTexte(convertirNombresEnChiffres(eq));
+                const reponseNormalized = normaliserTexte(reponse);
+                const reponseWithNumbersNormalized = normaliserTexte(reponseWithNumbers);
+                
+                return reponseNormalized === normaliserTexte(eq) || 
+                       reponseNormalized === eqNormalized || 
+                       reponseWithNumbersNormalized === eqNormalized;
+            });
+
+            if (isCorrect) {
+                resultDiv.innerHTML = `
+                    <div class="result correct">
+                        ✓ Correct !
+                        <div class="result-text">${bonneReponse.texteNL}</div>
+                    </div>
+                `;
+                hintDiv.style.display = 'none';
+                input.style.borderColor = '#2e7d32';
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="result incorrect">
+                        ✗ Incorrect.
+                        <div class="result-text">La bonne réponse : ${bonneReponse.texteNL}</div>
+                    </div>
+                `;
+                input.style.borderColor = '#c62828';
+                
+                // Afficher un indice
+                const words = correctAnswer.split(' ');
+                const firstWord = words[0];
+                hintDiv.textContent = `💡 Indice : Commence par "${firstWord}"`;
+                hintDiv.style.display = 'block';
+            }
+        }
+
+        // Générer les crans pour les 60 minutes
+        function genererCrans() {
+            const minuteMarksGroup = document.getElementById('minuteMarks');
+            for (let i = 1; i < 60; i++) {
+                if (i % 5 !== 0) {
+                    const angle = (i * 6);
+                    const rad = (angle * Math.PI) / 180;
+                    const x1 = 100 + 85 * Math.sin(rad);
+                    const y1 = 100 - 85 * Math.cos(rad);
+                    const x2 = 100 + 90 * Math.sin(rad);
+                    const y2 = 100 - 90 * Math.cos(rad);
+                    
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', x1);
+                    line.setAttribute('y1', y1);
+                    line.setAttribute('x2', x2);
+                    line.setAttribute('y2', y2);
+                    line.setAttribute('stroke', '#999');
+                    line.setAttribute('stroke-width', '1');
+                    minuteMarksGroup.appendChild(line);
+                }
+            }
+        }
+
+        // Appeler la fonction au chargement
+        window.addEventListener('load', () => {
+            genererCrans();
+            nouvelleHeure();
+        });
+    </script>
+</body>
+</html>

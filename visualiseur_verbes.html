@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unregelmäßige Verben Visualisierung</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* BOUTON DE RETOUR */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .back-btn {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+        }
+
+        
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f4ff;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .stat-box {
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background: #f8f9ff;
+            border-top: 2px solid #667eea;
+            border-bottom: 2px solid #667eea;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            color: #667eea;
+            font-weight: 700;
+            font-size: 0.95em;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9em;
+        }
+
+        tbody tr:hover {
+            background: #f8f9ff;
+        }
+
+        .infinitive {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .translation {
+            color: #764ba2;
+            font-style: italic;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-haben {
+            background: #BFDBFE;
+            color: #1E40AF;
+        }
+
+        .badge-zijn {
+            background: #BBEF63;
+            color: #166534;
+        }
+
+        .badge-both {
+            background: #FCD34D;
+            color: #92400E;
+        }
+
+        .badge-frequency {
+            background: #DDD6FE;
+            color: #3730A3;
+        }
+
+        .frequency-very {
+            background: #FF6B6B;
+            color: white;
+        }
+
+        .frequency-freq {
+            background: #FFA94D;
+            color: white;
+        }
+
+        .frequency-none {
+            background: #D0D0D0;
+            color: #333;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .info-message {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #1565c0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .button-group {
+                width: 100%;
+                justify-content: center;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Retour</a>
+    <div class="container">
+        <h1>🇳🇱 Vérification Verbes Néerlandais</h1>
+        <p class="subtitle">Visualisez et téléchargez vos fichiers de verbes réguliers ou irréguliers</p>
+
+        <div class="info-message">
+            ℹ️ Cette page vous permet de vérifier le contenu de vos fichiers de verbes et de les télécharger sous différents formats pour partage avec vos professeurs.
+        </div>
+
+        <div class="controls">
+            <select id="verbType" class="search-box" style="flex: 0 1 200px; max-width: 200px; padding: 10px 15px; font-weight: 600;">
+                <option value="irregulier">Verbes Irréguliers</option>
+                <option value="regulier">Verbes Réguliers</option>
+            </select>
+            <input type="text" class="search-box" id="searchBox" placeholder="Rechercher un verbe (infinitif ou traduction)..." style="flex: 1; min-width: 250px; max-width: 400px;">
+            <div class="button-group">
+                <button class="btn-download" onclick="downloadAsHTML()">📥 Télécharger (HTML)</button>
+                <button class="btn-download" onclick="downloadAsCSV()">📥 Télécharger (CSV)</button>
+                <button class="btn-secondary" onclick="window.print()">🖨️ Imprimer</button>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number" id="totalVerbs">0</div>
+                <div class="stat-label">Verbes totaux</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="veryFrequent">0</div>
+                <div class="stat-label">Très fréquents</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="frequent">0</div>
+                <div class="stat-label">Fréquents</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="hebben">0</div>
+                <div class="stat-label">Avec "hebben"</div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <div id="loadingMessage" class="loading">Chargement des verbes...</div>
+            <table id="verbsTable" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Infinitif</th>
+                        <th>Traduction</th>
+                        <th>Auxiliaire</th>
+                        <th>Fréquence</th>
+                        <th>Prétérit (ik)</th>
+                        <th>Participe Passé</th>
+                    </tr>
+                </thead>
+                <tbody id="verbsTableBody">
+                </tbody>
+            </table>
+            <div id="noResults" class="no-results" style="display:none;">
+                Aucun verbe ne correspond à votre recherche.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allVerbs = [];
+        let filteredVerbs = [];
+
+        // Charger les verbes
+        async function loadVerbs(type = 'irregulier') {
+            try {
+                const fileName = type === 'regulier' ? 'regulier.json' : 'irregulier.json';
+                const response = await fetch(fileName);
+                allVerbs = await response.json();
+                document.getElementById('loadingMessage').style.display = 'none';
+                displayVerbs(allVerbs);
+                calculateStats(allVerbs);
+                document.getElementById('verbsTable').style.display = 'table';
+            } catch (error) {
+                console.error('Erreur de chargement:', error);
+                document.getElementById('loadingMessage').textContent = 'Erreur lors du chargement du fichier.';
+            }
+        }
+
+        // Afficher les verbes
+        function displayVerbs(verbs) {
+            const tbody = document.getElementById('verbsTableBody');
+            tbody.innerHTML = '';
+
+            if (verbs.length === 0) {
+                document.getElementById('noResults').style.display = 'block';
+                document.getElementById('verbsTable').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('noResults').style.display = 'none';
+            document.getElementById('verbsTable').style.display = 'table';
+
+            verbs.forEach((verb, index) => {
+                const row = document.createElement('tr');
+                const preteriteIk = verb.preterite?.ik || '-';
+                const participlePast = verb.past_participle || '-';
+                const frequencyBadgeClass = verb.frequency === 'very_frequent' ? 'frequency-very' : 
+                                          verb.frequency === 'frequent' ? 'frequency-freq' : 'frequency-none';
+                const frequencyText = verb.frequency === 'very_frequent' ? '⭐⭐' : 
+                                     verb.frequency === 'frequent' ? '⭐' : 'Non classé';
+                const auxiliaryBadgeClass = verb.auxiliary === 'hebben' ? 'badge-haben' : 
+                                           verb.auxiliary === 'zijn' ? 'badge-zijn' : 'badge-both';
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td class="infinitive">${verb.infinitive}</td>
+                    <td class="translation">${verb.translation}</td>
+                    <td><span class="badge ${auxiliaryBadgeClass}">${verb.auxiliary === 'both' ? 'hebben/zijn' : verb.auxiliary}</span></td>
+                    <td><span class="badge ${frequencyBadgeClass}">${frequencyText}</span></td>
+                    <td>${preteriteIk}</td>
+                    <td>${participlePast}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Calculer les statistiques
+        function calculateStats(verbs) {
+            const stats = {
+                total: verbs.length,
+                veryFrequent: verbs.filter(v => v.frequency === 'very_frequent').length,
+                frequent: verbs.filter(v => v.frequency === 'frequent').length,
+                hebben: verbs.filter(v => v.auxiliary === 'hebben').length
+            };
+
+            document.getElementById('totalVerbs').textContent = stats.total;
+            document.getElementById('veryFrequent').textContent = stats.veryFrequent;
+            document.getElementById('frequent').textContent = stats.frequent;
+            document.getElementById('hebben').textContent = stats.haben;
+        }
+
+        // Recherche
+        function searchVerbs() {
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            filteredVerbs = allVerbs.filter(v => 
+                v.infinitive.toLowerCase().includes(query) ||
+                v.translation.toLowerCase().includes(query)
+            );
+            displayVerbs(filteredVerbs);
+        }
+
+        // Télécharger en HTML
+        function downloadAsHTML() {
+            const table = document.getElementById('verbsTable').cloneNode(true);
+            const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbes Irréguliers Néerlandais</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .stat-box {
+            padding: 15px;
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        thead {
+            background: #667eea;
+            color: white;
+        }
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tbody tr:hover {
+            background-color: #f0f4ff;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        @media print {
+            body { margin: 0; }
+            .container { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇳🇱 Verbes Irréguliers Néerlandais</h1>
+        <p style="text-align: center; color: #666;">Fichier de révision généré le ${new Date().toLocaleDateString('fr-FR')}</p>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">${allVerbs.length}</div>
+                <div class="stat-label">Verbes totaux</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">${allVerbs.filter(v => v.frequency === 'very_frequent').length}</div>
+                <div class="stat-label">Très fréquents</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">${allVerbs.filter(v => v.frequency === 'frequent').length}</div>
+                <div class="stat-label">Fréquents</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">${allVerbs.filter(v => v.auxiliary === 'hebben').length}</div>
+                <div class="stat-label">Avec "hebben"</div>
+            </div>
+        </div>
+
+        ${table.outerHTML}
+
+        <div class="footer">
+            <p>Fichier généré automatiquement - Vérification des verbes irréguliers néerlandais</p>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `verbes_irreguliers_${new Date().toISOString().split('T')[0]}.html`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // Télécharger en CSV
+        function downloadAsCSV() {
+            let csv = 'Infinitif,Traduction,Auxiliaire,Fréquence,Prétérit (ik),Participe Passé\n';
+            
+            const verbs = filteredVerbs.length > 0 ? filteredVerbs : allVerbs;
+            verbs.forEach(verb => {
+                const preteriteIk = verb.preterite?.ik || '-';
+                const participlePast = verb.past_participle || '-';
+                const frequency = verb.frequency === 'very_frequent' ? '⭐⭐' : 
+                                verb.frequency === 'frequent' ? '⭐' : 'Non classé';
+                const auxiliary = verb.auxiliary === 'both' ? 'hebben/zijn' : verb.auxiliary;
+                
+                csv += `"${verb.infinitive}","${verb.translation}","${auxiliary}","${frequency}","${preteriteIk}","${participlePast}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `verbes_irreguliers_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // Initialisation
+        document.getElementById('searchBox').addEventListener('keyup', searchVerbs);
+        document.getElementById('verbType').addEventListener('change', function() {
+            document.getElementById('loadingMessage').style.display = 'block';
+            document.getElementById('verbsTable').style.display = 'none';
+            loadVerbs(this.value);
+        });
+        document.addEventListener('DOMContentLoaded', loadVerbs);
+    </script>
+</body>
+</html>

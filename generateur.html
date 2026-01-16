@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Lektionsgenerator - Wortzauber</title>
+<meta name="google-signin-client_id" content="639970630190-dbtusqa5kb93jdthsr3413ms7t235anl.apps.googleusercontent.com">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="container">
+  <h1>�🇪 Lektionsgenerator</h1>
+  <p class="subtitle">Erstellen Sie Lernmaterialien für Sprachtraining in wenigen Klicks</p>
+
+  <!-- Login Container -->
+  <div id="loginContainer" class="login-container">
+    <div class="login-box">
+      <h2>🔐 Sicherer Zugang</h2>
+      <p>Melden Sie sich mit Ihrem Google-Konto an</p>
+      <div class="error-message" id="errorMessage">
+        ❌ Zugriff verweigert. Bitte überprüfen Sie Ihre E-Mail.
+      </div>
+      <div class="google-signin-container">
+        <div id="g_id_onload"
+             data-client_id="639970630190-dbtusqa5kb93jdthsr3413ms7t235anl.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Info (affiché après connexion) -->
+  <div class="user-info" id="userInfo">
+    <p>Angemeldet als: <strong id="userEmail"></strong></p>
+  </div>
+
+  <!-- Form Container -->
+  <div id="formContainer">
+    <div class="box">
+      <h2>1. Region</h2>
+      <input type="text" id="region" placeholder="Bsp: Berlin">
+    </div>
+
+    <div class="box">
+      <h2>2. Datum</h2>
+      <input type="date" id="date">
+    </div>
+
+    <div class="box">
+      <h2>3. Titel</h2>
+      <input type="text" id="titre" placeholder="Titel des Textes">
+    </div>
+
+    <div class="box">
+      <h2>4. Text</h2>
+      <textarea id="article" placeholder="Fügen Sie hier Ihren Text ein"></textarea>
+      <h3>Bild (hochladen)</h3>
+      <input type="file" id="imageInput" accept="image/*">
+    </div>
+
+    <div class="box">
+      <h2>5. Vokabular (CSV)</h2>
+      <textarea id="csvVocab" placeholder="Fügen Sie hier Ihre CSV-Vokabelliste ein"></textarea>
+    </div>
+
+    <div class="box">
+      <h2>6. Verben (CSV)</h2>
+      <textarea id="csvVerbes" placeholder="Fügen Sie hier Ihre CSV-Verbenliste ein"></textarea>
+    </div>
+
+    <div class="button-group">
+      <button onclick="genererFiche()">✨ Lektion generieren</button>
+      <button class="secondary" onclick="seDeconnecter()">🔒 Abmelden</button>
+    </div>
+
+    <h2 class="output-title">Generierter Code:</h2>
+    <textarea id="output"></textarea>
+
+    <div class="button-group" style="margin-top: 20px;">
+      <button id="btnTelecharger" class="secondary" onclick="telechargerFiche()" style="display:none;">⬇️ Herunterladen</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+// ===== CONFIGURATION GOOGLE SIGN-IN =====
+// À remplacer par votre CLIENT_ID depuis Google Cloud Console
+const AUTHORIZED_EMAILS = [
+  "darkmoulasse@gmail.com" // Ajoutez vos emails autorisés ici
+];
+
+function handleCredentialResponse(response) {
+  // Décoder le JWT token
+  const base64Url = response.credential.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(
+    atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join('')
+  );
+  
+  const data = JSON.parse(jsonPayload);
+  const userEmail = data.email;
+  
+  // Vérifier si l'email est autorisé
+  if (AUTHORIZED_EMAILS.includes(userEmail)) {
+    // Connexion réussie
+    sessionStorage.setItem('userEmail', userEmail);
+    // Redirection vers admin.html
+    window.location.href = 'admin.html';
+  } else {
+    // Email non autorisé
+    document.getElementById('errorMessage').classList.add('show-error');
+    setTimeout(() => {
+      location.reload();
+    }, 2000);
+  }
+}
+
+window.onload = function() {
+  // Vérifier si déjà connecté
+  if (sessionStorage.getItem('userEmail')) {
+    const email = sessionStorage.getItem('userEmail');
+    document.getElementById('loginContainer').style.display = 'none';
+    document.getElementById('userInfo').style.display = 'block';
+    document.getElementById('userEmail').textContent = email;
+    document.getElementById('formContainer').style.display = 'block';
+  }
+};
+
+// Déconnexion Google
+function seDeconnecter() {
+  if (confirm('Sind Sie sicher, dass Sie sich abmelden möchten?')) {
+    google.accounts.id.disableAutoSelect();
+    sessionStorage.removeItem('userEmail');
+    document.getElementById('formContainer').style.display = 'none';
+    document.getElementById('userInfo').style.display = 'none';
+    document.getElementById('loginContainer').style.display = 'block';
+    resetFormulaire();
+    location.reload();
+  }
+}
+
+// Initialiser le formulaire
+function initialiserFormulaire() {
+  document.getElementById("output").value = "";
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById("date").value = today;
+}
+
+// Réinitialiser le formulaire
+function resetFormulaire() {
+  document.getElementById("region").value = '';
+  document.getElementById("date").value = '';
+  document.getElementById("titre").value = '';
+  document.getElementById("article").value = '';
+  document.getElementById("csvVocab").value = '';
+  document.getElementById("csvVerbes").value = '';
+  document.getElementById("output").value = '';
+  document.getElementById('btnTelecharger').style.display = 'none';
+  imageBase64 = '';
+  htmlGenere = '';
+}
+
+let imageBase64 = "";
+let htmlGenere = "";
+
+// Convertir l'image uploadée en Base64
+document.getElementById("imageInput").addEventListener("change", function() {
+  const file = this.files[0];
+  const reader = new FileReader();
+  reader.onload = e => imageBase64 = e.target.result;
+  reader.readAsDataURL(file);
+});
+
+// ===============================
+//  PARSEUR CSV ROBUSTE
+// ===============================
+function parseCSV(text) {
+  const rows = [];
+  let current = "";
+  let row = [];
+  let insideQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    const next = text[i + 1];
+
+    if (c === '"' && insideQuotes && next === '"') {
+      current += '"';
+      i++;
+    }
+    else if (c === '"') {
+      insideQuotes = !insideQuotes;
+    }
+    else if (c === ',' && !insideQuotes) {
+      row.push(current.trim());
+      current = "";
+    }
+    else if ((c === '\n' || c === '\r') && !insideQuotes) {
+      if (current.length > 0 || row.length > 0) {
+        row.push(current.trim());
+        rows.push(row);
+      }
+      row = [];
+      current = "";
+    }
+    else {
+      current += c;
+    }
+  }
+
+  if (current.length > 0 || row.length > 0) {
+    row.push(current.trim());
+    rows.push(row);
+  }
+
+  return rows;
+}
+
+// Empêcher les caractères dangereux
+function escapeHTML(str = "") {
+  return str
+    .replace(/`/g, "\\`")
+    .replace(/\${/g, "\\${");
+}
+
+function genererFiche() {
+  const region = escapeHTML(document.getElementById("region").value.trim());
+  const date = document.getElementById("date").value;
+  const titre = escapeHTML(document.getElementById("titre").value.trim());
+  const article = escapeHTML(document.getElementById("article").value.trim());
+  const csvVocab = document.getElementById("csvVocab").value.trim();
+  const csvVerbes = document.getElementById("csvVerbes").value.trim();
+
+  if (!titre || !article || !date) {
+    alert("Bitte füllen Sie mindestens die Region, das Datum, den Titel und den Text aus.");
+    return;
+  }
+
+  // Parsing CSV
+  const vocabRows = parseCSV(csvVocab).slice(1);
+  const verbRows = parseCSV(csvVerbes).slice(1);
+
+  const vocabData = vocabRows.map(r => ({
+    nl: escapeHTML(r[0] || ""),
+    genre: escapeHTML(r[1] || ""),
+    fr: escapeHTML(r[2] || ""),
+    exemple: escapeHTML(r[3] || "")
+  }));
+
+  const verbData = verbRows.map(r => ({
+    verbe: escapeHTML(r[0] || ""),
+    type: escapeHTML(r[1] || ""),
+    forme: escapeHTML(r[2] || ""),
+    sens: escapeHTML(r[3] || ""),
+    exemple: escapeHTML(r[4] || "")
+  }));
+
+  const questions = vocabData
+    .map(v => ({ question: `Que signifie "${v.nl}" ?`, reponse: v.fr }))
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 10);
+
+  // Génération HTML
+  const vocabRows_html = vocabData.map(v => 
+  '<tr><td><button onclick="pronounce(\'' + v.nl.replace(/'/g, "\\'") + '\')" style="background: none; border: none; cursor: pointer; font-size: 1.2em; padding: 0; color: #4ecdc4;">🔊</button> ' + v.nl + '</td><td>' + v.genre + '</td><td>' + v.fr + '</td><td>' + v.exemple + '</td></tr>'
+).join('');
+
+  const verbRows_html = verbData.map(v => 
+  '<tr><td><button onclick="pronounce(\'' + v.verbe.replace(/'/g, "\\'") + '\')" style="background: none; border: none; cursor: pointer; font-size: 1.2em; padding: 0; color: #4ecdc4;">🔊</button> ' + v.verbe + '</td><td>' + v.type + '</td><td>' + v.forme + '</td><td>' + v.sens + '</td><td>' + v.exemple + '</td></tr>'
+).join('');
+
+  const questionsJSON = JSON.stringify(questions);
+  const imageTag = imageBase64 ? '<img src="' + imageBase64 + '" style="max-width:300px; border-radius: 8px; margin: 15px 0;">' : '';
+
+  htmlGenere = '<!DOCTYPE html>\n' +
+'<html lang="de">\n' +
+'<head>\n' +
+'<meta charset="UTF-8">\n' +
+'<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+'<title>' + titel + '</title>\n' +
+'<link rel="stylesheet" href="styles.css">\n' +
+'</head>\n' +
+'<body>\n' +
+'<div class="fiche-container">\n' +
+'<div class="fiche-header">\n' +
+'<h1 class="fiche-title">' + titre + '</h1>\n' +
+'<p class="fiche-meta">📍 ' + region + ' | 📅 ' + date + '</p>\n' +
+'</div>\n' +
+imageTag + '\n' +
+'<div class="fiche-article">' + article + '</div>\n' +
+'<div id="phase1">\n' +
+'  <h2>📚 Phase 1: Vokabular</h2>\n' +
+'  <table class="fiche-table">\n' +
+'    <thead><tr><th>Deutsch</th><th>Artikel</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>\n' +
+'    <tbody>\n' +
+vocabRows_html + '\n' +
+'    </tbody>\n' +
+'  </table>\n' +
+'  <h2>🔤 Verben</h2>\n' +
+'  <table class="fiche-table">\n' +
+'    <thead><tr><th>Verb</th><th>Typ</th><th>Form</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>\n' +
+'    <tbody>\n' +
+verbRows_html + '\n' +
+'    </tbody>\n' +
+'  </table>\n' +
+'  <button onclick="goToQuiz()">➡️ Zum Quiz</button>\n' +
+'</div>\n' +
+'<div id="phase2" class="hidden">\n' +
+'  <h2>✏️ Phase 2: Quiz</h2>\n' +
+'  <div class="progress-container">\n' +
+'    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>\n' +
+'    <div class="progress-text" id="progressText">Frage 0 / 0</div>\n' +
+'  </div>\n' +
+'  <div id="quizZone"></div>\n' +
+'</div>\n' +
+'<script>\n' +
+'function pronounce(word) {\n' +
+'  if (!window.speechSynthesis) {\n' +
+'    console.error("Web Speech API nicht verfügbar");\n' +
+'    return;\n' +
+'  }\n' +
+'  \n' +
+'  window.speechSynthesis.cancel();\n' +
+'  \n' +
+'  const utterance = new SpeechSynthesisUtterance(word);\n' +
+'  utterance.lang = "de-DE";\n' +
+'  utterance.rate = 0.8;\n' +
+'  utterance.volume = 1;\n' +
+'  utterance.pitch = 1;\n' +
+'  \n' +
+'  utterance.onerror = (event) => {\n' +
+'    console.error("Aussprachefehler:", event.error);\n' +
+'  };\n' +
+'  \n' +
+'  window.speechSynthesis.speak(utterance);\n' +
+'}\n' +
+'const encouragements = [\n' +
+'  "Sehr gut! 💪",\n' +
+'  "Du schaffst das prima! 🌟",\n' +
+'  "Fantastisch! 🎉",\n' +
+'  "Großartig! ⭐",\n' +
+'  "Wunderbar! 🚀",\n' +
+'  "Ausgezeichnet! 🏆",\n' +
+'  "Meisterlich! 👏"\n' +
+'];\n' +
+'let questions = ' + questionsJSON + ';\n' +
+'let indexQ = 0;\n' +
+'function getRandomEncouragement() {\n' +
+'  return encouragements[Math.floor(Math.random() * encouragements.length)];\n' +
+'}\n' +
+'function updateProgress() {\n' +
+'  const percent = (indexQ / questions.length) * 100;\n' +
+'  document.getElementById("progressFill").style.width = percent + "%";\n' +
+'  document.getElementById("progressText").textContent = "Frage " + indexQ + " / " + questions.length;\n' +
+'}\n' +
+'function goToQuiz() {\n' +
+'  document.getElementById("phase1").classList.add("hidden");\n' +
+'  document.getElementById("phase2").classList.remove("hidden");\n' +
+'  afficherQuestion();\n' +
+'}\n' +
+'function afficherQuestion() {\n' +
+'  const zone = document.getElementById("quizZone");\n' +
+'  updateProgress();\n' +
+'  if (indexQ >= questions.length) {\n' +
+'    zone.innerHTML = \'<div class="completion-message"><p>✅ Quiz abgeschlossen! Glückwunsch! </p><p style="font-size: 1.1em; color: #c41e3a;">Großartig! 🎊</p><button class="btn btn-primary" onclick="location.reload()">🔄 Nochmal</button></div>\';\n' +
+'    return;\n' +
+'  }\n' +
+'  zone.innerHTML = `\n' +
+'    <p><strong>Frage ${indexQ + 1} / ${questions.length}</strong></p>\n' +
+'    <p style="font-size: 1.1em; margin: 15px 0;">${questions[indexQ].question}</p>\n' +
+'    <button onclick="suivante()">➡️ Antwort zeigen</button>\n' +
+'  `;\n' +
+'}\n' +
+'function suivante() {\n' +
+'  const zone = document.getElementById("quizZone");\n' +
+'  const reponseCorrecte = questions[indexQ].reponse;\n' +
+'  zone.innerHTML += "<div class=\\"answer-display\\">✅ Antwort: <strong>" + reponseCorrecte + "</strong></div>";\n' +
+'  zone.innerHTML += "<div class=\\"encouragement\\">"+ getRandomEncouragement() + "</div>";\n' +
+'  indexQ++;\n' +
+'  setTimeout(() => afficherQuestion(), 2000);\n' +
+'}\n' +
+'<\/script>\n' +
+'</div>\n' +
+'</body>\n' +
+'</html>\n';
+
+  document.getElementById("output").value = htmlGenere;
+  document.getElementById("btnTelecharger").style.display = "flex";
+}
+
+function telechargerFiche() {
+  const region = document.getElementById("region").value.trim();
+  const date = document.getElementById("date").value;
+  
+  if (!region || !date) {
+    alert("Bitte füllen Sie die Region und das Datum für den Dateinamen aus.");
+    return;
+  }
+
+  const nomFichier = region + "_" + date + ".html";
+  const blob = new Blob([htmlGenere], { type: "text/html;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = nomFichier;
+  link.click();
+  URL.revokeObjectURL(link.href);
+  
+  alert("Lektion heruntergeladen: " + nomFichier);
+}
+
+function pronounce(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "nl-NL";
+  utterance.rate = 0.8;
+  window.speechSynthesis.speak(utterance);
+}
+</script>
+
+</body>
+</html>

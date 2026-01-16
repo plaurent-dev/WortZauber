@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Wortzauber</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-content">
+        <h1>✨ Wortzauber</h1>
+        <div class="navbar-buttons">
+            <a href="index.html" class="navbar-link">🏠 Startseite</a>
+            <a href="admin.html" class="navbar-link active" id="adminLink" style="display: none;">⚙️ Admin</a>
+            <a href="generateur.html" class="navbar-link" id="genLink" style="display: none;">✏️ Erstellen</a>
+            <div class="navbar-right">
+                <span class="user-info" id="userDisplay" style="display: none;">
+                    <span id="userEmail"></span>
+                </span>
+                <button class="navbar-link" id="logoutBtn" style="display: none;" onclick="logout()">🔓 Abmelden</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>⚙️ Verwaltungsmenü</h2>
+
+    <!-- Contenu Admin (visible si connecté) -->
+    <div id="adminContent" style="display: none;">
+        <div class="admin-section">
+            <h3>📝 Verwaltung der Lektionen</h3>
+            <div class="button-group">
+                <a href="generateur.html" class="admin-button create">
+                    <span class="admin-button-emoji">✏️</span>
+                    <span class="admin-button-text">Neue Lektion erstellen</span>
+                </a>
+                <button class="admin-button add" onclick="ouvrirModalAjout()">
+                    <span class="admin-button-emoji">➕</span>
+                    <span class="admin-button-text">Lektion hinzufügen</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>📖 Vokabelverwaltung</h3>
+            <div class="button-group">
+                <a href="admin_vocabulaire.html" class="admin-button add">
+                    <span class="admin-button-emoji">📚</span>
+                    <span class="admin-button-text">Vokabeln verwalten</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>📊 Statistiken</h3>
+            <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 20px; border-radius: 12px;">
+                <p style="margin: 10px 0; color: #666;">
+                    <strong style="color: #c41e3a;">Anzahl der Lektionen:</strong> <span id="ficheCount">0</span>
+                </p>
+                <p style="margin: 10px 0; color: #666;">
+                    <strong style="color: #c41e3a;">Zuletzt erstellt:</strong> <span id="lastFiche">--</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prompt de connexion (visible si non connecté) -->
+    <div id="loginPrompt" class="login-prompt">
+        <h3>🔐 Nur für Administratoren</h3>
+        <p style="color: #666; margin-bottom: 20px;">Melden Sie sich mit Google an, um auf den Verwaltungsbereich zuzugreifen</p>
+        <a href="generateur.html" style="display: inline-block; padding: 15px 30px; background: #c41e3a; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: all 0.3s ease; margin-top: 15px;">🔒 Mit Google anmelden</a>
+    </div>
+</div>
+
+<!-- Modal pour ajouter une fiche -->
+<div id="modalAjout" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.5);">
+    <div style="background-color: white; margin: 10% auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
+        <h2 style="color: #c41e3a; margin-bottom: 20px;">Lektion hinzufügen</h2>
+        <p style="margin-bottom: 15px; color: #666;">Geben Sie den Dateinamen ein (Format: Region_YYYY-MM-DD.html)</p>
+        <input type="text" id="nomFichierInput" placeholder="Bsp: Berlin_2026-01-08.html" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 15px; font-size: 1em; font-family: 'Segoe UI', sans-serif;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button onclick="confirmerAjout()" style="padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%); color: white;">✅ Hinzufügen</button>
+            <button onclick="fermerModal()" style="padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: #ddd; color: #333;">❌ Abbrechen</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Récupérer les fiches du localStorage
+    function chargerFichesFromStorage() {
+        const fichesStockees = localStorage.getItem('fiches_wz');
+        return fichesStockees ? JSON.parse(fichesStockees) : [];
+    }
+
+    // Sauvegarder les fiches dans localStorage
+    function sauvegarderFiches(fiches) {
+        localStorage.setItem('fiches_wz', JSON.stringify(fiches));
+    }
+
+    // Ouvrir le modal
+    function ouvrirModalAjout() {
+        document.getElementById('modalAjout').style.display = 'block';
+        document.getElementById('nomFichierInput').focus();
+    }
+
+    // Fermer le modal
+    function fermerModal() {
+        document.getElementById('modalAjout').style.display = 'none';
+        document.getElementById('nomFichierInput').value = '';
+    }
+
+    // Confirmer l'ajout
+    function confirmerAjout() {
+        const nomFichier = document.getElementById('nomFichierInput').value.trim();
+        
+        if (!nomFichier) {
+            alert('Geben Sie bitte einen Dateinamen ein');
+            return;
+        }
+        
+        const match = nomFichier.match(/^(.+?)_(\d{4}-\d{2}-\d{2})\.html$/);
+        
+        if (!match) {
+            alert('Ungültiges Format. Verwenden Sie: Region_YYYY-MM-DD.html\n\nBsp: Berlin_2026-01-08.html');
+            return;
+        }
+        
+        const region = match[1];
+        const date = match[2];
+        
+        // Vérifier si la fiche existe déjà
+        const fiches = chargerFichesFromStorage();
+        const existe = fiches.some(f => f.href === nomFichier);
+        
+        if (existe) {
+            alert('Diese Lektion ist bereits registriert.');
+            return;
+        }
+        
+        // Ajouter la fiche
+        fiches.push({
+            nom: nomFichier,
+            region: region,
+            date: date,
+            href: nomFichier
+        });
+        
+        // Trier par date décroissante
+        fiches.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        sauvegarderFiches(fiches);
+        updateStats();
+        fermerModal();
+        alert('Lektion "' + nomFichier + '" erfolgreich hinzugefügt!');
+    }
+
+    // Fermer le modal en cliquant en dehors
+    window.onclick = function(event) {
+        const modal = document.getElementById('modalAjout');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // Permettre d'ajouter en appuyant sur Entrée
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('nomFichierInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                confirmerAjout();
+            }
+        });
+    });
+
+    // Mettre à jour les statistiques
+    function updateStats() {
+        const fiches = chargerFichesFromStorage();
+        document.getElementById('ficheCount').textContent = fiches.length;
+        
+        if (fiches.length > 0) {
+            const lastFiche = fiches[0];
+            const dateObj = new Date(lastFiche.date);
+            const dateStr = dateObj.toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('lastFiche').textContent = lastFiche.region + ' - ' + dateStr;
+        } else {
+            document.getElementById('lastFiche').textContent = 'Keine Lektion';
+        }
+    }
+
+    // Vérifier la connexion
+    function updateNavbar() {
+        const userEmail = sessionStorage.getItem('userEmail');
+        const adminContent = document.getElementById('adminContent');
+        const loginPrompt = document.getElementById('loginPrompt');
+        const adminLink = document.getElementById('adminLink');
+        const genLink = document.getElementById('genLink');
+        const userDisplay = document.getElementById('userDisplay');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userEmailSpan = document.getElementById('userEmail');
+
+        if (userEmail) {
+            adminContent.style.display = 'block';
+            loginPrompt.style.display = 'none';
+            adminLink.style.display = 'inline-block';
+            genLink.style.display = 'inline-block';
+            userDisplay.style.display = 'block';
+            logoutBtn.style.display = 'inline-block';
+            userEmailSpan.textContent = userEmail;
+            updateStats();
+        } else {
+            adminContent.style.display = 'none';
+            loginPrompt.style.display = 'block';
+            adminLink.style.display = 'none';
+            genLink.style.display = 'none';
+            userDisplay.style.display = 'none';
+            logoutBtn.style.display = 'none';
+        }
+    }
+
+    // Fonction logout
+    function logout() {
+        sessionStorage.removeItem('userEmail');
+        updateNavbar();
+    }
+
+    window.onload = function() {
+        updateNavbar();
+    };
+</script>
+
+</body>
+</html>
