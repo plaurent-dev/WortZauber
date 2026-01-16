@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "theme": "Farben (Couleurs)",
+    "themeEmoji": "🎨",
+    "words": [
+      {
+        "german": "rot",
+        "article": "das",
+        "french": "rouge",
+        "example": "Die Tomate ist rot."
+      },
+      {
+        "german": "blau",
+        "article": "das",
+        "french": "bleu",
+        "example": "Der Himmel ist blau."
+      },
+      {
+        "german": "gelb",
+        "article": "das",
+        "french": "jaune",
+        "example": "Die Sonne ist gelb."
+      },
+      {
+        "german": "grün",
+        "article": "das",
+        "french": "vert",
+        "example": "Das Gras ist grün."
+      },
+      {
+        "german": "schwarz",
+        "article": "das",
+        "french": "noir",
+        "example": "Der Schuh ist schwarz."
+      },
+      {
+        "german": "weiß",
+        "article": "das",
+        "french": "blanc",
+        "example": "Der Schnee ist weiß."
+      },
+      {
+        "german": "orange",
+        "article": "das",
+        "french": "orange",
+        "example": "Die Orange ist orange."
+      },
+      {
+        "german": "rosa",
+        "article": "das",
+        "french": "rose",
+        "example": "Das Kleid ist rosa."
+      },
+      {
+        "german": "braun",
+        "article": "das",
+        "french": "marron",
+        "example": "Der Baum ist braun."
+      },
+      {
+        "german": "lila",
+        "article": "das",
+        "french": "violet/lilas",
+        "example": "Die Blume ist lila."
+      }
+    ]
+  },
+  {
+    "theme": "Obst und Gemüse (Fruits et Légumes)",
+    "themeEmoji": "🥕",
+    "words": [
+      {
+        "german": "der Apfel",
+        "article": "der",
+        "french": "la pomme",
+        "example": "Ich esse einen roten Apfel."
+      },
+      {
+        "german": "die Banane",
+        "article": "die",
+        "french": "la banane",
+        "example": "Die Banane ist gelb und süß."
+      },
+      {
+        "german": "die Orange",
+        "article": "die",
+        "french": "l'orange",
+        "example": "Ich trinke Orangensaft zum Frühstück."
+      },
+      {
+        "german": "die Erdbeere",
+        "article": "die",
+        "french": "la fraise",
+        "example": "Die Erdbeere schmeckt lecker."
+      },
+      {
+        "german": "die Kirsche",
+        "article": "die",
+        "french": "la cerise",
+        "example": "Die Kirsche ist klein und rot."
+      },
+      {
+        "german": "die Karotte",
+        "article": "die",
+        "french": "la carotte",
+        "example": "Das Kaninchen mag Karotten."
+      },
+      {
+        "german": "die Tomate",
+        "article": "die",
+        "french": "la tomate",
+        "example": "Ich mag Tomaten im Salat."
+      },
+      {
+        "german": "die Gurke",
+        "article": "die",
+        "french": "le concombre",
+        "example": "Die Gurke ist grün und knackig."
+      },
+      {
+        "german": "der Brokkoli",
+        "article": "der",
+        "french": "le brocoli",
+        "example": "Brokkoli ist gesund für mich."
+      },
+      {
+        "german": "die Kartoffel",
+        "article": "die",
+        "french": "la pomme de terre",
+        "example": "Wir essen Kartoffeln zum Abendessen."
+      }
+    ]
+  }
+]

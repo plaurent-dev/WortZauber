@@ -42,6 +42,625 @@
             box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
         }
 
+        /* SÉLECTION DE THÈME */
+        #themeSelection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px 20px;
+            min-height: 600px;
+        }
+
+        #themeSelection h1 {
+            font-size: 2.5em;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #themeSelection p {
+            font-size: 1.2em;
+            color: var(--text-medium);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .theme-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            border: 2px solid transparent;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            border-color: white;
+        }
+
+        .theme-card:active {
+            transform: translateY(-5px);
+        }
+
+        .theme-emoji {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+        }
+
+        .theme-name {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .theme-count {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        /* QUIZ KAHOOT STYLE */
+        #kahootQuiz {
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quiz-progress {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        .quiz-back-btn {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-back-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* QUESTION */
+        .kahoot-question {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .kahoot-question h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .kahoot-word {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin: 30px 0;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .kahoot-article {
+            font-size: 1.3em;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+
+        /* OPTIONS KAHOOT */
+        .kahoot-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .kahoot-option {
+            padding: 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kahoot-option:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .kahoot-option:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .kahoot-option:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-1 {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
+        }
+
+        .option-2 {
+            background: linear-gradient(135deg, #4ECDC4 0%, #44B8AC 100%);
+        }
+
+        .option-3 {
+            background: linear-gradient(135deg, #FFE66D 0%, #FFC90E 100%);
+        }
+
+        .option-4 {
+            background: linear-gradient(135deg, #A78BFA 0%, #9333EA 100%);
+        }
+
+        .kahoot-option.correct {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%) !important;
+            animation: correctPulse 0.6s ease-out;
+        }
+
+        .kahoot-option.incorrect {
+            background: linear-gradient(135deg, #f44336 0%, #da190b 100%) !important;
+            animation: incorrectShake 0.6s ease-out;
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* FEEDBACK */
+        .kahoot-feedback {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .kahoot-feedback.show {
+            display: block;
+        }
+
+        .kahoot-feedback.correct {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .kahoot-feedback.incorrect {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        /* ÉCRAN FIN */
+        .kahoot-end {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .kahoot-end h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .kahoot-end-score {
+            font-size: 3em;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        .kahoot-end-percentage {
+            font-size: 2em;
+            margin: 20px 0;
+            opacity: 0.95;
+        }
+
+        .kahoot-end-message {
+            font-size: 1.3em;
+            margin: 25px 0;
+            opacity: 0.9;
+        }
+
+        .kahoot-end-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .kahoot-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .kahoot-btn-restart {
+            background: white;
+            color: var(--primary);
+        }
+
+        .kahoot-btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .kahoot-btn-home {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .kahoot-btn-home:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .themes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kahoot-question {
+                padding: 30px 20px;
+            }
+
+            .kahoot-word {
+                font-size: 2.5em;
+            }
+
+            .kahoot-options {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Zurück</a>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>✨ Wortzauber</h1>
+            <div style="flex: 1; text-align: center;">
+                <span id="navTitle" style="font-size: 1.1em; font-weight: 600; color: white;">Vokabeltraining</span>
+            </div>
+            <div class="navbar-buttons"></div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- SÉLECTION DE THÈME -->
+        <div id="themeSelection">
+            <h1>🎓 Vokabeltraining</h1>
+            <p>Wähle ein Thema zum Trainieren:</p>
+            <div class="themes-grid" id="themesGrid"></div>
+        </div>
+
+        <!-- QUIZ KAHOOT -->
+        <div id="kahootQuiz">
+            <div class="quiz-header">
+                <button class="quiz-back-btn" onclick="backToThemes()">← Thema ändern</button>
+                <div class="quiz-progress">
+                    <span id="questionNumber">1</span>/<span id="totalQuestions">10</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="kahoot-question">
+                <h2 id="questionPrompt">Wähle die richtige Bedeutung:</h2>
+                <div class="kahoot-article" id="articleDisplay"></div>
+                <div class="kahoot-word" id="wordDisplay"></div>
+            </div>
+
+            <div class="kahoot-options" id="optionsContainer"></div>
+
+            <div class="kahoot-feedback" id="feedback"></div>
+
+            <div id="endScreen" style="display: none;">
+                <div class="kahoot-end">
+                    <h2 id="endTitle">Sehr gut!</h2>
+                    <div class="kahoot-end-score" id="endScore">8/10</div>
+                    <div class="kahoot-end-percentage" id="endPercentage">80%</div>
+                    <div class="kahoot-end-message" id="endMessage">Du machst gute Fortschritte!</div>
+                    <div class="kahoot-end-buttons">
+                        <button class="kahoot-btn kahoot-btn-restart" onclick="backToThemes()">🔄 Neuer Versuch</button>
+                        <button class="kahoot-btn kahoot-btn-home" onclick="window.location.href='index.html'">🏠 Startseite</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let vocabularyData = [];
+        let currentThemeIndex = -1;
+        let currentWords = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        // Charger le vocabulaire
+        async function loadVocabulary() {
+            try {
+                const response = await fetch('vocabulaire.json');
+                vocabularyData = await response.json();
+                displayThemes();
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        }
+
+        // Afficher les thèmes
+        function displayThemes() {
+            const grid = document.getElementById('themesGrid');
+            grid.innerHTML = vocabularyData.map((theme, index) => `
+                <div class="theme-card" onclick="startQuiz(${index})">
+                    <div class="theme-emoji">${theme.themeEmoji}</div>
+                    <div class="theme-name">${theme.theme}</div>
+                    <div class="theme-count">${theme.words.length} Wörter</div>
+                </div>
+            `).join('');
+        }
+
+        // Démarrer le quiz
+        function startQuiz(themeIndex) {
+            currentThemeIndex = themeIndex;
+            const theme = vocabularyData[themeIndex];
+            currentWords = [...theme.words].sort(() => Math.random() - 0.5);
+            currentQuestionIndex = 0;
+            score = 0;
+            answered = false;
+
+            document.getElementById('themeSelection').style.display = 'none';
+            document.getElementById('kahootQuiz').style.display = 'block';
+            document.getElementById('endScreen').style.display = 'none';
+            document.getElementById('navTitle').textContent = theme.theme;
+
+            displayQuestion();
+        }
+
+        // Afficher une question
+        function displayQuestion() {
+            if (currentQuestionIndex >= currentWords.length) {
+                showEnd();
+                return;
+            }
+
+            answered = false;
+            const word = currentWords[currentQuestionIndex];
+            const allWords = vocabularyData[currentThemeIndex].words;
+
+            // Créer les options (réponse correcte + 3 aléatoires)
+            const options = [word.french];
+            while (options.length < 4) {
+                const random = allWords[Math.floor(Math.random() * allWords.length)].french;
+                if (!options.includes(random)) {
+                    options.push(random);
+                }
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            // Afficher la question
+            document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+            document.getElementById('totalQuestions').textContent = currentWords.length;
+            document.getElementById('articleDisplay').textContent = word.article;
+            document.getElementById('wordDisplay').textContent = word.german;
+
+            // Afficher les options
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = options.map((option, index) => `
+                <button class="kahoot-option option-${index + 1}" onclick="selectOption(this, '${option}', '${word.french}')" disabled>
+                    ${option}
+                </button>
+            `).join('');
+
+            // Activer les boutons après un court délai
+            setTimeout(() => {
+                document.querySelectorAll('.kahoot-option').forEach(btn => {
+                    btn.disabled = false;
+                });
+            }, 500);
+
+            // Mettre à jour la barre de progression
+            const progress = ((currentQuestionIndex) / currentWords.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            document.getElementById('feedback').classList.remove('show', 'correct', 'incorrect');
+        }
+
+        // Sélectionner une option
+        function selectOption(btn, selected, correct) {
+            if (answered) return;
+            answered = true;
+
+            const isCorrect = selected === correct;
+            const feedback = document.getElementById('feedback');
+
+            if (isCorrect) {
+                score++;
+                btn.classList.add('correct');
+                feedback.textContent = '✅ Richtig!';
+                feedback.classList.add('show', 'correct');
+            } else {
+                btn.classList.add('incorrect');
+                // Montrer la bonne réponse
+                document.querySelectorAll('.kahoot-option').forEach(b => {
+                    if (b.textContent === correct) {
+                        b.classList.add('correct');
+                    }
+                });
+                feedback.textContent = `❌ Falsch! Die richtige Antwort ist: ${correct}`;
+                feedback.classList.add('show', 'incorrect');
+            }
+
+            document.querySelectorAll('.kahoot-option').forEach(b => {
+                b.disabled = true;
+            });
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                displayQuestion();
+            }, 2000);
+        }
+
+        // Retourner aux thèmes
+        function backToThemes() {
+            currentThemeIndex = -1;
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById('themeSelection').style.display = 'flex';
+            document.getElementById('kahootQuiz').style.display = 'none';
+            document.getElementById('endScreen').style.display = 'none';
+            document.getElementById('navTitle').textContent = 'Vokabeltraining';
+        }
+
+        // Afficher l'écran de fin
+        function showEnd() {
+            const percentage = Math.round((score / currentWords.length) * 100);
+            let message = '';
+            let emoji = '😊';
+
+            if (percentage === 100) {
+                message = 'Du bist ein Meister! 🌟';
+                emoji = '🌟';
+            } else if (percentage >= 80) {
+                message = 'Sehr gut! Mach weiter so! 👏';
+                emoji = '👏';
+            } else if (percentage >= 60) {
+                message = 'Gut! Weiter trainieren! 👍';
+                emoji = '👍';
+            } else {
+                message = 'Nicht aufgeben! Nächster Versuch! 💪';
+                emoji = '💪';
+            }
+
+            document.getElementById('endTitle').textContent = message;
+            document.getElementById('endScore').textContent = `${score}/${currentWords.length}`;
+            document.getElementById('endPercentage').textContent = `${percentage}%`;
+            document.getElementById('endMessage').textContent = emoji;
+
+            document.getElementById('kahootQuiz').style.display = 'none';
+            document.getElementById('endScreen').style.display = 'block';
+        }
+
+        // Charger les données au démarrage
+        window.addEventListener('load', loadVocabulary);
+    </script>
+</body>
+</html>
+    <script>
+        // Appliquer le thème sauvegardé dès le chargement
+        const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+        const styleLink = document.getElementById('styleLink');
+        if (savedTheme === 'soft') {
+            styleLink.href = 'styles-soft.css';
+        } else {
+            styleLink.href = 'styles.css';
+        }
+    </script>
+    <style>
+        /* BOUTON DE RETOUR */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        }
+
         .back-btn:active {
             transform: translateY(0);
         }
