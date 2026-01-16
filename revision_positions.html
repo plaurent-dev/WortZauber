@@ -4,8 +4,18 @@
     <meta charset="UTF-8">
     <title>Räumliche Positionen - Deutsche Städte</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link id="styleLink" rel="stylesheet" href="styles.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYnaelzF3AanXmOGDG8j9kv3GyETYf1Js"></script>
+    <script>
+        // Appliquer le thème sauvegardé dès le chargement
+        const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+        const styleLink = document.getElementById('styleLink');
+        if (savedTheme === 'soft') {
+            styleLink.href = 'styles-soft.css';
+        } else {
+            styleLink.href = 'styles.css';
+        }
+    </script>
     <style>
         /* BOUTON DE RETOUR */
         .back-btn {

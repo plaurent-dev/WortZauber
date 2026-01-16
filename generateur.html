@@ -5,7 +5,17 @@
 <title>Lektionsgenerator - Wortzauber</title>
 <meta name="google-signin-client_id" content="639970630190-dbtusqa5kb93jdthsr3413ms7t235anl.apps.googleusercontent.com">
 
-<link rel="stylesheet" href="styles.css">
+<link id="styleLink" rel="stylesheet" href="styles.css">
+<script>
+    // Appliquer le thème sauvegardé dès le chargement
+    const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+    const styleLink = document.getElementById('styleLink');
+    if (savedTheme === 'soft') {
+        styleLink.href = 'styles-soft.css';
+    } else {
+        styleLink.href = 'styles.css';
+    }
+</script>
 </head>
 
 <body>

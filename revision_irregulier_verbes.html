@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <title>Unregelmäßige Verben Training</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link id="styleLink" rel="stylesheet" href="styles.css">
+    <script>
+        // Appliquer le thème sauvegardé dès le chargement
+        const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+        const styleLink = document.getElementById('styleLink');
+        if (savedTheme === 'soft') {
+            styleLink.href = 'styles-soft.css';
+        } else {
+            styleLink.href = 'styles.css';
+        }
+    </script>
     <style>
         * {
             margin: 0;
