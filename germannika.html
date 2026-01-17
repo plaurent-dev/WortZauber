@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Germannika - Ressourcen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="styleLink" rel="stylesheet" href="styles.css">
+    <script>
+        // Appliquer le thème sauvegardé dès le chargement
+        const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+        const styleLink = document.getElementById('styleLink');
+        if (savedTheme === 'soft') {
+            styleLink.href = 'styles-soft.css';
+        } else {
+            styleLink.href = 'styles.css';
+        }
+    </script>
+    <style>
+        /* BOUTON DE RETOUR */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* BOUTON STYLE TOGGLE */
+        .style-toggle-btn {
+            padding: 8px 16px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .style-toggle-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* SECTION PRINCIPALE */
+        #selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            padding: 40px 20px;
+            min-height: 600px;
+        }
+
+        #selection h1 {
+            font-size: 2.5em;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        #selection p {
+            font-size: 1.1em;
+            color: var(--text-medium);
+            text-align: center;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        /* GRILLE DE CATÉGORIES */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            border: 3px solid transparent;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            border-color: white;
+        }
+
+        .category-card:active {
+            transform: scale(0.98);
+        }
+
+        .category-emoji {
+            font-size: 2.5em;
+        }
+
+        .category-title {
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        .category-description {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            #selection {
+                gap: 20px;
+                padding: 30px 15px;
+            }
+
+            #selection h1 {
+                font-size: 2em;
+            }
+
+            #selection p {
+                font-size: 1em;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .category-card {
+                padding: 20px 15px;
+            }
+
+            .category-emoji {
+                font-size: 2em;
+            }
+
+            .category-title {
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #selection {
+                gap: 15px;
+                padding: 20px 10px;
+            }
+
+            #selection h1 {
+                font-size: 1.6em;
+            }
+
+            #selection p {
+                font-size: 0.9em;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
+            }
+
+            .category-card {
+                padding: 15px 10px;
+            }
+
+            .category-emoji {
+                font-size: 1.6em;
+            }
+
+            .category-title {
+                font-size: 0.85em;
+            }
+
+            .category-description {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Zurück</a>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>🌐 Germannika</h1>
+            <div style="flex: 1; text-align: center;">
+                <span id="navTitle" style="font-size: 1.1em; font-weight: 600; color: white;">Ressourcen von Germannika</span>
+            </div>
+            <div class="navbar-buttons">
+                <button id="styleToggle" class="style-toggle-btn" title="Design-Stil wechseln">🎨 Soft</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="selection">
+            <h1>🌐 Germannika Ressourcen</h1>
+            <p>Wähle eine Kategorie, um zu den Übungen auf Germannika.com zu gehen:</p>
+            
+            <div class="categories-grid" id="categoriesGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        const categories = [
+            {
+                emoji: '🎧',
+                title: 'Hören A1',
+                description: 'Hörverstehensübungen',
+                url: 'https://germannika.com/horen-a1/'
+            },
+            {
+                emoji: '📖',
+                title: 'Lesen A1',
+                description: 'Leseverstehensübungen',
+                url: 'https://germannika.com/lesen-a1/'
+            },
+            {
+                emoji: '📚',
+                title: 'Wortschatz',
+                description: 'Vokabel trainieren',
+                url: 'https://germannika.com/wortschatz/'
+            },
+            {
+                emoji: '✏️',
+                title: 'Schreiben',
+                description: 'Schreibübungen',
+                url: 'https://germannika.com/schreiben/'
+            },
+            {
+                emoji: '🗣️',
+                title: 'Sprechen',
+                description: 'Sprechübungen',
+                url: 'https://germannika.com/sprechen/'
+            },
+            {
+                emoji: '📝',
+                title: 'Grammatik',
+                description: 'Grammatikübungen',
+                url: 'https://germannika.com/grammatik/'
+            }
+        ];
+
+        // ====== THEME TOGGLE ======
+        function initThemeToggle() {
+            const toggleBtn = document.getElementById('styleToggle');
+            const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+            
+            applyTheme(savedTheme);
+            
+            toggleBtn.addEventListener('click', function() {
+                const currentTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+                const newTheme = currentTheme === 'modern' ? 'soft' : 'modern';
+                applyTheme(newTheme);
+                localStorage.setItem('wortzauber-theme', newTheme);
+            });
+        }
+
+        function applyTheme(themeName) {
+            const styleLink = document.getElementById('styleLink');
+            const toggleBtn = document.getElementById('styleToggle');
+            
+            if (themeName === 'soft') {
+                styleLink.href = 'styles-soft.css';
+                toggleBtn.textContent = '🎨 Modern';
+            } else {
+                styleLink.href = 'styles.css';
+                toggleBtn.textContent = '🎨 Soft';
+            }
+        }
+
+        // ====== AFFICHER LES CATÉGORIES ======
+        function displayCategories() {
+            const grid = document.getElementById('categoriesGrid');
+            
+            grid.innerHTML = categories.map(cat => `
+                <a href="${cat.url}" target="_blank" class="category-card" title="Ouvrir dans un nouvel onglet">
+                    <div class="category-emoji">${cat.emoji}</div>
+                    <div class="category-title">${cat.title}</div>
+                    <div class="category-description">${cat.description}</div>
+                </a>
+            `).join('');
+        }
+
+        // ====== INITIALISATION ======
+        window.addEventListener('load', function() {
+            displayCategories();
+            initThemeToggle();
+        });
+    </script>
+</body>
+</html>
