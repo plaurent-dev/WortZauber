@@ -340,7 +340,10 @@
                 return;
             }
 
-            const leselekturen = data.leselekturen;
+            // Sélectionner 2 textes aléatoirement
+            const allTexts = data.leselekturen;
+            const shuffled = allTexts.sort(() => 0.5 - Math.random());
+            const leselekturen = shuffled.slice(0, 2);
 
             container.innerHTML = leselekturen.map(text => `
                 <div class="fiche-card" onclick="window.location.href='leselekture.html?id=${text.id}'">
