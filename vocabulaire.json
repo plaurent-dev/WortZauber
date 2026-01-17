@@ -1,7 +1,649 @@
 [
   {
-    "theme": "Farben (Couleurs)",
+    "id": 1,
+    "theme": "Schule (L'école)",
+    "themeEmoji": "🏫",
+    "image": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop",
+    "words": [
+      {
+        "german": "der Stift",
+        "article": "der",
+        "french": "le stylo",
+        "example": "Ich schreibe mit einem Stift."
+      },
+      {
+        "german": "das Heft",
+        "article": "das",
+        "french": "le cahier",
+        "example": "Ich schreibe im Heft."
+      },
+      {
+        "german": "der Tisch",
+        "article": "der",
+        "french": "le bureau",
+        "example": "Der Tisch ist im Klassenzimmer."
+      },
+      {
+        "german": "das Buch",
+        "article": "das",
+        "french": "le livre",
+        "example": "Ich lese ein Deutschbuch."
+      },
+      {
+        "german": "der Bleistift",
+        "article": "der",
+        "french": "le crayon",
+        "example": "Ich schreibe mit dem Bleistift."
+      },
+      {
+        "german": "die Tafel",
+        "article": "die",
+        "french": "le tableau noir",
+        "example": "Der Lehrer schreibt an die Tafel."
+      },
+      {
+        "german": "der Radierer",
+        "article": "der",
+        "french": "la gomme",
+        "example": "Ich lösche mit dem Radierer."
+      },
+      {
+        "german": "das Lineal",
+        "article": "das",
+        "french": "la règle",
+        "example": "Das Lineal ist 30 cm lang."
+      },
+      {
+        "german": "der Rucksack",
+        "article": "der",
+        "french": "le sac à dos",
+        "example": "Ich trage meinen Rucksack zur Schule."
+      },
+      {
+        "german": "die Schule",
+        "article": "die",
+        "french": "l'école",
+        "example": "Ich gehe zur Schule."
+      },
+      {
+        "german": "der Schüler",
+        "article": "der",
+        "french": "l'élève",
+        "example": "Der Schüler sitzt im Klassenzimmer."
+      },
+      {
+        "german": "die Schülerin",
+        "article": "die",
+        "french": "l'élève (fille)",
+        "example": "Die Schülerin antwortet die Frage."
+      },
+      {
+        "german": "der Lehrer",
+        "article": "der",
+        "french": "le professeur",
+        "example": "Der Lehrer erklärt die Lektion."
+      },
+      {
+        "german": "die Lehrerin",
+        "article": "die",
+        "french": "la professeure",
+        "example": "Die Lehrerin ist sehr nett."
+      },
+      {
+        "german": "das Klassenzimmer",
+        "article": "das",
+        "french": "la salle de classe",
+        "example": "Das Klassenzimmer ist groß."
+      },
+      {
+        "german": "die Mathematik",
+        "article": "die",
+        "french": "les mathématiques",
+        "example": "Ich lerne Mathematik."
+      },
+      {
+        "german": "Deutsch",
+        "article": "das",
+        "french": "l'allemand",
+        "example": "Wir sprechen Deutsch im Unterricht."
+      },
+      {
+        "german": "die Pause",
+        "article": "die",
+        "french": "la pause",
+        "example": "In der Pause spielen wir im Hof."
+      },
+      {
+        "german": "die Hausaufgabe",
+        "article": "die",
+        "french": "le devoir",
+        "example": "Ich mache meine Hausaufgaben."
+      },
+      {
+        "german": "die Note",
+        "article": "die",
+        "french": "la note/la marque",
+        "example": "Ich bekomme eine gute Note."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "theme": "Familie (La famille)",
+    "themeEmoji": "👨‍👩‍👧‍👦",
+    "image": "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&h=300&fit=crop",
+    "words": [
+      {
+        "german": "die Mutter",
+        "article": "die",
+        "french": "la mère",
+        "example": "Meine Mutter ist sehr nett."
+      },
+      {
+        "german": "der Vater",
+        "article": "der",
+        "french": "le père",
+        "example": "Mein Vater arbeitet."
+      },
+      {
+        "german": "die Schwester",
+        "article": "die",
+        "french": "la sœur",
+        "example": "Meine Schwester ist 10 Jahre alt."
+      },
+      {
+        "german": "der Bruder",
+        "article": "der",
+        "french": "le frère",
+        "example": "Mein Bruder spielt Fußball."
+      },
+      {
+        "german": "die Großmutter",
+        "article": "die",
+        "french": "la grand-mère",
+        "example": "Meine Großmutter wohnt im Land."
+      },
+      {
+        "german": "der Großvater",
+        "article": "der",
+        "french": "le grand-père",
+        "example": "Mein Großvater erzählt Geschichten."
+      },
+      {
+        "german": "die Tante",
+        "article": "die",
+        "french": "la tante",
+        "example": "Meine Tante besucht uns."
+      },
+      {
+        "german": "der Onkel",
+        "article": "der",
+        "french": "l'oncle",
+        "example": "Mein Onkel ist Arzt."
+      },
+      {
+        "german": "die Cousine",
+        "article": "die",
+        "french": "la cousine",
+        "example": "Meine Cousine ist meine beste Freundin."
+      },
+      {
+        "german": "der Cousin",
+        "article": "der",
+        "french": "le cousin",
+        "example": "Mein Cousin spielt Gitarre."
+      },
+      {
+        "german": "die Familie",
+        "article": "die",
+        "french": "la famille",
+        "example": "Meine Familie ist groß."
+      },
+      {
+        "german": "der Sohn",
+        "article": "der",
+        "french": "le fils",
+        "example": "Der Sohn spielt Videospiele."
+      },
+      {
+        "german": "die Tochter",
+        "article": "die",
+        "french": "la fille",
+        "example": "Die Tochter liebt Musik."
+      },
+      {
+        "german": "die Eltern",
+        "article": "die",
+        "french": "les parents",
+        "example": "Meine Eltern arbeiten."
+      },
+      {
+        "german": "die Großeltern",
+        "article": "die",
+        "french": "les grands-parents",
+        "example": "Ich besuche meine Großeltern."
+      },
+      {
+        "german": "das Kind",
+        "article": "das",
+        "french": "l'enfant",
+        "example": "Das Kind spielt im Park."
+      },
+      {
+        "german": "der Mann",
+        "article": "der",
+        "french": "l'homme",
+        "example": "Der Mann ist mein Vater."
+      },
+      {
+        "german": "die Frau",
+        "article": "die",
+        "french": "la femme",
+        "example": "Die Frau ist meine Mutter."
+      },
+      {
+        "german": "der Ehemann",
+        "article": "der",
+        "french": "le mari",
+        "example": "Der Ehemann arbeitet."
+      },
+      {
+        "german": "die Ehefrau",
+        "article": "die",
+        "french": "l'épouse",
+        "example": "Die Ehefrau ist Ärztin."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "theme": "Zimmer im Haus (Pièces de la maison)",
+    "themeEmoji": "🏠",
+    "image": "https://images.unsplash.com/photo-1570129477492-45a003537e90?w=400&h=300&fit=crop",
+    "words": [
+      {
+        "german": "das Wohnzimmer",
+        "article": "das",
+        "french": "le salon",
+        "example": "Wir sitzen im Wohnzimmer."
+      },
+      {
+        "german": "die Küche",
+        "article": "die",
+        "french": "la cuisine",
+        "example": "Meine Mutter kocht in der Küche."
+      },
+      {
+        "german": "das Schlafzimmer",
+        "article": "das",
+        "french": "la chambre à coucher",
+        "example": "Ich schlafe im Schlafzimmer."
+      },
+      {
+        "german": "das Badezimmer",
+        "article": "das",
+        "french": "la salle de bain",
+        "example": "Ich wasche mich im Badezimmer."
+      },
+      {
+        "german": "das Arbeitszimmer",
+        "article": "das",
+        "french": "le bureau",
+        "example": "Mein Vater arbeitet im Arbeitszimmer."
+      },
+      {
+        "german": "der Flur",
+        "article": "der",
+        "french": "le couloir",
+        "example": "Der Flur ist schmal."
+      },
+      {
+        "german": "die Treppe",
+        "article": "die",
+        "french": "l'escalier",
+        "example": "Ich gehe die Treppe hinauf."
+      },
+      {
+        "german": "der Keller",
+        "article": "der",
+        "french": "la cave",
+        "example": "Der Keller ist dunkel."
+      },
+      {
+        "german": "der Dachboden",
+        "article": "der",
+        "french": "le grenier",
+        "example": "Der Dachboden ist voll mit alten Sachen."
+      },
+      {
+        "german": "die Veranda",
+        "article": "die",
+        "french": "la véranda",
+        "example": "Wir sitzen auf der Veranda."
+      },
+      {
+        "german": "das Bett",
+        "article": "das",
+        "french": "le lit",
+        "example": "Ich schlafe im Bett."
+      },
+      {
+        "german": "der Stuhl",
+        "article": "der",
+        "french": "la chaise",
+        "example": "Der Stuhl ist rot."
+      },
+      {
+        "german": "der Tisch",
+        "article": "der",
+        "french": "la table",
+        "example": "Der Tisch ist groß."
+      },
+      {
+        "german": "das Sofa",
+        "article": "das",
+        "french": "le canapé",
+        "example": "Wir sitzen auf dem Sofa."
+      },
+      {
+        "german": "der Schrank",
+        "article": "der",
+        "french": "l'armoire",
+        "example": "Meine Kleidung ist im Schrank."
+      },
+      {
+        "german": "das Fenster",
+        "article": "das",
+        "french": "la fenêtre",
+        "example": "Das Fenster ist offen."
+      },
+      {
+        "german": "die Tür",
+        "article": "die",
+        "french": "la porte",
+        "example": "Die Tür ist geschlossen."
+      },
+      {
+        "german": "das Licht",
+        "article": "das",
+        "french": "la lumière",
+        "example": "Das Licht ist hell."
+      },
+      {
+        "german": "die Lampe",
+        "article": "die",
+        "french": "la lampe",
+        "example": "Die Lampe ist an."
+      },
+      {
+        "german": "der Teppich",
+        "article": "der",
+        "french": "le tapis",
+        "example": "Der Teppich ist weich."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "theme": "Die Stadt (La ville)",
+    "themeEmoji": "🏙️",
+    "image": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400&h=300&fit=crop",
+    "words": [
+      {
+        "german": "die Stadt",
+        "article": "die",
+        "french": "la ville",
+        "example": "Ich lebe in der Stadt."
+      },
+      {
+        "german": "die Straße",
+        "article": "die",
+        "french": "la rue",
+        "example": "Die Straße ist voller Autos."
+      },
+      {
+        "german": "der Park",
+        "article": "der",
+        "french": "le parc",
+        "example": "Ich spiele im Park."
+      },
+      {
+        "german": "das Café",
+        "article": "das",
+        "french": "le café",
+        "example": "Wir trinken Kaffee im Café."
+      },
+      {
+        "german": "das Restaurant",
+        "article": "das",
+        "french": "le restaurant",
+        "example": "Wir essen im Restaurant."
+      },
+      {
+        "german": "der Laden",
+        "article": "der",
+        "french": "le magasin",
+        "example": "Ich kaufe im Laden ein."
+      },
+      {
+        "german": "die Kirche",
+        "article": "die",
+        "french": "l'église",
+        "example": "Die Kirche ist alt."
+      },
+      {
+        "german": "das Museum",
+        "article": "das",
+        "french": "le musée",
+        "example": "Wir gehen ins Museum."
+      },
+      {
+        "german": "die Bibliothek",
+        "article": "die",
+        "french": "la bibliothèque",
+        "example": "Ich leihe Bücher in der Bibliothek aus."
+      },
+      {
+        "german": "das Rathaus",
+        "article": "das",
+        "french": "la mairie",
+        "example": "Das Rathaus ist im Zentrum."
+      },
+      {
+        "german": "der Bahnhof",
+        "article": "der",
+        "french": "la gare",
+        "example": "Der Zug fährt vom Bahnhof ab."
+      },
+      {
+        "german": "die Bushaltestelle",
+        "article": "die",
+        "french": "l'arrêt de bus",
+        "example": "Die Bushaltestelle ist in der Nähe."
+      },
+      {
+        "german": "die Bank",
+        "article": "die",
+        "french": "la banque",
+        "example": "Ich gehe zur Bank."
+      },
+      {
+        "german": "die Apotheke",
+        "article": "die",
+        "french": "la pharmacie",
+        "example": "Ich kaufe Medikamente in der Apotheke."
+      },
+      {
+        "german": "der Supermarkt",
+        "article": "der",
+        "french": "le supermarché",
+        "example": "Ich kaufe Lebensmittel im Supermarkt."
+      },
+      {
+        "german": "das Kino",
+        "article": "das",
+        "french": "le cinéma",
+        "example": "Ich gehe ins Kino."
+      },
+      {
+        "german": "der Fluss",
+        "article": "der",
+        "french": "la rivière/le fleuve",
+        "example": "Der Fluss ist breit."
+      },
+      {
+        "german": "die Brücke",
+        "article": "die",
+        "french": "le pont",
+        "example": "Die Brücke ist über den Fluss."
+      },
+      {
+        "german": "der Platz",
+        "article": "der",
+        "french": "la place",
+        "example": "Der Marktplatz ist groß."
+      },
+      {
+        "german": "das Haus",
+        "article": "das",
+        "french": "la maison",
+        "example": "Das Haus ist schön."
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "theme": "Essen (La nourriture)",
+    "themeEmoji": "🍕",
+    "image": "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400&h=300&fit=crop",
+    "words": [
+      {
+        "german": "das Brot",
+        "article": "das",
+        "french": "le pain",
+        "example": "Ich esse Brot zum Frühstück."
+      },
+      {
+        "german": "der Käse",
+        "article": "der",
+        "french": "le fromage",
+        "example": "Der Käse ist lecker."
+      },
+      {
+        "german": "die Butter",
+        "article": "die",
+        "french": "le beurre",
+        "example": "Ich streiche Butter auf das Brot."
+      },
+      {
+        "german": "die Milch",
+        "article": "die",
+        "french": "le lait",
+        "example": "Ich trinke Milch."
+      },
+      {
+        "german": "das Ei",
+        "article": "das",
+        "french": "l'œuf",
+        "example": "Ich esse ein Ei zum Frühstück."
+      },
+      {
+        "german": "die Wurst",
+        "article": "die",
+        "french": "la saucisse/la charcuterie",
+        "example": "Ich mag Wurst."
+      },
+      {
+        "german": "der Schinken",
+        "article": "der",
+        "french": "le jambon",
+        "example": "Der Schinken ist rosa."
+      },
+      {
+        "german": "der Fisch",
+        "article": "der",
+        "french": "le poisson",
+        "example": "Ich esse Fisch."
+      },
+      {
+        "german": "das Fleisch",
+        "article": "das",
+        "french": "la viande",
+        "example": "Das Fleisch ist rot."
+      },
+      {
+        "german": "das Gemüse",
+        "article": "das",
+        "french": "les légumes",
+        "example": "Ich esse Gemüse."
+      },
+      {
+        "german": "der Apfel",
+        "article": "der",
+        "french": "la pomme",
+        "example": "Der Apfel ist rot."
+      },
+      {
+        "german": "die Banane",
+        "article": "die",
+        "french": "la banane",
+        "example": "Die Banane ist gelb."
+      },
+      {
+        "german": "die Orange",
+        "article": "die",
+        "french": "l'orange",
+        "example": "Die Orange ist süß."
+      },
+      {
+        "german": "die Erdbeere",
+        "article": "die",
+        "french": "la fraise",
+        "example": "Die Erdbeere schmeckt lecker."
+      },
+      {
+        "german": "der Salat",
+        "article": "der",
+        "french": "la salade",
+        "example": "Ich esse einen grünen Salat."
+      },
+      {
+        "german": "die Kartoffel",
+        "article": "die",
+        "french": "la pomme de terre",
+        "example": "Kartoffeln sind gesund."
+      },
+      {
+        "german": "die Tomate",
+        "article": "die",
+        "french": "la tomate",
+        "example": "Die Tomate ist rot."
+      },
+      {
+        "german": "das Wasser",
+        "article": "das",
+        "french": "l'eau",
+        "example": "Ich trinke Wasser."
+      },
+      {
+        "german": "der Saft",
+        "article": "der",
+        "french": "le jus",
+        "example": "Ich trinke Orangensaft."
+      },
+      {
+        "german": "die Schokolade",
+        "article": "die",
+        "french": "le chocolat",
+        "example": "Ich mag Schokolade."
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "theme": "Farben (Les couleurs)",
     "themeEmoji": "🎨",
+    "image": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&h=300&fit=crop",
     "words": [
       {
         "german": "rot",
@@ -62,72 +704,66 @@
         "article": "das",
         "french": "violet/lilas",
         "example": "Die Blume ist lila."
-      }
-    ]
-  },
-  {
-    "theme": "Obst und Gemüse (Fruits et Légumes)",
-    "themeEmoji": "🥕",
-    "words": [
-      {
-        "german": "der Apfel",
-        "article": "der",
-        "french": "la pomme",
-        "example": "Ich esse einen roten Apfel."
       },
       {
-        "german": "die Banane",
-        "article": "die",
-        "french": "la banane",
-        "example": "Die Banane ist gelb und süß."
+        "german": "grau",
+        "article": "das",
+        "french": "gris",
+        "example": "Der Stein ist grau."
       },
       {
-        "german": "die Orange",
-        "article": "die",
-        "french": "l'orange",
-        "example": "Ich trinke Orangensaft zum Frühstück."
+        "german": "dunkelblau",
+        "article": "das",
+        "french": "bleu foncé",
+        "example": "Das Wasser ist dunkelblau."
       },
       {
-        "german": "die Erdbeere",
-        "article": "die",
-        "french": "la fraise",
-        "example": "Die Erdbeere schmeckt lecker."
+        "german": "hellgrün",
+        "article": "das",
+        "french": "vert clair",
+        "example": "Das Blatt ist hellgrün."
       },
       {
-        "german": "die Kirsche",
-        "article": "die",
-        "french": "la cerise",
-        "example": "Die Kirsche ist klein und rot."
+        "german": "hellblau",
+        "article": "das",
+        "french": "bleu clair",
+        "example": "Der Himmel ist hellblau."
       },
       {
-        "german": "die Karotte",
-        "article": "die",
-        "french": "la carotte",
-        "example": "Das Kaninchen mag Karotten."
+        "german": "dunkelrot",
+        "article": "das",
+        "french": "rouge foncé",
+        "example": "Das Kleid ist dunkelrot."
       },
       {
-        "german": "die Tomate",
-        "article": "die",
-        "french": "la tomate",
-        "example": "Ich mag Tomaten im Salat."
+        "german": "hellgelb",
+        "article": "das",
+        "french": "jaune clair",
+        "example": "Die Banane ist hellgelb."
       },
       {
-        "german": "die Gurke",
-        "article": "die",
-        "french": "le concombre",
-        "example": "Die Gurke ist grün und knackig."
+        "german": "türkis",
+        "article": "das",
+        "french": "turquoise",
+        "example": "Das Wasser ist türkis."
       },
       {
-        "german": "der Brokkoli",
-        "article": "der",
-        "french": "le brocoli",
-        "example": "Brokkoli ist gesund für mich."
+        "german": "gold",
+        "article": "das",
+        "french": "or",
+        "example": "Der Ring ist gold."
       },
       {
-        "german": "die Kartoffel",
-        "article": "die",
-        "french": "la pomme de terre",
-        "example": "Wir essen Kartoffeln zum Abendessen."
+        "german": "silber",
+        "article": "das",
+        "french": "argent",
+        "example": "Die Kette ist silber."
+      },
+      {
+        "german": "beige",
+        "article": "das",
+        "french": "beige",
+        "example": "Das Sofa ist beige."
       }
     ]
   }
