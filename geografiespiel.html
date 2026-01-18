@@ -358,7 +358,8 @@
                 <label for="gameMode">Mode:</label>
                 <select id="gameMode" onchange="changeGameMode(this.value)">
                     <option value="normal">Normal (Pas d'indices)</option>
-                    <option value="cities">Facile (Villes visibles)</option>
+                    <option value="easy">Facile (Points jaunes)</option>
+                    <option value="super_easy">Super facile (Indices au survol)</option>
                 </select>
             </div>
             <div style="margin-top: 10px;">
@@ -431,7 +432,7 @@
             toleranceRadius: { easy: 50, medium: 30, hard: 15 },
             isWaitingForFeedback: false,
             cityMarkers: [],
-            gameMode: 'normal'  // 'normal' ou 'cities' (affiche les villes)
+            gameMode: 'normal'  // 'normal', 'easy', 'super_easy'
         };
 
         let map;
@@ -483,20 +484,19 @@
             gameState.cityMarkers.forEach(marker => marker.setMap(null));
             gameState.cityMarkers = [];
 
-            // Afficher les marqueurs: tous en mode facile, autres en mode normal
+            // Afficher les marqueurs: tous en mode facile/super_easy, rien en mode normal
             cities.forEach((city, index) => {
-                const shouldShowMarker = (gameState.gameMode === 'cities');
+                const shouldShowMarker = (gameState.gameMode === 'easy' || gameState.gameMode === 'super_easy');
                 
                 if (shouldShowMarker) {
                     const cityName = city.name;
+                    const showTooltip = gameState.gameMode === 'super_easy';
+                    
                     const infowindow = new google.maps.InfoWindow({
                         content: `<div style="color: #333; font-weight: bold;">${cityName}</div>`
                     });
 
-                    const isCurrentCity = index === gameState.currentCityIndex;
-                    const markerColor = isCurrentCity ? '#FF6B6B' : '#FFD700';  // Rouge pour la ville cherchée
-                    const strokeColor = isCurrentCity ? '#FF0000' : '#FFA500';
-
+                    // Tous les points en jaune (même la ville cherchée)
                     const marker = new google.maps.Marker({
                         position: { lat: city.lat, lng: city.lng },
                         map: map,
@@ -504,9 +504,9 @@
                         icon: {
                             path: google.maps.SymbolPath.CIRCLE,
                             scale: 6,
-                            fillColor: markerColor,
+                            fillColor: '#FFD700',
                             fillOpacity: 0.8,
-                            strokeColor: strokeColor,
+                            strokeColor: '#FFA500',
                             strokeWeight: 2
                         },
                         opacity: 0.8
@@ -517,13 +517,16 @@
                         handleMapClick({ lat: () => city.lat, lng: () => city.lng });
                     });
 
-                    marker.addListener('mouseover', () => {
-                        infowindow.open(map, marker);
-                    });
+                    // Afficher les indices seulement en super_easy
+                    if (showTooltip) {
+                        marker.addListener('mouseover', () => {
+                            infowindow.open(map, marker);
+                        });
 
-                    marker.addListener('mouseout', () => {
-                        infowindow.close();
-                    });
+                        marker.addListener('mouseout', () => {
+                            infowindow.close();
+                        });
+                    }
 
                     gameState.cityMarkers.push(marker);
                 }
