@@ -6,6 +6,17 @@
 /* Google Fonts Import - Fira Sans */
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap');
 
+/* Affichage Desktop/Mobile */
+[data-show-desktop="true"] {
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    [data-show-desktop="true"] {
+        display: none !important;
+    }
+}
+
 /* ============================================
    VARIABLES DE COULEURS - PALETTE BERLIN
    ============================================ */
@@ -638,6 +649,7 @@ select:focus {
     .container {
         padding: 1rem;
         max-width: 100%;
+        background: rgba(255, 255, 255, 0.35);
     }
 
     .navbar {

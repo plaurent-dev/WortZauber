@@ -59,7 +59,7 @@
             </div>
             <a href="germannika.html" class="navbar-link" title="Germannika Ressourcen">🌐 Germannika</a>
             <button id="styleToggle" class="style-toggle-btn" title="Design-Stil wechseln">🎨 Soft</button>
-            <a href="admin.html" class="navbar-link" id="loginBtn" style="background: #ffc107; color: #333;">🔐 Anmelden</a>
+            <a href="admin.html" class="navbar-link" id="loginBtn" style="background: #ffc107; color: #333;" data-show-desktop="true">🔐 Anmelden</a>
             <a href="admin.html" class="navbar-link admin" id="adminLink" style="display: none;">⚙️ Admin</a>
             
             <div class="navbar-right">
@@ -410,10 +410,12 @@
                 return;
             }
 
-            // Sélectionner 2 textes aléatoirement
+            // Sélectionner 1 texte sur mobile, 2 sur desktop
+            const isMobile = window.innerWidth <= 768;
+            const numTexts = isMobile ? 1 : 2;
             const allTexts = data.leselekturen;
             const shuffled = allTexts.sort(() => 0.5 - Math.random());
-            const leselekturen = shuffled.slice(0, 2);
+            const leselekturen = shuffled.slice(0, numTexts);
 
             container.innerHTML = leselekturen.map(text => `
                 <div class="fiche-card" onclick="window.location.href='leselekture.html?id=${text.id}'">
