@@ -115,29 +115,7 @@
             "ihr": "hasst",
             "sie/Sie": "hassen"
           }
-        }
-      ]
-    },
-    {
-      "numero": "2-A",
-      "type": "verbes faibles",
-      "images": [
-        "Lektion/CONJ02.jpg",
-        "Lektion/CONJ02_1.jpg"
-      ],
-      "regles": {
-        "definition": "Un verbe FAIBLE est un verbe RÉGULIER à tous les TEMPS et à toutes les PERSONNES. Pour le conjuguer, il faut ENLEVER EN et ajouter les TERMINAISONS.",
-        "terminaisons": {
-          "ich": "e",
-          "du": "st",
-          "er/sie/es": "t",
-          "wir": "en",
-          "ihr": "t",
-          "sie/Sie": "en"
         },
-        "exceptions": "Si le radical se termine par -s, -ß, -z, on met seulement -t à la 2e personne du singulier (du)"
-      },
-      "conjugaisons": [
         {
           "infinitif": "spielen",
           "traduction_fr": "jouer",
