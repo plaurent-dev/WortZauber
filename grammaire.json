@@ -1,0 +1,78 @@
+{
+  "tableaux": [
+    {
+      "numero": "1",
+      "type": "Les phrases interrogatives partielles (W-Fragen)",
+      "regles": {
+        "definition": "Une phrase interrogative partielle permet d'obtenir un renseignement précis. Elle commence toujours par un mot question en W suivi du verbe conjugué puis du sujet (inversé). Le mot question en W peut être associé à un autre mot : un adjectif (exemple alt, wie alt), une préposition (mit: avec), un nom commun (ex : welche farbe, fr de quelle couleur)"
+      },
+      "exemples": [
+        {
+          "mot_interrogatif": "Wieviele + Nom",
+          "traduction_fr": "Combien de + Nom",
+          "exemple": "Wieviele Tage hat die Woche ? Die Woche hat 7 Tage"
+        },
+        {
+          "mot_interrogatif": "Was",
+          "traduction_fr": "Que / Quoi",
+          "exemple": "Was machst du ? Was ist das ?"
+        },
+        {
+          "mot_interrogatif": "Wie",
+          "traduction_fr": "Comment",
+          "exemple": "Wie heißt das Mädchen ? Wie geht's ?"
+        },
+        {
+          "mot_interrogatif": "Wo",
+          "traduction_fr": "Où (pour le lieu, où on se trouve, où on habite)",
+          "exemple": "Wo wohnst du ? Ich wohne in Frankreich"
+        },
+        {
+          "mot_interrogatif": "Woher",
+          "traduction_fr": "D'où (provenance)",
+          "exemple": "Woher kommst du ? Ich komme aus Deutschland"
+        },
+        {
+          "mot_interrogatif": "Wohin",
+          "traduction_fr": "Où (pour le lieu, où l'on va)",
+          "exemple": "Wohin gehst du ? Ich gehe in die Schule"
+        },
+        {
+          "mot_interrogatif": "Wann",
+          "traduction_fr": "Quand",
+          "exemple": "Wann haben wir Deutsch ?"
+        },
+        {
+          "mot_interrogatif": "Wer",
+          "traduction_fr": "Qui",
+          "exemple": "Wer bist du ? Ich bin ein Kind"
+        },
+        {
+          "mot_interrogatif": "Welche Farbe",
+          "traduction_fr": "De quelle couleur ?",
+          "exemple": "Welche Farbe ist der Kuli ? Der Kuli ist blau"
+        },
+        {
+          "mot_interrogatif": "Wie alt + sein",
+          "traduction_fr": "Quel âge ?",
+          "exemple": "Wie alt bist du ? Ich bin dreizehn Jahre alt"
+        },
+        {
+          "mot_interrogatif": "Um wieviel Uhr",
+          "traduction_fr": "À quelle heure ?",
+          "exemple": "Wieviel Uhr ist es ?"
+        },
+        {
+          "mot_interrogatif": "Wie lange ?",
+          "traduction_fr": "Combien de temps ?",
+          "exemple": "Wie lange dauert eine Stunde ?"
+        },
+        {
+          "mot_interrogatif": "Wie oft ?",
+          "traduction_fr": "Combien de fois / À quelle fréquence ?",
+          "exemple": "Wie oft hast du Deutsch ?"
+        }
+      ]
+    }
+  ]
+}
