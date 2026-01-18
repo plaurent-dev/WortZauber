@@ -455,6 +455,136 @@
           }
         }
       ]
+    },
+    {
+      "numero": "3",
+      "type": "verbes forts",
+      "images": [
+        "Lektion/CONJ03.jpg",
+        "Lektion/CONJ03_1.jpg"
+      ],
+      "regles": {
+        "definition": "Un verbe FORT est un verbe IRREGULIER MAIS les verbes FORTS de la catégorie 1 sont : REGULIERS au présent MAIS IRREGULIERS aux temps du passé.",
+        "terminaisons": {
+          "ich": "e",
+          "du": "st",
+          "er/sie/es": "t",
+          "wir": "en",
+          "ihr": "t",
+          "sie/Sie": "en"
+        },
+        "exceptions": "Si le radical se termine par -s, -ß, -z, on met seulement -t et non pas -st à la 2e personne du singulier (du)"
+      },
+      "conjugaisons": [
+        {
+          "infinitif": "heißen",
+          "traduction_fr": "s'appeler",
+          "formes": {
+            "ich": "heiße",
+            "du": "heißt",
+            "er/sie/es": "heißt",
+            "wir": "heißen",
+            "ihr": "heißt",
+            "sie/Sie": "heißen"
+          }
+        },
+        {
+          "infinitif": "schwimmen",
+          "traduction_fr": "nager",
+          "formes": {
+            "ich": "schwimme",
+            "du": "schwimmst",
+            "er/sie/es": "schwimmt",
+            "wir": "schwimmen",
+            "ihr": "schwimmt",
+            "sie/Sie": "schwimmen"
+          }
+        },
+        {
+          "infinitif": "kommen",
+          "traduction_fr": "venir",
+          "formes": {
+            "ich": "komme",
+            "du": "kommst",
+            "er/sie/es": "kommt",
+            "wir": "kommen",
+            "ihr": "kommt",
+            "sie/Sie": "kommen"
+          }
+        },
+        {
+          "infinitif": "gehen",
+          "traduction_fr": "aller, se déplacer",
+          "formes": {
+            "ich": "gehe",
+            "du": "gehst",
+            "er/sie/es": "geht",
+            "wir": "gehen",
+            "ihr": "geht",
+            "sie/Sie": "gehen"
+          }
+        },
+        {
+          "infinitif": "trinken",
+          "traduction_fr": "boire",
+          "formes": {
+            "ich": "trinke",
+            "du": "trinkst",
+            "er/sie/es": "trinkt",
+            "wir": "trinken",
+            "ihr": "trinkt",
+            "sie/Sie": "trinken"
+          }
+        },
+        {
+          "infinitif": "singen",
+          "traduction_fr": "chanter",
+          "formes": {
+            "ich": "singe",
+            "du": "singst",
+            "er/sie/es": "singt",
+            "wir": "singen",
+            "ihr": "singt",
+            "sie/Sie": "singen"
+          }
+        },
+        {
+          "infinitif": "liegen",
+          "traduction_fr": "se trouver / être allongé",
+          "formes": {
+            "ich": "liege",
+            "du": "liegst",
+            "er/sie/es": "liegt",
+            "wir": "liegen",
+            "ihr": "liegt",
+            "sie/Sie": "liegen"
+          }
+        },
+        {
+          "infinitif": "fliegen",
+          "traduction_fr": "voler",
+          "formes": {
+            "ich": "fliege",
+            "du": "fliegst",
+            "er/sie/es": "fliegt",
+            "wir": "fliegen",
+            "ihr": "fliegt",
+            "sie/Sie": "fliegen"
+          }
+        },
+        {
+          "infinitif": "beginnen",
+          "traduction_fr": "commencer",
+          "formes": {
+            "ich": "beginne",
+            "du": "beginnst",
+            "er/sie/es": "beginnt",
+            "wir": "beginnen",
+            "ihr": "beginnt",
+            "sie/Sie": "beginnen"
+          }
+        }
+      ]
     }
   ]
 }
