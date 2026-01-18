@@ -388,44 +388,8 @@
         updateNavbar();
         afficherFichesRecentes();
         afficherLeselekturen();
-        initThemeToggle();
         initDynamicBackground();
     };
-
-    // ============================================
-    // THEME SWITCHER
-    // ============================================
-    function initThemeToggle() {
-        const styleLink = document.getElementById('styleLink');
-        const toggleBtn = document.getElementById('styleToggle');
-        const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
-        
-        // Appliquer le thème sauvegardé
-        applyTheme(savedTheme);
-        
-        // Event listener pour le bouton
-        toggleBtn.addEventListener('click', function() {
-            const currentTheme = localStorage.getItem('wortzauber-theme') || 'modern';
-            const newTheme = currentTheme === 'modern' ? 'soft' : 'modern';
-            applyTheme(newTheme);
-            localStorage.setItem('wortzauber-theme', newTheme);
-        });
-    }
-
-    function applyTheme(themeName) {
-        const styleLink = document.getElementById('styleLink');
-        const toggleBtn = document.getElementById('styleToggle');
-        
-        if (themeName === 'soft') {
-            styleLink.href = 'styles-soft.css';
-            toggleBtn.textContent = '🎨 Modern';
-            toggleBtn.setAttribute('title', 'Wechsel zu modernem Design');
-        } else {
-            styleLink.href = 'styles.css';
-            toggleBtn.textContent = '🎨 Soft';
-            toggleBtn.setAttribute('title', 'Wechsel zu weichem Design');
-        }
-    }
 
     // ====== LESELEKTÜRE ======
     async function afficherLeselekturen() {
