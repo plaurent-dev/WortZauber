@@ -643,6 +643,86 @@
             return { question: exemple, answer: '' };
         }
 
+        function displayTableaus() {
+            const track = document.getElementById('carouselTrack');
+            track.innerHTML = '';
+
+            grammairesData.forEach((tableau, index) => {
+                const examplesCount = (tableau.exemples || []).length;
+                const emoji = getEmojiForTableau(tableau.type);
+
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.innerHTML = `
+                    <div class="tableau-card">
+                        <div class="tableau-emoji">${emoji}</div>
+                        <div class="tableau-type">${tableau.type}</div>
+                        <div class="tableau-count">${examplesCount} exemple${examplesCount !== 1 ? 's' : ''}</div>
+                        <button class="start-btn" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; margin-top: 20px;" onclick="startQuiz()">Starten →</button>
+                    </div>
+                `;
+                track.appendChild(slide);
+            });
+
+            updateCarouselPosition();
+        }
+
+        function updateCarouselDots() {
+            const dotsContainer = document.getElementById('carouselDots');
+            dotsContainer.innerHTML = '';
+
+            for (let i = 0; i < grammairesData.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = `dot ${i === currentTableauIndex ? 'active' : ''}`;
+                dot.onclick = () => {
+                    currentTableauIndex = i;
+                    updateCarouselPosition();
+                    updateCarouselDots();
+                };
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateCarouselPosition() {
+            const track = document.getElementById('carouselTrack');
+            track.style.transform = `translateX(-${currentTableauIndex * 100}%)`;
+        }
+
+        function nextTableau() {
+            currentTableauIndex = (currentTableauIndex + 1) % grammairesData.length;
+            updateCarouselPosition();
+            updateCarouselDots();
+        }
+
+        function previousTableau() {
+            currentTableauIndex = (currentTableauIndex - 1 + grammairesData.length) % grammairesData.length;
+            updateCarouselPosition();
+            updateCarouselDots();
+        }
+
+        function extractWWord(exemple) {
+            // The exemple format is like "Wieviele Tage hat die Woche ? Die Woche hat 7 Tage"
+            const parts = exemple.split('?');
+            if (parts.length >= 1) {
+                const question = parts[0].trim();
+                // Extract the W-word (first word of the question)
+                const wWord = question.split(/\s+/)[0];
+                return wWord;
+            }
+            return '';
+        }
+
+        function parseExemple(exemple) {
+            // Parse "Question ? Réponse" format
+            const parts = exemple.split('?');
+            if (parts.length >= 2) {
+                const question = parts[0].trim() + '?';
+                const answer = parts.slice(1).join('?').trim();
+                return { question, answer };
+            }
+            return { question: exemple, answer: '' };
+        }
+
         function startQuiz() {
             const tableau = grammairesData[currentTableauIndex];
             const exemples = tableau.exemples || [];
@@ -825,4 +905,6 @@
         }
 
         // Initialize
-        loadGrammaires();
+        loadGrammaires();    </script>
+</body>
+</html>
