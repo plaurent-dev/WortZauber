@@ -40,7 +40,7 @@
         {
           "mot_interrogatif": "Wann",
           "traduction_fr": "Quand",
-          "exemple": "Wann haben wir Deutsch ?"
+          "exemple": "Wann haben wir Deutsch ? Wir haben Deutsch am Dienstag um zehn Uhr."
         },
         {
           "mot_interrogatif": "Wer",
@@ -60,17 +60,17 @@
         {
           "mot_interrogatif": "Um wieviel Uhr",
           "traduction_fr": "À quelle heure ?",
-          "exemple": "Wieviel Uhr ist es ?"
+          "exemple": "Wieviel Uhr ist es ? Es ist neunzehn Uhr sechs."
         },
         {
           "mot_interrogatif": "Wie lange ?",
           "traduction_fr": "Combien de temps ?",
-          "exemple": "Wie lange dauert eine Stunde ?"
+          "exemple": "Wie lange dauert eine Stunde ? Eine Stunde dauert sechzig Minuten."
         },
         {
           "mot_interrogatif": "Wie oft ?",
           "traduction_fr": "Combien de fois / À quelle fréquence ?",
-          "exemple": "Wie oft hast du Deutsch ?"
+          "exemple": "Wie oft hast du Deutsch ? Ich habe dreimal pro Woche Deutsch."
         }
       ]
     }
