@@ -297,6 +297,49 @@
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
         }
 
+        .kahoot-word-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .speaker-btn {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid white;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .speaker-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        .speaker-btn:active {
+            transform: scale(0.95);
+        }
+
+        .speaker-btn.playing {
+            background: rgba(255, 255, 255, 0.7);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
         .kahoot-article {
             font-size: 1.3em;
             opacity: 0.95;
@@ -542,6 +585,18 @@
             background: rgba(255, 255, 255, 0.5);
         }
 
+        @media (max-width: 1024px) {
+            .speaker-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.6em;
+            }
+
+            .kahoot-word-container {
+                gap: 15px;
+            }
+        }
+
         @media (max-width: 768px) {
             .kahoot-question {
                 padding: 30px 20px;
@@ -551,6 +606,12 @@
                 font-size: 2.5em;
             }
 
+            .speaker-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.4em;
+            }
+
             .kahoot-options {
                 grid-template-columns: 1fr;
             }
@@ -558,6 +619,26 @@
             .quiz-header {
                 flex-direction: column;
                 align-items: stretch;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .speaker-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+
+            .kahoot-word-container {
+                gap: 12px;
+            }
+
+            .kahoot-word {
+                font-size: 2em;
+            }
+
+            .kahoot-question {
+                padding: 20px 15px;
             }
         }
     </style>
@@ -637,7 +718,10 @@
             <div class="kahoot-question">
                 <h2 id="questionPrompt">Wähle die richtige Bedeutung:</h2>
                 <div class="kahoot-article" id="articleDisplay"></div>
-                <div class="kahoot-word" id="wordDisplay"></div>
+                <div class="kahoot-word-container">
+                    <div class="kahoot-word" id="wordDisplay"></div>
+                    <button class="speaker-btn" id="speakerBtn" title="Mot écouter">🔊</button>
+                </div>
             </div>
 
             <div class="kahoot-options" id="optionsContainer"></div>
@@ -672,6 +756,7 @@
         let answered = false;
         let quizMode = 'de-to-fr'; // Mode par défaut: Allemand → Français
         let maxQuestions = 10; // Nombre de questions par défaut
+        let currentUtterance = null;
 
         // ====== THEME TOGGLE ======
         function initThemeToggle() {
@@ -709,7 +794,6 @@
                 const response = await fetch('vocabulaire.json');
                 vocabularyData = await response.json();
                 displayCarousel();
-                initThemeToggle();
             } catch (error) {
                 console.error('Erreur:', error);
             }
@@ -879,6 +963,14 @@
                 document.getElementById('articleDisplay').textContent = '';
                 document.getElementById('wordDisplay').textContent = displayText;
             }
+
+            // Setup speaker button
+            const speakerBtn = document.getElementById('speakerBtn');
+            speakerBtn.onclick = (e) => {
+                e.preventDefault();
+                speakWord(displayText);
+            };
+            speakerBtn.classList.remove('playing');
 
             // Afficher les options
             const container = document.getElementById('optionsContainer');
@@ -1069,6 +1161,41 @@
                     setTimeout(() => piece.remove(), 3000);
                 }, i * 30);
             }
+        }
+
+        function speakWord(word) {
+            // Stop current speech if any
+            if (currentUtterance) {
+                window.speechSynthesis.cancel();
+                currentUtterance = null;
+                document.getElementById('speakerBtn').classList.remove('playing');
+                return;
+            }
+
+            // Create utterance
+            currentUtterance = new SpeechSynthesisUtterance(word);
+            currentUtterance.lang = 'de-DE'; // German language
+            currentUtterance.rate = 0.9; // Slower speech for better understanding
+            currentUtterance.pitch = 1;
+            currentUtterance.volume = 1;
+
+            // Add visual feedback
+            const speakerBtn = document.getElementById('speakerBtn');
+            speakerBtn.classList.add('playing');
+
+            // Handle end of speech
+            currentUtterance.onend = () => {
+                speakerBtn.classList.remove('playing');
+                currentUtterance = null;
+            };
+
+            currentUtterance.onerror = () => {
+                speakerBtn.classList.remove('playing');
+                currentUtterance = null;
+            };
+
+            // Speak
+            window.speechSynthesis.speak(currentUtterance);
         }
 
         // Charger les données au démarrage

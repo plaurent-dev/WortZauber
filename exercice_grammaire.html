@@ -264,6 +264,45 @@
             line-height: 1.8;
             padding: 20px;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .speaker-btn {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid white;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .speaker-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        .speaker-btn:active {
+            transform: scale(0.95);
+        }
+
+        .speaker-btn.playing {
+            background: rgba(255, 255, 255, 0.7);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
         }
 
         .options-grid {
@@ -591,6 +630,14 @@
                 font-size: 1.4em;
                 margin: 20px 0;
                 padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .speaker-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3em;
             }
 
             .options-grid {
@@ -742,6 +789,14 @@
                 margin: 15px 0;
                 padding: 12px;
                 line-height: 1.6;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .speaker-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
             }
 
             .options-grid {
@@ -852,7 +907,10 @@
 
         <div class="question-container">
             <div class="question-text" id="questionText"></div>
-            <div class="example-sentence" id="exampleSentence"></div>
+            <div class="example-sentence" id="exampleSentenceContainer">
+                <span id="exampleSentence"></span>
+                <button class="speaker-btn" id="speakerBtn" title="Écouter la réponse">🔊</button>
+            </div>
             <div class="options-grid" id="optionsContainer"></div>
             <div class="feedback" id="feedback"></div>
             <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Suivant →</button>
@@ -879,6 +937,7 @@
         let currentQuestions = [];
         let correctAnswers = 0;
         let selectedAnswer = null;
+        let currentUtterance = null;
 
         // Load grammaire.json
         async function loadGrammaires() {
@@ -1123,6 +1182,14 @@
             document.getElementById('nextBtn').style.display = 'none';
             selectedAnswer = null;
 
+            // Setup speaker button
+            const speakerBtn = document.getElementById('speakerBtn');
+            speakerBtn.onclick = (e) => {
+                e.preventDefault();
+                speakAnswer(question.answer);
+            };
+            speakerBtn.classList.remove('playing');
+
             // Get all W-words from current tableau
             const tableau = grammairesData[currentTableauIndex];
             const allWWords = [...new Set(tableau.exemples.map(e => extractWWord(e.exemple)))].filter(w => w);
@@ -1243,6 +1310,41 @@
                 backToSelection();
             }
             // Otherwise, let the default href behavior handle navigation to ubungen.html
+        }
+
+        function speakAnswer(text) {
+            // Stop current speech if any
+            if (currentUtterance) {
+                window.speechSynthesis.cancel();
+                currentUtterance = null;
+                document.getElementById('speakerBtn').classList.remove('playing');
+                return;
+            }
+
+            // Create utterance
+            currentUtterance = new SpeechSynthesisUtterance(text);
+            currentUtterance.lang = 'de-DE'; // German language
+            currentUtterance.rate = 0.9; // Slower speech for better understanding
+            currentUtterance.pitch = 1;
+            currentUtterance.volume = 1;
+
+            // Add visual feedback
+            const speakerBtn = document.getElementById('speakerBtn');
+            speakerBtn.classList.add('playing');
+
+            // Handle end of speech
+            currentUtterance.onend = () => {
+                speakerBtn.classList.remove('playing');
+                currentUtterance = null;
+            };
+
+            currentUtterance.onerror = () => {
+                speakerBtn.classList.remove('playing');
+                currentUtterance = null;
+            };
+
+            // Speak
+            window.speechSynthesis.speak(currentUtterance);
         }
 
         // Initialize
