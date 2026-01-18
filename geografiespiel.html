@@ -500,7 +500,7 @@
                     const marker = new google.maps.Marker({
                         position: { lat: city.lat, lng: city.lng },
                         map: map,
-                        title: cityName,
+                        title: showTooltip ? cityName : '',  // Affiche le tooltip seulement en super_easy
                         icon: {
                             path: google.maps.SymbolPath.CIRCLE,
                             scale: 6,
@@ -517,7 +517,7 @@
                         handleMapClick({ lat: () => city.lat, lng: () => city.lng });
                     });
 
-                    // Afficher les indices seulement en super_easy
+                    // Afficher les indices (InfoWindow) seulement en super_easy
                     if (showTooltip) {
                         marker.addListener('mouseover', () => {
                             infowindow.open(map, marker);
