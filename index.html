@@ -33,6 +33,9 @@
 
 <body>
 
+<!-- Dynamic Background -->
+<div id="dynamicBackground" class="dynamic-background"></div>
+
 <!-- Navbar -->
 <nav class="navbar">
     <div class="navbar-content">
@@ -81,6 +84,51 @@
 </div>
 
 <script>
+    // ====== DYNAMIC BACKGROUND WITH GERMAN CITIES ======
+    const germanCities = [
+        'Berlin',
+        'Munich',
+        'Hamburg',
+        'Cologne',
+        'Frankfurt',
+        'Stuttgart',
+        'Düsseldorf',
+        'Dortmund',
+        'Essen',
+        'Leipzig',
+        'Dresden',
+        'Nuremberg',
+        'Hanover',
+        'Mannheim',
+        'Augsburg',
+        'Wuppertal',
+        'Heidelberg',
+        'Potsdam',
+        'Freiburg',
+        'Bonn'
+    ];
+
+    function initDynamicBackground() {
+        const bgElement = document.getElementById('dynamicBackground');
+        if (!bgElement) return;
+
+        // Charger une ville aléatoire
+        const randomCity = germanCities[Math.floor(Math.random() * germanCities.length)];
+        
+        // Utiliser Unsplash API pour obtenir une image de qualité
+        const imageUrl = `https://source.unsplash.com/1600x900/?${randomCity},Germany,city&sig=${Math.random()}`;
+        
+        bgElement.style.backgroundImage = `url('${imageUrl}')`;
+        bgElement.style.backgroundSize = 'cover';
+        bgElement.style.backgroundPosition = 'center';
+        bgElement.style.backgroundAttachment = 'fixed';
+    }
+
+    // Initialiser le fond au chargement de la page
+    window.addEventListener('load', function() {
+        initDynamicBackground();
+    });
+
     // Charger les fiches depuis le fichier JSON central
     async function chargerFichesFromJSON() {
         try {

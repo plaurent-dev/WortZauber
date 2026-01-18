@@ -40,6 +40,32 @@ html, body {
     height: 100%;
 }
 
+/* ============================================
+   DYNAMIC BACKGROUND STYLES
+   ============================================ */
+.dynamic-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: brightness(0.4) blur(3px);
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 body {
     font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--blanc-pur);
@@ -93,7 +119,8 @@ p {
    NAVBAR - BERLIN MINIMALISTE
    ============================================ */
 .navbar {
-    background: var(--anthracite);
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
     padding: 1rem 2rem;
     border-bottom: 1px solid var(--gris-beton);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -273,6 +300,12 @@ p {
     max-width: 1100px;
     margin: 0 auto;
     padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .section {
