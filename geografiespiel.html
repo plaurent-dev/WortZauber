@@ -375,7 +375,7 @@
         </div>
     </div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYnaelzF3AanXmOGDG8j9kv3GyETYf1Js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYnaelzF3AanXmOGDG8j9kv3GyETYf1Js&callback=initMap"></script>
     <script>
         // Les 20 plus grandes villes allemandes avec coordonnées
         const cities = [
@@ -496,21 +496,22 @@
             const radiusKm = gameState.toleranceRadius[gameState.difficulty];
             const isCorrect = distance <= radiusKm;
 
-            // Placer le marqueur utilisateur
-            if (userMarker) userMarker.setMap(null);
+            // Placer le marqueur utilisateur avec AdvancedMarkerElement
+            if (userMarker) userMarker.map = null;
             
             const markerColor = isCorrect ? '#4CAF50' : '#f44336';
-            userMarker = new google.maps.Marker({
+            const markerElement = document.createElement('div');
+            markerElement.style.width = '16px';
+            markerElement.style.height = '16px';
+            markerElement.style.backgroundColor = markerColor;
+            markerElement.style.borderRadius = '50%';
+            markerElement.style.border = '2px solid white';
+            markerElement.style.boxShadow = `0 0 0 3px ${markerColor}66`;
+
+            userMarker = new google.maps.marker.AdvancedMarkerElement({
                 position: latLng,
                 map: map,
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 8,
-                    fillColor: markerColor,
-                    fillOpacity: 0.8,
-                    strokeColor: 'white',
-                    strokeWeight: 2
-                }
+                content: markerElement
             });
 
             // Afficher le feedback
@@ -599,7 +600,7 @@
         }
 
         // Initialiser la carte au chargement
-        window.addEventListener('load', initMap);
+        // Ne pas appeler initMap ici - Google Maps appellera via callback
     </script>
 </body>
 </html>
