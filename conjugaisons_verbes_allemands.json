@@ -1,0 +1,205 @@
+{
+  "tableaux": [
+    {
+      "numero": "1",
+      "type": "verbes auxiliaires",
+      "regles": {
+        "definition": "Ces 3 verbes sont irréguliers à tous les pronoms et peuvent être utilisés comme verbe ou comme auxiliaire (au passé-composé, au plus-que-parfait, au futur)."
+      },
+      "conjugaisons": [
+        {
+          "infinitif": "sein",
+          "traduction_fr": "être",
+          "formes": {
+            "ich": "bin",
+            "du": "bist",
+            "er/sie/es": "ist",
+            "wir": "sind",
+            "ihr": "seid",
+            "sie/Sie": "sind"
+          }
+        },
+        {
+          "infinitif": "haben",
+          "traduction_fr": "avoir / posséder",
+          "formes": {
+            "ich": "habe",
+            "du": "hast",
+            "er/sie/es": "hat",
+            "wir": "haben",
+            "ihr": "habt",
+            "sie/Sie": "haben"
+          }
+        },
+        {
+          "infinitif": "werden",
+          "traduction_fr": "devenir",
+          "formes": {
+            "ich": "werde",
+            "du": "wirst",
+            "er/sie/es": "wird",
+            "wir": "werden",
+            "ihr": "werdet",
+            "sie/Sie": "werden"
+          }
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "type": "verbes faibles",
+      "regles": {
+        "definition": "Un verbe FAIBLE est un verbe RÉGULIER à tous les TEMPS et à toutes les PERSONNES. Pour le conjuguer, il faut ENLEVER EN et ajouter les TERMINAISONS.",
+        "terminaisons": {
+          "ich": "e",
+          "du": "st",
+          "er/sie/es": "t",
+          "wir": "en",
+          "ihr": "t",
+          "sie/Sie": "en"
+        },
+        "exceptions": "Si le radical se termine par -s, -ß, -z, on met seulement -t et non pas -st à la 2e personne du singulier (du)"
+      },
+      "conjugaisons": [
+        {
+          "infinitif": "wohnen",
+          "traduction_fr": "habiter",
+          "formes": {
+            "ich": "wohne",
+            "du": "wohnst",
+            "er/sie/es": "wohnt",
+            "wir": "wohnen",
+            "ihr": "wohnt",
+            "sie/Sie": "wohnen"
+          }
+        },
+        {
+          "infinitif": "brauchen",
+          "traduction_fr": "avoir besoin de",
+          "formes": {
+            "ich": "brauche",
+            "du": "brauchst",
+            "er/sie/es": "braucht",
+            "wir": "brauchen",
+            "ihr": "braucht",
+            "sie/Sie": "brauchen"
+          }
+        },
+        {
+          "infinitif": "lieben",
+          "traduction_fr": "aimer, beaucoup, adorer",
+          "formes": {
+            "ich": "liebe",
+            "du": "liebst",
+            "er/sie/es": "liebt",
+            "wir": "lieben",
+            "ihr": "liebt",
+            "sie/Sie": "lieben"
+          }
+        },
+        {
+          "infinitif": "hassen",
+          "traduction_fr": "détester",
+          "formes": {
+            "ich": "hasse",
+            "du": "hasst",
+            "er/sie/es": "hasst",
+            "wir": "hassen",
+            "ihr": "hasst",
+            "sie/Sie": "hassen"
+          }
+        }
+      ]
+    },
+    {
+      "numero": "2-A",
+      "type": "verbes faibles",
+      "regles": {
+        "definition": "Un verbe FAIBLE est un verbe RÉGULIER à tous les TEMPS et à toutes les PERSONNES. Pour le conjuguer, il faut ENLEVER EN et ajouter les TERMINAISONS.",
+        "terminaisons": {
+          "ich": "e",
+          "du": "st",
+          "er/sie/es": "t",
+          "wir": "en",
+          "ihr": "t",
+          "sie/Sie": "en"
+        },
+        "exceptions": "Si le radical se termine par -s, -ß, -z, on met seulement -t à la 2e personne du singulier (du)"
+      },
+      "conjugaisons": [
+        {
+          "infinitif": "spielen",
+          "traduction_fr": "jouer",
+          "formes": {
+            "ich": "spiele",
+            "du": "spielst",
+            "er/sie/es": "spielt",
+            "wir": "spielen",
+            "ihr": "spielt",
+            "sie/Sie": "spielen"
+          }
+        },
+        {
+          "infinitif": "machen",
+          "traduction_fr": "faire",
+          "formes": {
+            "ich": "mache",
+            "du": "machst",
+            "er/sie/es": "macht",
+            "wir": "machen",
+            "ihr": "macht",
+            "sie/Sie": "machen"
+          }
+        },
+        {
+          "infinitif": "tanzen",
+          "traduction_fr": "danser",
+          "formes": {
+            "ich": "tanze",
+            "du": "tanzt",
+            "er/sie/es": "tanzt",
+            "wir": "tanzen",
+            "ihr": "tanzt",
+            "sie/Sie": "tanzen"
+          }
+        },
+        {
+          "infinitif": "wiederholen",
+          "traduction_fr": "répéter",
+          "formes": {
+            "ich": "wiederhole",
+            "du": "wiederholst",
+            "er/sie/es": "wiederholt",
+            "wir": "wiederholen",
+            "ihr": "wiederholt",
+            "sie/Sie": "wiederholen"
+          }
+        },
+        {
+          "infinitif": "hören",
+          "traduction_fr": "entendre, écouter",
+          "formes": {
+            "ich": "höre",
+            "du": "hörst",
+            "er/sie/es": "hört",
+            "wir": "hören",
+            "ihr": "hört",
+            "sie/Sie": "hören"
+          }
+        },
+        {
+          "infinitif": "leben",
+          "traduction_fr": "vivre",
+          "formes": {
+            "ich": "lebe",
+            "du": "lebst",
+            "er/sie/es": "lebt",
+            "wir": "leben",
+            "ihr": "lebt",
+            "sie/Sie": "leben"
+          }
+        }
+      ]
+    }
+  ]
+}
