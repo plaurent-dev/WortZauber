@@ -142,7 +142,7 @@
         'Dresden': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Dresden_-_Frauenkirche_%28Daytime%29.jpg/1280px-Dresden_-_Frauenkirche_%28Daytime%29.jpg',
         'Nuremberg': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Nuernberg_Sebald_Sebalduskirche.jpg/1280px-Nuernberg_Sebald_Sebalduskirche.jpg',
         'Hanover': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Hannover_Neustadter_Hof.jpg/1280px-Hannover_Neustadter_Hof.jpg',
-        'Mannheim': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Mannheim_Schloss.jpg/1280px-Mannheim_Schloss.jpg',
+        'Mannheim': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Mannheim_Wasserturm.jpg/1280px-Mannheim_Wasserturm.jpg',
         'Augsburg': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Augsburg_Rathausplatz_-_Blick_auf_die_Fuggerei.jpg/1280px-Augsburg_Rathausplatz_-_Blick_auf_die_Fuggerei.jpg',
         'Wuppertal': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Wuppertaler_Schwebebahn.jpg/1280px-Wuppertaler_Schwebebahn.jpg',
         'Heidelberg': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Heidelberg_Schloss_from_Theodor_Heuss_Bridge.jpg/1280px-Heidelberg_Schloss_from_Theodor_Heuss_Bridge.jpg',
@@ -175,7 +175,6 @@
                 console.log('✅ Image Wikimedia chargée:', randomCity.name);
             };
             img.onerror = function() {
-                console.log('⚠️ Image non chargée, gradient utilisé:', randomCity.name);
                 // Le gradient est déjà appliqué comme fallback
             };
             img.src = imageUrl;
@@ -356,75 +355,12 @@
         updateNavbar();
         afficherFichesRecentes();
     }
-
-    // Google Maps
-    const villesNL = {
-        "Nijmegen": { lat: 51.842, lng: 5.852 },
-        "Rotterdam": { lat: 51.922, lng: 4.479 },
-        "Den Haag": { lat: 52.070, lng: 4.300 },
-        "Amsterdam": { lat: 52.370, lng: 4.895 },
-    "Leeuwarden": { lat: 53.201, lng: 5.799 },
-    "Emmen": { lat: 52.785, lng: 6.897 },
-    "Middelburg": { lat: 51.498, lng: 3.610 }
-        // Ajoute d'autres villes ici si besoin
-    };
-
-    async function afficherMarqueursGoogleMap() {
-        // Vérifier si l'élément map existe
-        const mapElement = document.getElementById('map');
-        if (!mapElement) {
-            console.log('ℹ️ Élément #map non trouvé, Google Maps non activée');
-            return;
-        }
-
-        const articles = await chargerFichesFromJSON();
-        const map = new google.maps.Map(mapElement, {
-            center: { lat: 52.1, lng: 5.2 },
-            zoom: 8,
-            mapTypeId: 'roadmap'
-        });
-
-        // Regrouper les articles par ville
-        const articlesParVille = {};
-        articles.forEach(article => {
-            if (!articlesParVille[article.region]) {
-                articlesParVille[article.region] = [];
-            }
-            articlesParVille[article.region].push(article);
-        });
-
-        Object.keys(articlesParVille).forEach(ville => {
-            const coords = villesNL[ville];
-            if (coords) {
-                const articlesVille = articlesParVille[ville];
-                const marker = new google.maps.Marker({
-                    position: coords,
-                    map: map,
-                    title: `${ville} (${articlesVille.length} article${articlesVille.length > 1 ? 's' : ''})`
-                });
-
-                const content = `
-                    <div>
-                        <strong>${ville}</strong><br>
-                        ${articlesVille.map(a => 
-                            `<a href="${a.href}" target="_blank">${a.date} : ${a.titre ? a.titre : 'Voir l\'article'}</a>`
-                        ).join('<br>')}
-                    </div>
-                `;
-                const infowindow = new google.maps.InfoWindow({ content });
-
-                marker.addListener('click', () => {
-                    infowindow.open(map, marker);
-                });
-            }
-        });
     }
 
     window.onload = function() {
         updateNavbar();
         afficherFichesRecentes();
         afficherLeselekturen();
-        afficherMarqueursGoogleMap();
         initThemeToggle();
     };
 

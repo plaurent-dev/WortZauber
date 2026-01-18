@@ -639,10 +639,12 @@
 
             <div id="endScreen" style="display: none;">
                 <div class="kahoot-end">
-                    <h2 id="endTitle">Sehr gut!</h2>
-                    <div class="kahoot-end-score" id="endScore">8/10</div>
-                    <div class="kahoot-end-percentage" id="endPercentage">80%</div>
-                    <div class="kahoot-end-message" id="endMessage">Du machst gute Fortschritte!</div>
+                    <div class="kahoot-end-emoji">🎉</div>
+                    <h2 id="endTitle">Résultat</h2>
+                    <div class="kahoot-end-score" id="endScore">0/0</div>
+                    <div class="kahoot-end-percentage" id="endPercentage">0%</div>
+                    <div class="kahoot-end-message" id="endMessage">Gute Arbeit!</div>
+                    <div class="kahoot-end-submessage" id="endSubmessage">Du wirst in Kürze zur Startseite zurückgeleitet...</div>
                     <div class="kahoot-end-buttons">
                         <button class="kahoot-btn kahoot-btn-restart" onclick="backToThemes()">🔄 Neuer Versuch</button>
                         <button class="kahoot-btn kahoot-btn-home" onclick="window.location.href='index.html'">🏠 Startseite</button>
@@ -1029,6 +1031,11 @@
             if (percentage === 100) {
                 createConfetti();
             }
+
+            // Redirection automatique après 10 secondes
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 10000);
         }
 
         // Créer de l'animation confetti pour les victoires parfaites
