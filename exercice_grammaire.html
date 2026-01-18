@@ -30,7 +30,7 @@
         /* BOUTON DE RETOUR */
         .back-btn {
             position: fixed;
-            top: 20px;
+            top: 80px;
             left: 20px;
             padding: 12px 20px;
             background: white;
@@ -42,7 +42,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
+            z-index: 999;
             text-decoration: none;
         }
 
@@ -64,8 +64,8 @@
             align-items: center;
             justify-content: center;
             gap: 30px;
-            padding: 40px 20px;
-            min-height: 600px;
+            padding: 60px 20px 40px;
+            min-height: calc(100vh - 100px);
         }
 
         #tableauSelection h1 {
@@ -205,7 +205,7 @@
             display: none;
             flex-direction: column;
             gap: 30px;
-            padding: 40px 20px;
+            padding: 100px 20px 40px;
         }
 
         .quiz-screen.active {
@@ -390,7 +390,7 @@
             flex-direction: column;
             gap: 30px;
             align-items: center;
-            padding: 40px 20px;
+            padding: 100px 20px 40px;
         }
 
         .end-screen.active {
@@ -475,7 +475,15 @@
     </style>
 </head>
 <body>
-    <button class="back-btn" onclick="goBack()">← Retour</button>
+    <a href="ubungen.html" class="back-btn" id="backBtn" onclick="handleBackClick(event)">← Zurück</a>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>✨ Wortzauber</h1>
+            <div style="flex: 1; text-align: center;">
+                <span id="navTitle" style="font-size: 1.1em; font-weight: 600; color: white;">Grammaire Übungen</span>
+            </div>
+        </div>
+    </nav>
 
     <!-- Selection Screen -->
     <div id="tableauSelection">
@@ -496,7 +504,6 @@
 
     <!-- Quiz Screen -->
     <div id="quizScreen" class="quiz-screen">
-        <button class="back-btn" onclick="backToSelection()">← Retour</button>
         <div class="question-counter" id="questionNumber"></div>
         <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
@@ -808,12 +815,14 @@
             document.getElementById('tableauSelection').style.display = 'flex';
         }
 
-        function goBack() {
-            window.location.href = 'ubungen.html';
+        function handleBackClick(event) {
+            // If quiz is active, return to selection instead of going home
+            if (document.getElementById('quizScreen').classList.contains('active')) {
+                event.preventDefault();
+                backToSelection();
+            }
+            // Otherwise, let the default href behavior handle navigation to ubungen.html
         }
 
         // Initialize
         loadGrammaires();
-    </script>
-</body>
-</html>
