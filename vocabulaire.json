@@ -636,6 +636,162 @@
         "article": "die",
         "french": "le chocolat",
         "example": "Ich mag Schokolade."
+      },
+      {
+        "german": "die Kirsche",
+        "article": "die",
+        "french": "la cerise",
+        "example": "Die Kirsche ist süß."
+      },
+      {
+        "german": "das Obst",
+        "article": "das",
+        "french": "les fruits",
+        "example": "Ich esse gerne Obst."
+      },
+      {
+        "german": "der Kartoffelsalat",
+        "article": "der",
+        "french": "la salade de pomme de terre",
+        "example": "Der Kartoffelsalat ist köstlich."
+      },
+      {
+        "german": "das Gemüse",
+        "article": "das",
+        "french": "les légumes",
+        "example": "Ich esse Gemüse zum Mittagessen."
+      },
+      {
+        "german": "der Honig",
+        "article": "der",
+        "french": "le miel",
+        "example": "Ich mag Honig im Tee."
+      },
+      {
+        "german": "die Marmelade",
+        "article": "die",
+        "french": "la confiture",
+        "example": "Ich streiche Marmelade auf das Brot."
+      },
+      {
+        "german": "der Joghurt",
+        "article": "der",
+        "french": "le yaourt",
+        "example": "Der Joghurt schmeckt sauer."
+      },
+      {
+        "german": "das Brötchen",
+        "article": "das",
+        "french": "le petit pain",
+        "example": "Ich esse ein Brötchen zum Frühstück."
+      },
+      {
+        "german": "das Müsli",
+        "article": "das",
+        "french": "les céréales",
+        "example": "Ich esse Müsli mit Milch."
+      },
+      {
+        "german": "das Frühstück",
+        "article": "das",
+        "french": "le petit-déjeuner",
+        "example": "Das Frühstück ist wichtig."
+      },
+      {
+        "german": "der Reis",
+        "article": "der",
+        "french": "le riz",
+        "example": "Ich esse Reis mit Gemüse."
+      },
+      {
+        "german": "die Bratwurst",
+        "article": "die",
+        "french": "la saucisse grillée",
+        "example": "Die Bratwurst ist lecker."
+      },
+      {
+        "german": "das Hähnchen",
+        "article": "das",
+        "french": "le poulet",
+        "example": "Das Hähnchen ist zart."
+      },
+      {
+        "german": "die Pommes",
+        "article": "die",
+        "french": "les frites",
+        "example": "Ich esse gerne Pommes."
+      },
+      {
+        "german": "die Nudeln",
+        "article": "die",
+        "french": "les nouilles",
+        "example": "Die Nudeln sind al dente."
+      },
+      {
+        "german": "die Speise",
+        "article": "die",
+        "french": "le plat",
+        "example": "Die Speise ist sehr lecker."
+      },
+      {
+        "german": "die Getränke",
+        "article": "die",
+        "french": "les boissons",
+        "example": "Was möchtest du trinken? Wir haben viele Getränke."
+      },
+      {
+        "german": "die Schorle",
+        "article": "die",
+        "french": "la boisson pétillante (jus + eau gazeuse)",
+        "example": "Ich trinke gerne Apfelschorle."
+      },
+      {
+        "german": "der Kaffee",
+        "article": "der",
+        "french": "le café",
+        "example": "Ich trinke jeden Morgen Kaffee."
+      },
+      {
+        "german": "der Kakao",
+        "article": "der",
+        "french": "le cacao",
+        "example": "Der Kakao ist warm und süß."
+      },
+      {
+        "german": "der Tee",
+        "article": "der",
+        "french": "le thé",
+        "example": "Ich trinke Tee ohne Zucker."
+      },
+      {
+        "german": "das Mineralwasser",
+        "article": "das",
+        "french": "l'eau minérale",
+        "example": "Ich trinke Mineralwasser."
+      },
+      {
+        "german": "der Quark",
+        "article": "der",
+        "french": "le fromage blanc",
+        "example": "Der Quark ist wie Joghurt."
+      },
+      {
+        "german": "der Berliner",
+        "article": "der",
+        "french": "le beignet",
+        "example": "Der Berliner ist süß und fluffig."
+      },
+      {
+        "german": "der Stollen",
+        "article": "der",
+        "french": "le gâteau de Noël allemand",
+        "example": "Der Stollen ist ein Weihnachtskuchen."
+      },
+      {
+        "german": "die Karotte",
+        "article": "die",
+        "french": "la carotte",
+        "example": "Die Karotte ist orange und gesund."
       }
     ]
   },
