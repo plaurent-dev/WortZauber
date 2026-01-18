@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Geographie Spiel - Deutsche Städte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="styles.css?v=1.0.5">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Fira Sans', sans-serif;
+        }
+
+        #map {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        .game-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .game-header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 30, 30, 0.9);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            z-index: 101;
+            pointer-events: auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            min-width: 350px;
+        }
+
+        .game-header h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.3em;
+            color: #ffc107;
+            border: none;
+        }
+
+        .city-name {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: white;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 15px;
+            font-size: 0.95em;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #ffc107;
+        }
+
+        .game-info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            z-index: 101;
+            pointer-events: auto;
+            font-size: 0.95em;
+        }
+
+        .difficulty-selector {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            z-index: 101;
+            pointer-events: auto;
+        }
+
+        .difficulty-selector select {
+            background: #ffc107;
+            color: #333;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .back-btn-game {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            color: white;
+            border: 2px solid #ffc107;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 101;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn-game:hover {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 1000;
+            display: none;
+            pointer-events: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, -40%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #4caf50;
+            color: white;
+        }
+
+        .feedback.incorrect {
+            background: #f44336;
+            color: white;
+        }
+
+        .feedback h3 {
+            margin: 0 0 10px 0;
+            font-size: 2em;
+            border: none;
+        }
+
+        .feedback p {
+            margin: 10px 0;
+            font-size: 1.1em;
+            color: inherit;
+        }
+
+        .feedback button {
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: white;
+            color: #333;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .results-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(30, 30, 30, 0.95);
+            color: white;
+            display: none;
+            z-index: 2000;
+            pointer-events: auto;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .results-screen.show {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .results-content {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .results-content h2 {
+            font-size: 2.5em;
+            color: #ffc107;
+            margin-bottom: 20px;
+            border: none;
+        }
+
+        .final-score {
+            font-size: 3em;
+            font-weight: 700;
+            color: #ffc107;
+            margin: 30px 0;
+        }
+
+        .score-breakdown {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 5px 0;
+        }
+
+        .score-item.correct {
+            color: #4caf50;
+        }
+
+        .score-item.incorrect {
+            color: #f44336;
+        }
+
+        .results-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .results-buttons button {
+            padding: 15px 30px;
+            font-size: 1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-restart {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-restart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-home {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-home:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="game-overlay">
+        <a href="index.html" class="back-btn-game">← Zurück</a>
+        
+        <div class="game-header">
+            <h2>🗺️ Deutsche Städte finden</h2>
+            <div class="city-name" id="cityName">Loading...</div>
+            <div class="game-stats">
+                <div class="stat">
+                    <div class="stat-label">Fragen</div>
+                    <div class="stat-value"><span id="current">0</span>/<span id="total">20</span></div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Punkte</div>
+                    <div class="stat-value" id="scoreDisplay">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-info">
+            💡 Klicke auf der Karte, um die Stadt zu finden!
+        </div>
+
+        <div class="difficulty-selector">
+            <label for="difficulty">Schwierigkeitsgrad:</label>
+            <select id="difficulty" onchange="changeDifficulty(this.value)">
+                <option value="easy">Einfach (50km)</option>
+                <option value="medium" selected>Mittel (30km)</option>
+                <option value="hard">Schwer (15km)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="feedback" id="feedback">
+        <h3 id="feedbackTitle">Korrekt!</h3>
+        <p id="feedbackText">Großartig!</p>
+        <button onclick="nextCity()">Weiter →</button>
+    </div>
+
+    <div class="results-screen" id="resultsScreen">
+        <div class="results-content">
+            <h2>🎉 Spiel vorbei!</h2>
+            <div class="final-score" id="finalScore">0</div>
+            <p>von 2000 möglichen Punkten</p>
+            
+            <div class="score-breakdown" id="scoreBreakdown"></div>
+            
+            <div class="results-buttons">
+                <button class="btn-restart" onclick="restartGame()">🔄 Nochmal spielen</button>
+                <button class="btn-home" onclick="window.location.href='index.html'">🏠 Startseite</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYnaelzF3AanXmOGDG8j9kv3GyETYf1Js"></script>
+    <script>
+        // Les 20 plus grandes villes allemandes avec coordonnées
+        const cities = [
+            { name: 'Berlin', lat: 52.5200, lng: 13.4050, population: '3.6M' },
+            { name: 'Munich', lat: 48.1351, lng: 11.5820, population: '1.5M' },
+            { name: 'Cologne', lat: 50.9375, lng: 6.9603, population: '1.1M' },
+            { name: 'Frankfurt', lat: 50.1109, lng: 8.6821, population: '753k' },
+            { name: 'Hamburg', lat: 53.5511, lng: 9.9937, population: '1.9M' },
+            { name: 'Dusseldorf', lat: 51.2277, lng: 6.7735, population: '621k' },
+            { name: 'Dortmund', lat: 51.5136, lng: 7.4653, population: '586k' },
+            { name: 'Essen', lat: 51.4556, lng: 7.0116, population: '582k' },
+            { name: 'Leipzig', lat: 51.3397, lng: 12.3731, population: '614k' },
+            { name: 'Dresden', lat: 51.0504, lng: 13.7373, population: '556k' },
+            { name: 'Hannover', lat: 52.3702, lng: 9.7330, population: '543k' },
+            { name: 'Nuremberg', lat: 49.4521, lng: 11.0767, population: '518k' },
+            { name: 'Duisburg', lat: 51.4344, lng: 6.7623, population: '498k' },
+            { name: 'Bochum', lat: 51.4819, lng: 7.2147, population: '364k' },
+            { name: 'Wuppertal', lat: 51.2562, lng: 7.1508, population: '354k' },
+            { name: 'Bielefeld', lat: 52.0200, lng: 8.5321, population: '333k' },
+            { name: 'Bonn', lat: 50.7353, lng: 7.0972, population: '327k' },
+            { name: 'Mannheim', lat: 49.4891, lng: 8.4673, population: '309k' },
+            { name: 'Karlsruhe', lat: 49.0134, lng: 8.4043, population: '312k' },
+            { name: 'Augsburg', lat: 48.3705, lng: 10.8910, population: '294k' }
+        ];
+
+        let gameState = {
+            currentCityIndex: 0,
+            score: 0,
+            difficulty: 'medium',
+            answers: [],
+            map: null,
+            currentMarker: null,
+            toleranceRadius: { easy: 50, medium: 30, hard: 15 }
+        };
+
+        let map;
+        let searchCircle;
+        let userMarker;
+
+        function initMap() {
+            // Centre sur l'Allemagne
+            const germanCenter = { lat: 51.1657, lng: 10.4515 };
+            
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 7,
+                center: germanCenter,
+                mapTypeId: 'terrain',
+                gestureHandling: 'cooperative'
+            });
+
+            gameState.map = map;
+
+            // Click handler pour les clics utilisateur
+            map.addListener('click', function(event) {
+                handleMapClick(event.latLng);
+            });
+
+            // Ajouter les marqueurs des villes en dégradé
+            cities.forEach((city, index) => {
+                const marker = new google.maps.Marker({
+                    position: { lat: city.lat, lng: city.lng },
+                    map: map,
+                    title: city.name,
+                    icon: getMarkerIcon(index),
+                    opacity: 0.3
+                });
+            });
+
+            displayCurrentCity();
+        }
+
+        function getMarkerIcon(index) {
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
+            const color = colors[index % colors.length];
+            return {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 5,
+                fillColor: color,
+                fillOpacity: 0.3,
+                strokeColor: color,
+                strokeWeight: 1
+            };
+        }
+
+        function displayCurrentCity() {
+            const city = cities[gameState.currentCityIndex];
+            document.getElementById('cityName').textContent = city.name;
+            document.getElementById('current').textContent = gameState.currentCityIndex + 1;
+            document.getElementById('scoreDisplay').textContent = gameState.score;
+
+            // Dessiner le cercle de tolérance
+            if (searchCircle) searchCircle.setMap(null);
+            
+            const radiusKm = gameState.toleranceRadius[gameState.difficulty];
+            searchCircle = new google.maps.Circle({
+                center: { lat: city.lat, lng: city.lng },
+                radius: radiusKm * 1000,
+                map: map,
+                fillColor: '#4CAF50',
+                fillOpacity: 0.1,
+                strokeColor: '#4CAF50',
+                strokeOpacity: 0.5,
+                strokeWeight: 2
+            });
+
+            // Centrer la carte sur la région générale
+            map.setCenter({ lat: city.lat + 0.5, lng: city.lng + 0.3 });
+        }
+
+        function handleMapClick(latLng) {
+            const city = cities[gameState.currentCityIndex];
+            const distance = calculateDistance(
+                city.lat, city.lng,
+                latLng.lat(), latLng.lng()
+            );
+
+            const radiusKm = gameState.toleranceRadius[gameState.difficulty];
+            const isCorrect = distance <= radiusKm;
+
+            // Placer le marqueur utilisateur
+            if (userMarker) userMarker.setMap(null);
+            
+            const markerColor = isCorrect ? '#4CAF50' : '#f44336';
+            userMarker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 8,
+                    fillColor: markerColor,
+                    fillOpacity: 0.8,
+                    strokeColor: 'white',
+                    strokeWeight: 2
+                }
+            });
+
+            // Afficher le feedback
+            showFeedback(isCorrect, distance, radiusKm);
+            gameState.answers.push({ city: city.name, correct: isCorrect, distance });
+
+            if (isCorrect) {
+                gameState.score += Math.max(0, 100 - Math.round(distance));
+            }
+        }
+
+        function showFeedback(isCorrect, distance, radius) {
+            const feedback = document.getElementById('feedback');
+            const title = document.getElementById('feedbackTitle');
+            const text = document.getElementById('feedbackText');
+
+            if (isCorrect) {
+                feedback.className = 'feedback show correct';
+                title.textContent = '✅ Korrekt!';
+                const points = Math.max(0, 100 - Math.round(distance));
+                text.textContent = `${points} Punkte! (${distance.toFixed(1)} km entfernt)`;
+            } else {
+                feedback.className = 'feedback show incorrect';
+                title.textContent = '❌ Falsch!';
+                text.textContent = `${distance.toFixed(1)} km entfernt! Grenzwert: ${radius} km`;
+            }
+        }
+
+        function nextCity() {
+            document.getElementById('feedback').classList.remove('show');
+            gameState.currentCityIndex++;
+
+            if (gameState.currentCityIndex >= cities.length) {
+                endGame();
+            } else {
+                displayCurrentCity();
+            }
+        }
+
+        function endGame() {
+            const results = document.getElementById('resultsScreen');
+            document.getElementById('finalScore').textContent = gameState.score;
+
+            let breakdown = '<h3 style="color: white; text-align: center;">Ergebnisse:</h3>';
+            gameState.answers.forEach((answer, index) => {
+                const className = answer.correct ? 'correct' : 'incorrect';
+                const icon = answer.correct ? '✅' : '❌';
+                breakdown += `
+                    <div class="score-item ${className}">
+                        <span>${index + 1}. ${answer.city}</span>
+                        <span>${icon} ${answer.distance.toFixed(1)} km</span>
+                    </div>
+                `;
+            });
+            document.getElementById('scoreBreakdown').innerHTML = breakdown;
+            results.classList.add('show');
+        }
+
+        function restartGame() {
+            gameState.currentCityIndex = 0;
+            gameState.score = 0;
+            gameState.answers = [];
+            document.getElementById('resultsScreen').classList.remove('show');
+            if (userMarker) userMarker.setMap(null);
+            if (searchCircle) searchCircle.setMap(null);
+            displayCurrentCity();
+        }
+
+        function changeDifficulty(level) {
+            gameState.difficulty = level;
+            displayCurrentCity();
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Rayon de la Terre en km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        // Initialiser la carte au chargement
+        window.addEventListener('load', initMap);
+    </script>
+</body>
+</html>
