@@ -724,8 +724,17 @@
             // 5 questions en dur
             maxQuestions = 5;
             
-            // Limiter à 5 verbes maximum
-            const verbesDisponibles = tableau.conjugaisons.slice(0, 5);
+            // Sélectionner 5 verbes aléatoires
+            const allVerbes = tableau.conjugaisons.slice();
+            const verbesDisponibles = [];
+            const numVerbesToSelect = Math.min(5, allVerbes.length);
+            
+            // Sélectionner aléatoirement numVerbesToSelect verbes
+            for (let i = 0; i < numVerbesToSelect; i++) {
+                const randomIndex = Math.floor(Math.random() * allVerbes.length);
+                verbesDisponibles.push(allVerbes[randomIndex]);
+                allVerbes.splice(randomIndex, 1); // Enlever le verbe sélectionné pour ne pas le répéter
+            }
             
             // Si moins de verbes que de questions demandées, adapter
             if (verbesDisponibles.length < maxQuestions) {
