@@ -565,25 +565,7 @@
                 </div>
             </div>
 
-            <!-- PARAMÈTRES DE QUIZ -->
-            <div style="background: var(--bg-light-gray); padding: 25px; border-radius: 12px; margin-top: 30px; max-width: 500px; margin-left: auto; margin-right: auto;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
-                    <!-- NOMBRE DE QUESTIONS -->
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 10px; color: var(--primary);">
-                            📝 Fragen:
-                        </label>
-                        <select id="numQuestions" style="width: 100%; padding: 10px; border: 2px solid var(--primary); border-radius: 6px; font-size: 1em; font-weight: 600; cursor: pointer;">
-                            <option value="5">5 Fragen</option>
-                            <option value="10" selected>10 Fragen</option>
-                            <option value="15">15 Fragen</option>
-                            <option value="20">20 Fragen</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <button class="kahoot-btn kahoot-btn-restart" onclick="startCurrentTableau()" style="margin-top: 20px; padding: 15px 30px; font-size: 1.1em;">🚀 Starten</button>
+            <button class="kahoot-btn kahoot-btn-restart" onclick="startCurrentTableau()" style="margin-top: 30px; padding: 15px 30px; font-size: 1.1em;">🚀 Starten</button>
         </div>
 
         <!-- QUIZ -->
@@ -739,8 +721,8 @@
             currentTableauIndex = tableauIndex;
             const tableau = conjugaisons.tableaux[tableauIndex];
             
-            // Récupérer le nombre de questions
-            maxQuestions = parseInt(document.getElementById('numQuestions').value);
+            // 5 questions en dur
+            maxQuestions = 5;
             
             // Limiter à 5 verbes maximum
             const verbesDisponibles = tableau.conjugaisons.slice(0, 5);
