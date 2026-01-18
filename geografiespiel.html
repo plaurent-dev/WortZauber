@@ -18,7 +18,11 @@
         #map {
             width: 100%;
             height: 100vh;
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: auto;
         }
 
         .game-overlay {
@@ -28,11 +32,7 @@
             right: 0;
             bottom: 0;
             pointer-events: none;
-            z-index: 100;
-        }
-
-        .game-overlay > * {
-            pointer-events: auto;
+            z-index: 50;
         }
 
         .game-header {
@@ -47,7 +47,7 @@
             text-align: center;
             backdrop-filter: blur(10px);
             z-index: 101;
-            pointer-events: none;
+            pointer-events: auto;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             min-width: 350px;
         }
@@ -103,7 +103,7 @@
             border-radius: 8px;
             backdrop-filter: blur(10px);
             z-index: 101;
-            pointer-events: none;
+            pointer-events: auto;
             font-size: 0.95em;
         }
 
@@ -143,9 +143,10 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            z-index: 101;
+            z-index: 102;
             text-decoration: none;
             backdrop-filter: blur(10px);
+            pointer-events: auto;
         }
 
         .back-btn-game:hover {
