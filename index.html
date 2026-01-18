@@ -370,8 +370,15 @@
     };
 
     async function afficherMarqueursGoogleMap() {
+        // Vérifier si l'élément map existe
+        const mapElement = document.getElementById('map');
+        if (!mapElement) {
+            console.log('ℹ️ Élément #map non trouvé, Google Maps non activée');
+            return;
+        }
+
         const articles = await chargerFichesFromJSON();
-        const map = new google.maps.Map(document.getElementById('map'), {
+        const map = new google.maps.Map(mapElement, {
             center: { lat: 52.1, lng: 5.2 },
             zoom: 8,
             mapTypeId: 'roadmap'
