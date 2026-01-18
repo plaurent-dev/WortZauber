@@ -510,6 +510,309 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
         }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1024px) {
+            #tableauSelection {
+                padding: 50px 15px 40px;
+            }
+
+            .carousel-container {
+                max-width: 100%;
+            }
+
+            .question-container {
+                padding: 30px 25px;
+            }
+
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .option-btn {
+                padding: 20px;
+                font-size: 1.1em;
+            }
+
+            .example-sentence {
+                font-size: 1.6em;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #tableauSelection {
+                padding: 40px 10px 30px;
+                gap: 20px;
+            }
+
+            #tableauSelection h1 {
+                font-size: 2em;
+                margin-bottom: 5px;
+            }
+
+            .carousel-nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+
+            .tableau-card {
+                padding: 30px 20px;
+            }
+
+            .tableau-emoji {
+                font-size: 3em;
+            }
+
+            .tableau-type {
+                font-size: 1.3em;
+            }
+
+            .quiz-screen {
+                padding: 80px 15px 30px;
+            }
+
+            .question-container {
+                padding: 25px 20px;
+                margin-bottom: 20px;
+            }
+
+            .question-text {
+                font-size: 1em;
+                margin-bottom: 15px;
+            }
+
+            .example-sentence {
+                font-size: 1.4em;
+                margin: 20px 0;
+                padding: 15px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-top: 20px;
+            }
+
+            .option-btn {
+                padding: 18px;
+                font-size: 1em;
+                border-radius: 10px;
+            }
+
+            .feedback {
+                padding: 18px;
+                min-height: 60px;
+                font-size: 0.95em;
+                margin-top: 20px;
+            }
+
+            .feedback-question {
+                font-size: 0.9em;
+            }
+
+            .next-btn {
+                padding: 15px 35px;
+                font-size: 1em;
+                margin-top: 20px;
+            }
+
+            #endScreen {
+                padding: 80px 15px 30px;
+            }
+
+            .score-card {
+                padding: 30px 20px;
+                max-width: 100%;
+            }
+
+            .score-number {
+                font-size: 2.5em;
+            }
+
+            .score-label {
+                font-size: 1em;
+            }
+
+            .motivation-text {
+                font-size: 0.9em;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .retry-btn,
+            .home-btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 1em;
+            }
+
+            .progress-bar {
+                height: 5px;
+            }
+
+            .question-counter {
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #tableauSelection {
+                padding: 30px 10px 20px;
+            }
+
+            #tableauSelection h1 {
+                font-size: 1.6em;
+            }
+
+            .carousel-container {
+                gap: 10px;
+            }
+
+            .carousel-nav-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1em;
+            }
+
+            .tableau-card {
+                padding: 20px 15px;
+                min-width: 100%;
+            }
+
+            .tableau-emoji {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+
+            .tableau-type {
+                font-size: 1.1em;
+                margin-bottom: 8px;
+            }
+
+            .tableau-count {
+                font-size: 0.9em;
+            }
+
+            .start-btn {
+                padding: 10px 25px !important;
+                font-size: 0.9em !important;
+                margin-top: 15px !important;
+            }
+
+            .carousel-dots {
+                gap: 6px;
+                margin-top: 15px;
+            }
+
+            .dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .dot.active {
+                width: 30px;
+            }
+
+            .quiz-screen {
+                padding: 70px 12px 20px;
+                gap: 15px;
+            }
+
+            .question-container {
+                padding: 20px 15px;
+            }
+
+            .question-text {
+                font-size: 0.9em;
+                margin-bottom: 12px;
+            }
+
+            .example-sentence {
+                font-size: 1.2em;
+                margin: 15px 0;
+                padding: 12px;
+                line-height: 1.6;
+            }
+
+            .options-grid {
+                gap: 10px;
+                margin-top: 15px;
+            }
+
+            .option-btn {
+                padding: 15px;
+                font-size: 0.95em;
+                border-radius: 8px;
+            }
+
+            .feedback {
+                padding: 15px;
+                min-height: auto;
+                font-size: 0.9em;
+                margin-top: 15px;
+            }
+
+            .feedback-message {
+                margin-bottom: 10px;
+                font-size: 1em;
+            }
+
+            .feedback-question {
+                font-size: 0.85em;
+                padding-top: 10px;
+                margin-top: 10px;
+            }
+
+            .next-btn {
+                padding: 12px 30px;
+                font-size: 0.95em;
+                margin-top: 15px;
+            }
+
+            .back-btn {
+                top: 75px;
+                left: 10px;
+                right: auto;
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+
+            .end-screen {
+                padding: 70px 12px 20px;
+            }
+
+            .score-card {
+                padding: 20px 15px;
+            }
+
+            .score-number {
+                font-size: 2em;
+            }
+
+            .score-label {
+                font-size: 0.9em;
+            }
+
+            .motivation-text {
+                font-size: 0.85em;
+            }
+
+            .retry-btn,
+            .home-btn {
+                padding: 12px;
+                font-size: 0.9em;
+            }
+        }
     </style>
 </head>
 <body>
