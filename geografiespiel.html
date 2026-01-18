@@ -418,17 +418,7 @@
             { name: 'Dortmund', lat: 51.5136, lng: 7.4653, population: '586k' },
             { name: 'Essen', lat: 51.4556, lng: 7.0116, population: '582k' },
             { name: 'Leipzig', lat: 51.3397, lng: 12.3731, population: '614k' },
-            { name: 'Dresden', lat: 51.0504, lng: 13.7373, population: '556k' },
-            { name: 'Hannover', lat: 52.3702, lng: 9.7330, population: '543k' },
-            { name: 'Nuremberg', lat: 49.4521, lng: 11.0767, population: '518k' },
-            { name: 'Duisburg', lat: 51.4344, lng: 6.7623, population: '498k' },
-            { name: 'Bochum', lat: 51.4819, lng: 7.2147, population: '364k' },
-            { name: 'Wuppertal', lat: 51.2562, lng: 7.1508, population: '354k' },
-            { name: 'Bielefeld', lat: 52.0200, lng: 8.5321, population: '333k' },
-            { name: 'Bonn', lat: 50.7353, lng: 7.0972, population: '327k' },
-            { name: 'Mannheim', lat: 49.4891, lng: 8.4673, population: '309k' },
-            { name: 'Karlsruhe', lat: 49.0134, lng: 8.4043, population: '312k' },
-            { name: 'Augsburg', lat: 48.3705, lng: 10.8910, population: '294k' }
+            { name: 'Dresden', lat: 51.0504, lng: 13.7373, population: '556k' }
         ];
 
         let gameState = {
@@ -493,17 +483,19 @@
             gameState.cityMarkers.forEach(marker => marker.setMap(null));
             gameState.cityMarkers = [];
 
-            if (gameState.gameMode !== 'cities') {
-                return;
-            }
-
-            // Ajouter les marqueurs de toutes les villes sauf celle qu'on cherche
+            // Afficher les marqueurs: tous en mode facile, autres en mode normal
             cities.forEach((city, index) => {
-                if (index !== gameState.currentCityIndex) {
+                const shouldShowMarker = (gameState.gameMode === 'cities');
+                
+                if (shouldShowMarker) {
                     const cityName = city.name;
                     const infowindow = new google.maps.InfoWindow({
                         content: `<div style="color: #333; font-weight: bold;">${cityName}</div>`
                     });
+
+                    const isCurrentCity = index === gameState.currentCityIndex;
+                    const markerColor = isCurrentCity ? '#FF6B6B' : '#FFD700';  // Rouge pour la ville cherchée
+                    const strokeColor = isCurrentCity ? '#FF0000' : '#FFA500';
 
                     const marker = new google.maps.Marker({
                         position: { lat: city.lat, lng: city.lng },
@@ -512,16 +504,25 @@
                         icon: {
                             path: google.maps.SymbolPath.CIRCLE,
                             scale: 6,
-                            fillColor: '#FFD700',
-                            fillOpacity: 0.7,
-                            strokeColor: '#FFA500',
+                            fillColor: markerColor,
+                            fillOpacity: 0.8,
+                            strokeColor: strokeColor,
                             strokeWeight: 2
                         },
-                        opacity: 0.6
+                        opacity: 0.8
                     });
 
+                    // Quand on clique sur un marqueur, ça compte comme un clic sur la carte
                     marker.addListener('click', () => {
+                        handleMapClick({ lat: () => city.lat, lng: () => city.lng });
+                    });
+
+                    marker.addListener('mouseover', () => {
                         infowindow.open(map, marker);
+                    });
+
+                    marker.addListener('mouseout', () => {
+                        infowindow.close();
                     });
 
                     gameState.cityMarkers.push(marker);
@@ -538,9 +539,8 @@
             // Afficher les marqueurs des villes si mode "cities"
             displayCityMarkers();
 
-            // Ne pas afficher le cercle de tolérance, juste l'utiliser pour les calculs
-            // Centrer la carte sur la région générale
-            map.setCenter({ lat: city.lat + 0.5, lng: city.lng + 0.3 });
+            // Ne pas centrer sur la ville - garder la vue générale de l'Allemagne
+            // pour ne pas donner d'indice sur la localisation
         }
 
         function handleMapClick(latLng) {
@@ -640,7 +640,6 @@
             gameState.isWaitingForFeedback = false;
             document.getElementById('resultsScreen').classList.remove('show');
             if (userMarker) userMarker.setMap(null);
-            if (searchCircle) searchCircle.setMap(null);
             displayCurrentCity();
         }
 
