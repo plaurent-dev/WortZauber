@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Admin - Wortzauber</title>
 
-    <link id="styleLink" rel="stylesheet" href="styles.css">
+    <link id="styleLink" rel="stylesheet" href="styles.css?v=1.0.4">
     <script>
-        // Appliquer le thème sauvegardé dès le chargement
+        // Version Manager et Application du thème
+        const APP_VERSION = '1.0.4';
         const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
         const styleLink = document.getElementById('styleLink');
-        if (savedTheme === 'soft') {
-            styleLink.href = 'styles-soft.css';
-        } else {
-            styleLink.href = 'styles.css';
-        }
+        const baseHref = savedTheme === 'soft' ? 'styles-soft.css' : 'styles.css';
+        styleLink.href = baseHref + '?v=' + APP_VERSION;
     </script>
 </head>
 
