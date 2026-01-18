@@ -120,6 +120,14 @@
             pointer-events: auto;
         }
 
+        .difficulty-selector div {
+            margin-bottom: 10px;
+        }
+
+        .difficulty-selector div:last-child {
+            margin-bottom: 0;
+        }
+
         .difficulty-selector select {
             background: #ffc107;
             color: #333;
@@ -346,12 +354,21 @@
         </div>
 
         <div class="difficulty-selector">
-            <label for="difficulty">Schwierigkeitsgrad:</label>
-            <select id="difficulty" onchange="changeDifficulty(this.value)">
-                <option value="easy">Einfach (50km)</option>
-                <option value="medium" selected>Mittel (30km)</option>
-                <option value="hard">Schwer (15km)</option>
-            </select>
+            <div>
+                <label for="gameMode">Mode:</label>
+                <select id="gameMode" onchange="changeGameMode(this.value)">
+                    <option value="normal">Normal (Pas d'indices)</option>
+                    <option value="cities">Facile (Villes visibles)</option>
+                </select>
+            </div>
+            <div style="margin-top: 10px;">
+                <label for="difficulty">Difficulté:</label>
+                <select id="difficulty" onchange="changeDifficulty(this.value)">
+                    <option value="easy">Einfach (50km)</option>
+                    <option value="medium" selected>Mittel (30km)</option>
+                    <option value="hard">Schwer (15km)</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -422,7 +439,9 @@
             map: null,
             currentMarker: null,
             toleranceRadius: { easy: 50, medium: 30, hard: 15 },
-            isWaitingForFeedback: false
+            isWaitingForFeedback: false,
+            cityMarkers: [],
+            gameMode: 'normal'  // 'normal' ou 'cities' (affiche les villes)
         };
 
         let map;
@@ -469,11 +488,55 @@
             displayCurrentCity();
         }
 
+        function displayCityMarkers() {
+            // Nettoyer les anciens marqueurs
+            gameState.cityMarkers.forEach(marker => marker.setMap(null));
+            gameState.cityMarkers = [];
+
+            if (gameState.gameMode !== 'cities') {
+                return;
+            }
+
+            // Ajouter les marqueurs de toutes les villes sauf celle qu'on cherche
+            cities.forEach((city, index) => {
+                if (index !== gameState.currentCityIndex) {
+                    const cityName = city.name;
+                    const infowindow = new google.maps.InfoWindow({
+                        content: `<div style="color: #333; font-weight: bold;">${cityName}</div>`
+                    });
+
+                    const marker = new google.maps.Marker({
+                        position: { lat: city.lat, lng: city.lng },
+                        map: map,
+                        title: cityName,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 6,
+                            fillColor: '#FFD700',
+                            fillOpacity: 0.7,
+                            strokeColor: '#FFA500',
+                            strokeWeight: 2
+                        },
+                        opacity: 0.6
+                    });
+
+                    marker.addListener('click', () => {
+                        infowindow.open(map, marker);
+                    });
+
+                    gameState.cityMarkers.push(marker);
+                }
+            });
+        }
+
         function displayCurrentCity() {
             const city = cities[gameState.currentCityIndex];
             document.getElementById('cityName').textContent = city.name;
             document.getElementById('current').textContent = gameState.currentCityIndex + 1;
             document.getElementById('scoreDisplay').textContent = gameState.score;
+
+            // Afficher les marqueurs des villes si mode "cities"
+            displayCityMarkers();
 
             // Ne pas afficher le cercle de tolérance, juste l'utiliser pour les calculs
             // Centrer la carte sur la région générale
@@ -583,6 +646,11 @@
 
         function changeDifficulty(level) {
             gameState.difficulty = level;
+            displayCurrentCity();
+        }
+
+        function changeGameMode(mode) {
+            gameState.gameMode = mode;
             displayCurrentCity();
         }
 
