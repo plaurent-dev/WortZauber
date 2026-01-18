@@ -509,22 +509,20 @@
             const radiusKm = gameState.toleranceRadius[gameState.difficulty];
             const isCorrect = distance <= radiusKm;
 
-            // Placer le marqueur utilisateur avec AdvancedMarkerElement
-            if (userMarker) userMarker.map = null;
+            // Supprimer l'ancien cercle utilisateur s'il existe
+            if (userMarker) userMarker.setMap(null);
             
+            // Créer un cercle pour marquer le clic
             const markerColor = isCorrect ? '#4CAF50' : '#f44336';
-            const markerElement = document.createElement('div');
-            markerElement.style.width = '16px';
-            markerElement.style.height = '16px';
-            markerElement.style.backgroundColor = markerColor;
-            markerElement.style.borderRadius = '50%';
-            markerElement.style.border = '2px solid white';
-            markerElement.style.boxShadow = `0 0 0 3px ${markerColor}66`;
-
-            userMarker = new google.maps.marker.AdvancedMarkerElement({
-                position: latLng,
+            userMarker = new google.maps.Circle({
+                center: latLng,
+                radius: 5000, // 5km de rayon pour le marqueur
                 map: map,
-                content: markerElement
+                fillColor: markerColor,
+                fillOpacity: 0.7,
+                strokeColor: 'white',
+                strokeWeight: 2,
+                strokeOpacity: 0.8
             });
 
             // Afficher le feedback
