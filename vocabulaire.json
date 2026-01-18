@@ -124,6 +124,78 @@
         "article": "die",
         "french": "la note/la marque",
         "example": "Ich bekomme eine gute Note."
+      },
+      {
+        "german": "die Aula",
+        "article": "die",
+        "french": "la salle de spectacle",
+        "example": "Die Aula ist groß und modern."
+      },
+      {
+        "german": "die Mensa",
+        "article": "die",
+        "french": "la cantine/cafétéria",
+        "example": "Ich esse in der Mensa."
+      },
+      {
+        "german": "das Gebäude",
+        "article": "das",
+        "french": "le bâtiment",
+        "example": "Das Schulgebäude ist alt."
+      },
+      {
+        "german": "der Sportplatz",
+        "article": "der",
+        "french": "le terrain de sport",
+        "example": "Der Sportplatz ist hinter der Schule."
+      },
+      {
+        "german": "die Führung",
+        "article": "die",
+        "french": "la visite guidée",
+        "example": "Die Führung durch die Schule ist interessant."
+      },
+      {
+        "german": "die Sporthalle",
+        "article": "die",
+        "french": "la salle de sport",
+        "example": "Wir spielen in der Sporthalle Basketball."
+      },
+      {
+        "german": "die Turnhalle",
+        "article": "die",
+        "french": "la salle de gymnastique",
+        "example": "Die Turnhalle hat viele Geräte."
+      },
+      {
+        "german": "die Pausenhalle",
+        "article": "die",
+        "french": "la salle de pause",
+        "example": "In der Pausenhalle können wir spielen."
+      },
+      {
+        "german": "das Lehrerzimmer",
+        "article": "das",
+        "french": "la salle des professeurs",
+        "example": "Das Lehrerzimmer ist für Lehrer reserviert."
+      },
+      {
+        "german": "der Kunstsaal",
+        "article": "der",
+        "french": "la grande salle d'art",
+        "example": "Wir machen Kunst im Kunstsaal."
+      },
+      {
+        "german": "die Tür",
+        "article": "die",
+        "french": "la porte",
+        "example": "Die Tür ist offen."
+      },
+      {
+        "german": "der Pausenhof",
+        "article": "der",
+        "french": "la cour de récréation",
+        "example": "Ich spiele im Pausenhof mit meinen Freunden."
       }
     ]
   },
