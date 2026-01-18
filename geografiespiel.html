@@ -375,7 +375,19 @@
         </div>
     </div>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYnaelzF3AanXmOGDG8j9kv3GyETYf1Js&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYnaelzF3AanXmOGDG8j9kv3GyETYf1Js"></script>
+    <script>
+        // Attendre que Google Maps soit chargé
+        function waitForGoogleMaps() {
+            if (typeof google !== 'undefined' && google.maps) {
+                initMap();
+            } else {
+                setTimeout(waitForGoogleMaps, 100);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', waitForGoogleMaps);
+    </script>
     <script>
         // Les 20 plus grandes villes allemandes avec coordonnées
         const cities = [
@@ -600,7 +612,7 @@
         }
 
         // Initialiser la carte au chargement
-        // Ne pas appeler initMap ici - Google Maps appellera via callback
+        // Géré par waitForGoogleMaps() après le chargement de Google Maps
     </script>
 </body>
 </html>
