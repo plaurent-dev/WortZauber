@@ -53,7 +53,9 @@
       "type": "verbes faibles",
       "images": [
         "Lektion/CONJ02.jpg",
-        "Lektion/CONJ02_1.jpg"
+        "Lektion/CONJ02_1.jpg",
+        "Lektion/CONJ02_2.jpg",
+        "Lektion/CONJ02_3.jpg"
       ],
       "regles": {
         "definition": "Un verbe FAIBLE est un verbe RÉGULIER à tous les TEMPS et à toutes les PERSONNES. Pour le conjuguer, il faut ENLEVER EN et ajouter les TERMINAISONS.",
@@ -186,6 +188,270 @@
             "wir": "leben",
             "ihr": "lebt",
             "sie/Sie": "leben"
+          }
+        },
+        {
+          "infinitif": "grenzen an",
+          "traduction_fr": "avoir une frontière",
+          "formes": {
+            "ich": "grenze an",
+            "du": "grenzt an",
+            "er/sie/es": "grenzt an",
+            "wir": "grenzen an",
+            "ihr": "grenzt an",
+            "sie/Sie": "grenzen an"
+          }
+        },
+        {
+          "infinitif": "reisen",
+          "traduction_fr": "voyager",
+          "formes": {
+            "ich": "reise",
+            "du": "reist",
+            "er/sie/es": "reist",
+            "wir": "reisen",
+            "ihr": "reist",
+            "sie/Sie": "reisen"
+          }
+        },
+        {
+          "infinitif": "fotografieren",
+          "traduction_fr": "photographier",
+          "formes": {
+            "ich": "fotografiere",
+            "du": "fotografierst",
+            "er/sie/es": "fotografiert",
+            "wir": "fotografieren",
+            "ihr": "fotografiert",
+            "sie/Sie": "fotografieren"
+          }
+        },
+        {
+          "infinitif": "probieren",
+          "traduction_fr": "goûter",
+          "formes": {
+            "ich": "probiere",
+            "du": "probierst",
+            "er/sie/es": "probiert",
+            "wir": "probieren",
+            "ihr": "probiert",
+            "sie/Sie": "probieren"
+          }
+        },
+        {
+          "infinitif": "kaufen",
+          "traduction_fr": "acheter",
+          "formes": {
+            "ich": "kaufe",
+            "du": "kaufst",
+            "er/sie/es": "kauft",
+            "wir": "kaufen",
+            "ihr": "kauft",
+            "sie/Sie": "kaufen"
+          }
+        },
+        {
+          "infinitif": "schauen",
+          "traduction_fr": "regarder",
+          "formes": {
+            "ich": "schaue",
+            "du": "schaust",
+            "er/sie/es": "schaut",
+            "wir": "schauen",
+            "ihr": "schaut",
+            "sie/Sie": "schauen"
+          }
+        },
+        {
+          "infinitif": "sagen",
+          "traduction_fr": "dire",
+          "formes": {
+            "ich": "sage",
+            "du": "sagst",
+            "er/sie/es": "sagt",
+            "wir": "sagen",
+            "ihr": "sagt",
+            "sie/Sie": "sagen"
+          }
+        },
+        {
+          "infinitif": "dauern",
+          "traduction_fr": "durer",
+          "formes": {
+            "ich": "dauere",
+            "du": "dauerst",
+            "er/sie/es": "dauert",
+            "wir": "dauern",
+            "ihr": "dauert",
+            "sie/Sie": "dauern"
+          }
+        },
+        {
+          "infinitif": "fehlen",
+          "traduction_fr": "marquer / être absent",
+          "formes": {
+            "ich": "fehle",
+            "du": "fehlst",
+            "er/sie/es": "fehlt",
+            "wir": "fehlen",
+            "ihr": "fehlt",
+            "sie/Sie": "fehlen"
+          }
+        },
+        {
+          "infinitif": "telefonieren",
+          "traduction_fr": "téléphoner",
+          "formes": {
+            "ich": "telefoniere",
+            "du": "telefonierst",
+            "er/sie/es": "telefoniert",
+            "wir": "telefonieren",
+            "ihr": "telefoniert",
+            "sie/Sie": "telefonieren"
+          }
+        },
+        {
+          "infinitif": "rauchen",
+          "traduction_fr": "fumer",
+          "formes": {
+            "ich": "rauche",
+            "du": "rauchst",
+            "er/sie/es": "raucht",
+            "wir": "rauchen",
+            "ihr": "raucht",
+            "sie/Sie": "rauchen"
+          }
+        },
+        {
+          "infinitif": "hupen",
+          "traduction_fr": "klaxonner",
+          "formes": {
+            "ich": "hupe",
+            "du": "hupst",
+            "er/sie/es": "hupst",
+            "wir": "hupen",
+            "ihr": "hupst",
+            "sie/Sie": "hupen"
+          }
+        },
+        {
+          "infinitif": "parken",
+          "traduction_fr": "se garer / stationner",
+          "formes": {
+            "ich": "parke",
+            "du": "parkst",
+            "er/sie/es": "parkt",
+            "wir": "parken",
+            "ihr": "parkt",
+            "sie/Sie": "parken"
+          }
+        },
+        {
+          "infinitif": "suchen",
+          "traduction_fr": "chercher",
+          "formes": {
+            "ich": "suche",
+            "du": "suchst",
+            "er/sie/es": "sucht",
+            "wir": "suchen",
+            "ihr": "sucht",
+            "sie/Sie": "suchen"
+          }
+        },
+        {
+          "infinitif": "besuchen",
+          "traduction_fr": "visiter un lieu, une personne, rendre visite",
+          "formes": {
+            "ich": "besuche",
+            "du": "besuchst",
+            "er/sie/es": "besucht",
+            "wir": "besuchen",
+            "ihr": "besucht",
+            "sie/Sie": "besuchen"
+          }
+        },
+        {
+          "infinitif": "verkaufen",
+          "traduction_fr": "vendre",
+          "formes": {
+            "ich": "verkaufe",
+            "du": "verkaufst",
+            "er/sie/es": "verkauft",
+            "wir": "verkaufen",
+            "ihr": "verkauft",
+            "sie/Sie": "verkaufen"
+          }
+        },
+        {
+          "infinitif": "einkaufen",
+          "traduction_fr": "faire des courses, des achats",
+          "formes": {
+            "ich": "kaufe ein",
+            "du": "kaufst ein",
+            "er/sie/es": "kauft ein",
+            "wir": "kaufen ein",
+            "ihr": "kauft ein",
+            "sie/Sie": "kaufen ein"
+          }
+        },
+        {
+          "infinitif": "korrigieren",
+          "traduction_fr": "corriger",
+          "formes": {
+            "ich": "korrigiere",
+            "du": "korrigierst",
+            "er/sie/es": "korrigiert",
+            "wir": "korrigieren",
+            "ihr": "korrigiert",
+            "sie/Sie": "korrigieren"
+          }
+        },
+        {
+          "infinitif": "lernen",
+          "traduction_fr": "apprendre",
+          "formes": {
+            "ich": "lerne",
+            "du": "lernst",
+            "er/sie/es": "lernt",
+            "wir": "lernen",
+            "ihr": "lernt",
+            "sie/Sie": "lernen"
+          }
+        },
+        {
+          "infinitif": "organisieren",
+          "traduction_fr": "organiser",
+          "formes": {
+            "ich": "organisiere",
+            "du": "organisierst",
+            "er/sie/es": "organisiert",
+            "wir": "organisieren",
+            "ihr": "organisiert",
+            "sie/Sie": "organisieren"
+          }
+        },
+        {
+          "infinitif": "surfen",
+          "traduction_fr": "surfer",
+          "formes": {
+            "ich": "surfe",
+            "du": "surfst",
+            "er/sie/es": "surft",
+            "wir": "surfen",
+            "ihr": "surft",
+            "sie/Sie": "surfen"
+          }
+        },
+        {
+          "infinitif": "relaxen",
+          "traduction_fr": "se détendre / se relaxer",
+          "formes": {
+            "ich": "relaxe",
+            "du": "relaxst",
+            "er/sie/es": "relaxt",
+            "wir": "relaxen",
+            "ihr": "relaxt",
+            "sie/Sie": "relaxen"
           }
         }
       ]
