@@ -713,7 +713,18 @@
             
             // Préparer les mots (on en prend jusqu'à maxQuestions)
             const allWords = [...theme.words].sort(() => Math.random() - 0.5);
+            const requestedQuestions = maxQuestions;
+            const availableQuestions = allWords.length;
+            
+            // Si moins de questions disponibles que demandé, adapter
+            if (availableQuestions < requestedQuestions) {
+                console.warn(`Thème "${theme.theme}" n'a que ${availableQuestions} mots, mais ${requestedQuestions} ont été demandés. Utilisation de tous les mots.`);
+                maxQuestions = availableQuestions;
+            }
+            
             currentWords = allWords.slice(0, Math.min(maxQuestions, allWords.length));
+            
+            console.log(`Quiz démarré: ${theme.theme}, ${currentWords.length} questions sur ${availableQuestions} mots disponibles`);
             
             currentQuestionIndex = 0;
             score = 0;
@@ -730,6 +741,7 @@
         // Afficher une question
         function displayQuestion() {
             if (currentQuestionIndex >= currentWords.length) {
+                console.log(`Quiz terminé: ${currentQuestionIndex} questions affichées, ${currentWords.length} total`);
                 showEnd();
                 return;
             }
@@ -737,6 +749,14 @@
             answered = false;
             const word = currentWords[currentQuestionIndex];
             const allWords = vocabularyData[currentThemeIndex].words;
+
+            // Vérifier que le mot existe
+            if (!word || !word.german || !word.french) {
+                console.error('Mot invalide détecté:', word);
+                currentQuestionIndex++;
+                displayQuestion();
+                return;
+            }
 
             // Déterminer ce qui s'affiche selon le mode
             let displayText, correctAnswer, allOptions;
@@ -755,12 +775,18 @@
 
             // Créer les options (réponse correcte + 3 aléatoires)
             const options = [correctAnswer];
-            while (options.length < 4) {
+            const maxAttempts = 100;
+            let attempts = 0;
+            
+            while (options.length < 4 && attempts < maxAttempts) {
                 const randomOption = allOptions[Math.floor(Math.random() * allOptions.length)];
                 if (!options.includes(randomOption)) {
                     options.push(randomOption);
                 }
+                attempts++;
             }
+            
+            // Si on n'a pas 4 options, c'est normal (peu de mots dans le thème)
             options.sort(() => Math.random() - 0.5);
 
             // Afficher la question

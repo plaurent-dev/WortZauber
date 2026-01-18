@@ -164,36 +164,23 @@
         bgElement.style.backgroundPosition = 'center';
         bgElement.style.backgroundAttachment = 'fixed';
 
-        // Essayer Loremflickr d'abord (paysages aléatoires)
-        const randomTag = germanLandscapeTags[Math.floor(Math.random() * germanLandscapeTags.length)];
-        const loremflickrUrl = `https://loremflickr.com/1280/720?lock=${Math.floor(Math.random() * 1000)}&search=${randomTag}`;
-        
-        const img = new Image();
-        img.onload = function() {
-            bgElement.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${loremflickrUrl}')`;
-            bgElement.style.backgroundSize = 'cover';
-            bgElement.style.backgroundPosition = 'center';
-            console.log('Image Loremflickr chargée:', randomTag);
-        };
-        img.onerror = function() {
-            console.log('Loremflickr échoué, essai Wikimedia...');
-            // Fallback: Charger l'image Wikipedia
-            const imageUrl = cityImages[randomCity.name];
-            if (imageUrl) {
-                const imgWiki = new Image();
-                imgWiki.onload = function() {
-                    bgElement.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${imageUrl}')`;
-                    bgElement.style.backgroundSize = 'cover';
-                    bgElement.style.backgroundPosition = 'center';
-                    console.log('Image Wikimedia chargée:', randomCity.name);
-                };
-                imgWiki.onerror = function() {
-                    console.log('Fallback: gradient utilisé');
-                };
-                imgWiki.src = imageUrl;
-            }
-        };
-        img.src = loremflickrUrl;
+        // Charger directement l'image Wikimedia Commons (plus fiable)
+        const imageUrl = cityImages[randomCity.name];
+        if (imageUrl) {
+            const img = new Image();
+            img.onload = function() {
+                bgElement.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${imageUrl}')`;
+                bgElement.style.backgroundSize = 'cover';
+                bgElement.style.backgroundPosition = 'center';
+                console.log('✅ Image Wikimedia chargée:', randomCity.name);
+            };
+            img.onerror = function() {
+                console.log('⚠️ Image non chargée, gradient utilisé:', randomCity.name);
+                // Le gradient est déjà appliqué comme fallback
+            };
+            img.src = imageUrl;
+        }
+    }
     }
 
     // Initialiser le fond au chargement de la page
