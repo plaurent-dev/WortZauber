@@ -625,7 +625,7 @@
 
             for (let i = 0; i < questionsNeeded; i++) {
                 const randomIndex = Math.floor(Math.random() * availableExamples.length);
-                const exemple = availableExemples.splice(randomIndex, 1)[0];
+                const exemple = availableExamples.splice(randomIndex, 1)[0];
                 
                 const wWord = extractWWord(exemple.exemple);
                 const parsed = parseExemple(exemple.exemple);
