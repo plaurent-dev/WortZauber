@@ -35,6 +35,7 @@
 
 <!-- Dynamic Background -->
 <div id="dynamicBackground" class="dynamic-background"></div>
+<div id="imageInfo" class="image-info"></div>
 
 <!-- Navbar -->
 <nav class="navbar">
@@ -127,30 +128,54 @@
 
     // Images locales de paysages allemands du dossier Background
     const cityImages = {
-        'Berlin': 'Background/Urban-landscape-Cologne-Germany-sunset-sky-the-Rhine-bridge-buildings_1600x1200.jpg',
+        'Berlin': 'Background/Germany-Frauenkirche-city-architecture-houses_2560x1440.jpg',
         'Munich': 'Background/Neuschwanstein-Castle-Bavaria-Germany-mountains-winter-snow-trees_1920x1200.jpg',
         'Hamburg': 'Background/Germany-Hamburg-river-water-castles_1920x1200.jpg',
         'Cologne': 'Background/Urban-landscape-Cologne-Germany-sunset-sky-the-Rhine-bridge-buildings_1600x1200.jpg',
         'Frankfurt': 'Background/Frankfurt-city-night-Germany-skyscrapers-river-bridge-illumination_1920x1200.jpg',
-        'Stuttgart': 'Background/bavaria_sightseeing.jpg',
+        'Stuttgart': 'Background/Lake-Starnberg-Bavaria-Germany-sunset-pier_1920x1200.jpg',
         'Düsseldorf': 'Background/Urban-landscape-Cologne-Germany-sunset-sky-the-Rhine-bridge-buildings_1600x1200.jpg',
         'Dortmund': 'Background/Baviere.png',
-        'Essen': 'Background/bavaria_sightseeing.jpg',
-        'Leipzig': 'Background/Frankfurt-city-night-Germany-skyscrapers-river-bridge-illumination_1920x1200.jpg',
-        'Dresden': 'Background/Neuschwanstein-Castle-Bavaria-Germany-mountains-winter-snow-trees_1920x1200.jpg',
-        'Nuremberg': 'Background/bavaria_sightseeing.jpg',
-        'Hanover': 'Background/Germany-Hamburg-river-water-castles_1920x1200.jpg',
-        'Mannheim': 'Background/Frankfurt-city-night-Germany-skyscrapers-river-bridge-illumination_1920x1200.jpg',
-        'Augsburg': 'Background/Neuschwanstein-Castle-Bavaria-Germany-mountains-winter-snow-trees_1920x1200.jpg',
-        'Wuppertal': 'Background/Baviere.png',
-        'Heidelberg': 'Background/Urban-landscape-Cologne-Germany-sunset-sky-the-Rhine-bridge-buildings_1600x1200.jpg',
-        'Potsdam': 'Background/Neuschwanstein-Castle-Bavaria-Germany-mountains-winter-snow-trees_1920x1200.jpg',
-        'Freiburg': 'Background/bavaria_sightseeing.jpg',
+        'Essen': 'Background/BASF-Ludwigshafen-Germany_2880x1800.jpg',
+        'Leipzig': 'Background/Leipzig-at-night-buildings-lights-Germany_3840x2160.jpg',
+        'Dresden': 'Background/Dresden-Altstadt-Germany-city-building-houses_1920x1200.jpg',
+        'Nuremberg': 'Background/Christmas-market-Annaberg-Buchholz-Germany_2880x1800.jpg',
+        'Hanover': 'Background/Germany-city-house-river-summer-forest-mist_1920x1200.jpg',
+        'Mannheim': 'Background/BASF-Ludwigshafen-Germany_2880x1800.jpg',
+        'Augsburg': 'Background/Lake-Starnberg-Bavaria-Germany-sunset-pier_1920x1200.jpg',
+        'Wuppertal': 'Background/Germany-Brannenburg-wood-house-trees-autumn_1920x1200.jpg',
+        'Heidelberg': 'Background/Heidelberg-bridge-river-city-houses-Germany_5120x2880.jpg',
+        'Potsdam': 'Background/Germany-Potsdam-street-city-buildings_3840x2160.jpg',
+        'Freiburg': 'Background/Castle-Germany-night-lights-moon-trees_1920x1200.jpg',
         'Bonn': 'Background/Urban-landscape-Cologne-Germany-sunset-sky-the-Rhine-bridge-buildings_1600x1200.jpg'
+    };
+
+    // Métadonnées pour chaque image Background
+    const imageMetadata = {
+        'Background/BASF-Ludwigshafen-Germany_2880x1800.jpg': { city: 'Ludwigshafen', region: 'Rhénanie-Palatinat', description: 'Complexe BASF' },
+        'Background/bavaria_sightseeing.jpg': { city: 'Bavière', region: 'Bavière', description: 'Paysage bavarois' },
+        'Background/Baviere.png': { city: 'Bavière', region: 'Bavière', description: 'Scène bavaroise' },
+        'Background/Castle-Germany-night-lights-moon-trees_1920x1200.jpg': { city: 'Château allemand', region: 'Saxe', description: 'Château de nuit' },
+        'Background/Christmas-market-Annaberg-Buchholz-Germany_2880x1800.jpg': { city: 'Annaberg-Buchholz', region: 'Saxe', description: 'Marché de Noël' },
+        'Background/Dresden-Altstadt-Germany-city-building-houses_1920x1200.jpg': { city: 'Dresde', region: 'Saxe', description: 'Altstadt - Centre historique' },
+        'Background/Frankfurt-city-night-Germany-skyscrapers-river-bridge-illumination_1920x1200.jpg': { city: 'Francfort', region: 'Hesse', description: 'Skyline de nuit' },
+        'Background/Germany-Brannenburg-wood-house-trees-autumn_1920x1200.jpg': { city: 'Brannenburg', region: 'Bavière', description: 'Maison forestière' },
+        'Background/Germany-city-house-river-summer-forest-mist_1920x1200.jpg': { city: 'Forêt allemande', region: 'Divers', description: 'Rivière et forêt' },
+        'Background/Germany-Frauenkirche-city-architecture-houses_2560x1440.jpg': { city: 'Dresde/Berlin', region: 'Divers', description: 'Architecture allemande' },
+        'Background/Germany-Hamburg-bridge-river-lights-buildings_1920x1200.jpg': { city: 'Hambourg', region: 'Hambourg', description: 'Pont illuminé' },
+        'Background/Germany-Hamburg-river-water-castles_1920x1200.jpg': { city: 'Hambourg', region: 'Hambourg', description: 'Châteaux sur l\'eau' },
+        'Background/Germany-Potsdam-street-city-buildings_3840x2160.jpg': { city: 'Potsdam', region: 'Brandebourg', description: 'Rue de Potsdam' },
+        'Background/Heidelberg-bridge-river-city-houses-Germany_5120x2880.jpg': { city: 'Heidelberg', region: 'Bade-Wurtemberg', description: 'Pont et rivière' },
+        'Background/Lake-Starnberg-Bavaria-Germany-sunset-pier_1920x1200.jpg': { city: 'Lac de Starnberg', region: 'Bavière', description: 'Coucher de soleil' },
+        'Background/Leipzig-at-night-buildings-lights-Germany_3840x2160.jpg': { city: 'Leipzig', region: 'Saxe', description: 'Ville de nuit' },
+        'Background/Moritzburg-Castle-Saxony-Germany-water-reflection-night-lights_1920x1200.jpg': { city: 'Château de Moritzburg', region: 'Saxe', description: 'Château de nuit' },
+        'Background/Neuschwanstein-Castle-Bavaria-Germany-mountains-winter-snow-trees_1920x1200.jpg': { city: 'Château de Neuschwanstein', region: 'Bavière', description: 'Château mythique' },
+        'Background/Urban-landscape-Cologne-Germany-sunset-sky-the-Rhine-bridge-buildings_1600x1200.jpg': { city: 'Cologne', region: 'Rhénanie du Nord-Westphalie', description: 'Cathédrale et Rhin' }
     };
 
     function initDynamicBackground() {
         const bgElement = document.getElementById('dynamicBackground');
+        const infoElement = document.getElementById('imageInfo');
         if (!bgElement) return;
 
         // Sélectionner une ville aléatoire
@@ -162,7 +187,7 @@
         bgElement.style.backgroundPosition = 'center';
         bgElement.style.backgroundAttachment = 'fixed';
 
-        // Charger directement l'image Wikimedia Commons (plus fiable)
+        // Charger directement l'image
         const imageUrl = cityImages[randomCity.name];
         if (imageUrl) {
             const img = new Image();
@@ -170,6 +195,15 @@
                 bgElement.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${imageUrl}')`;
                 bgElement.style.backgroundSize = 'cover';
                 bgElement.style.backgroundPosition = 'center';
+                
+                // Afficher les infos de l'image
+                const metadata = imageMetadata[imageUrl];
+                if (metadata && infoElement) {
+                    infoElement.innerHTML = `
+                        <div class="image-location">${metadata.city}</div>
+                        <div class="image-region">${metadata.region} • ${metadata.description}</div>
+                    `;
+                }
             };
             img.onerror = function() {
                 // Le gradient est déjà appliqué comme fallback
