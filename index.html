@@ -170,7 +170,6 @@
                 bgElement.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${imageUrl}')`;
                 bgElement.style.backgroundSize = 'cover';
                 bgElement.style.backgroundPosition = 'center';
-                console.log('✅ Image Wikimedia chargée:', randomCity.name);
             };
             img.onerror = function() {
                 // Le gradient est déjà appliqué comme fallback
@@ -328,19 +327,16 @@
     function updateNavbar() {
         const userEmail = sessionStorage.getItem('userEmail');
         const adminLink = document.getElementById('adminLink');
-        const loginBtn = document.getElementById('loginBtn');
         const userDisplay = document.getElementById('userDisplay');
         const logoutBtn = document.getElementById('logoutBtn');
         const userEmailSpan = document.getElementById('userEmail');
 
         if (userEmail) {
-            loginBtn.style.display = 'none';
             adminLink.style.display = 'inline-block';
             userDisplay.style.display = 'block';
             logoutBtn.style.display = 'inline-block';
             userEmailSpan.textContent = userEmail;
         } else {
-            loginBtn.style.display = 'inline-block';
             adminLink.style.display = 'none';
             userDisplay.style.display = 'none';
             logoutBtn.style.display = 'none';
