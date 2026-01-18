@@ -415,12 +415,29 @@
             // Centre sur l'Allemagne
             const germanCenter = { lat: 51.1657, lng: 10.4515 };
             
+            // Style de carte minimaliste pour cacher les labels
+            const styledMapType = new google.maps.StyledMapType(
+                [
+                    { elementType: 'labels', stylers: [{ visibility: 'off' }] },
+                    { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#cccccc' }] },
+                    { featureType: 'water', stylers: [{ color: '#b3d9ff' }] },
+                    { featureType: 'landscape', stylers: [{ color: '#f3f3f3' }] }
+                ],
+                { name: 'Clean Map' }
+            );
+            
             map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 7,
+                zoom: 6.5,
                 center: germanCenter,
                 mapTypeId: 'terrain',
-                gestureHandling: 'cooperative'
+                gestureHandling: 'cooperative',
+                mapTypeControlOptions: {
+                    mapTypeIds: ['roadmap', 'satellite', 'terrain', 'styled_map']
+                }
             });
+
+            map.mapTypes.set('styled_map', styledMapType);
+            map.setMapTypeId('styled_map');
 
             gameState.map = map;
 
@@ -429,31 +446,7 @@
                 handleMapClick(event.latLng);
             });
 
-            // Ajouter les marqueurs des villes en dégradé
-            cities.forEach((city, index) => {
-                const marker = new google.maps.Marker({
-                    position: { lat: city.lat, lng: city.lng },
-                    map: map,
-                    title: city.name,
-                    icon: getMarkerIcon(index),
-                    opacity: 0.3
-                });
-            });
-
             displayCurrentCity();
-        }
-
-        function getMarkerIcon(index) {
-            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
-            const color = colors[index % colors.length];
-            return {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 5,
-                fillColor: color,
-                fillOpacity: 0.3,
-                strokeColor: color,
-                strokeWeight: 1
-            };
         }
 
         function displayCurrentCity() {
