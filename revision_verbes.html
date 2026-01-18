@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Verben Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link id="styleLink" rel="stylesheet" href="styles.css?v=1.0.4">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DVYSW3YGYJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DVYSW3YGYJ');
+    </script>
+    
+    <script>
+        // Version Manager et Application du thème
+        const APP_VERSION = '1.0.4';
+        const savedTheme = localStorage.getItem('wortzauber-theme') || 'modern';
+        const styleLink = document.getElementById('styleLink');
+        const baseHref = savedTheme === 'soft' ? 'styles-soft.css' : 'styles.css';
+        styleLink.href = baseHref + '?v=' + APP_VERSION;
+    </script>
+    <style>
+        /* BOUTON DE RETOUR */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-btn:active {
+            transform: translateY(0);
+        }
+
+        /* SÉLECTION DE TABLEAU */
+        #tableauSelection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            padding: 40px 20px;
+            min-height: 600px;
+        }
+
+        #tableauSelection h1 {
+            font-size: 2.5em;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        #tableauSelection p {
+            font-size: 1.2em;
+            color: var(--text-medium);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* CARROUSEL */
+        .carousel-container {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .carousel-wrapper {
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .tableau-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            border: 3px solid transparent;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .tableau-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            border-color: white;
+        }
+
+        .tableau-card:active {
+            transform: scale(0.98);
+        }
+
+        .tableau-emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .tableau-type {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .tableau-count {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        /* CONTRÔLES CARROUSEL */
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .carousel-btn {
+            padding: 12px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .carousel-btn:active {
+            transform: scale(0.95);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--primary);
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* AFFICHAGE DES VERBES */
+        #verbTableau {
+            display: none;
+        }
+
+        #verbTableau.show {
+            display: block;
+        }
+
+        .tableau-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tableau-back-btn {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tableau-back-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .tableau-info {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* IMAGES */
+        .images-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .images-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* RÈGLES */
+        .regles-section {
+            background: var(--bg-light-gray);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .regles-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .regles-section p {
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .terminaisons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .terminaison {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* VERBES */
+        .verbes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .verbe-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .verbe-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .verbe-infinitif {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .verbe-traduction {
+            font-size: 0.95em;
+            color: var(--text-medium);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .verbe-conjugaisons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .verbe-forme {
+            background: var(--bg-light-gray);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .verbe-forme strong {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .tableau-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .verbe-conjugaisons {
+                grid-template-columns: 1fr;
+            }
+
+            .terminaisons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Zurück</a>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1>✨ Wortzauber</h1>
+            <div style="flex: 1; text-align: center;">
+                <span id="navTitle" style="font-size: 1.1em; font-weight: 600; color: white;">Verben Training</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- SÉLECTION DE TABLEAU -->
+        <div id="tableauSelection">
+            <h1>📚 Verben Training</h1>
+            <p>Wähle ein Verben-Tableau zum Lernen:</p>
+            
+            <div class="carousel-container">
+                <div class="carousel-wrapper">
+                    <div class="carousel-track" id="carouselTrack"></div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn" onclick="prevTableau()">← Vorher</button>
+                    <div class="carousel-dots" id="dotsContainer"></div>
+                    <button class="carousel-btn" onclick="nextTableau()">Nachher →</button>
+                </div>
+            </div>
+
+            <button class="kahoot-btn kahoot-btn-restart" onclick="startCurrentTableau()" style="margin-top: 20px; padding: 15px 30px; font-size: 1.1em;">📖 Anschauen</button>
+        </div>
+
+        <!-- TABLEAU DE VERBES -->
+        <div id="verbTableau">
+            <div class="tableau-header">
+                <button class="tableau-back-btn" onclick="backToTableaux()">← Tableaux ändern</button>
+                <div class="tableau-info" id="tableauInfo"></div>
+            </div>
+
+            <!-- IMAGES -->
+            <div class="images-container" id="imagesContainer"></div>
+
+            <!-- RÈGLES -->
+            <div class="regles-section" id="reglesSection"></div>
+
+            <!-- VERBES -->
+            <div class="verbes-grid" id="verbesContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let conjugaisons = [];
+        let currentCarouselIndex = 0;
+        let currentTableauIndex = -1;
+
+        // ====== INITIALISATION ======
+        async function init() {
+            try {
+                const response = await fetch('conjugaisons_verbes_allemands.json');
+                conjugaisons = await response.json();
+                
+                if (conjugaisons.tableaux && Array.isArray(conjugaisons.tableaux)) {
+                    displayCarousel();
+                } else {
+                    console.error('Structure JSON invalide');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        }
+
+        // ====== CARROUSEL ======
+        function displayCarousel() {
+            const track = document.getElementById('carouselTrack');
+            const dots = document.getElementById('dotsContainer');
+
+            // Créer les slides
+            track.innerHTML = conjugaisons.tableaux.map((tableau, index) => {
+                const emoji = getEmojiForTableau(tableau.type);
+                return `
+                    <div class="carousel-slide">
+                        <div class="tableau-card" onclick="selectTableau(${index})">
+                            <div class="tableau-emoji">${emoji}</div>
+                            <div class="tableau-type">${tableau.type}</div>
+                            <div class="tableau-count">${tableau.conjugaisons.length} Verben</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Créer les points de navigation
+            dots.innerHTML = conjugaisons.tableaux.map((_, index) => `
+                <div class="dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
+            `).join('');
+
+            currentCarouselIndex = 0;
+        }
+
+        function getEmojiForTableau(type) {
+            switch(type.toLowerCase()) {
+                case 'verbes auxiliaires':
+                    return '🔗';
+                case 'verbes faibles':
+                    return '📝';
+                default:
+                    return '📖';
+            }
+        }
+
+        function selectTableau(index) {
+            currentCarouselIndex = index;
+            updateCarousel();
+        }
+
+        function nextTableau() {
+            currentCarouselIndex = (currentCarouselIndex + 1) % conjugaisons.tableaux.length;
+            updateCarousel();
+            hideTableau();
+        }
+
+        function prevTableau() {
+            currentCarouselIndex = (currentCarouselIndex - 1 + conjugaisons.tableaux.length) % conjugaisons.tableaux.length;
+            updateCarousel();
+            hideTableau();
+        }
+
+        function goToSlide(index) {
+            currentCarouselIndex = index;
+            updateCarousel();
+            hideTableau();
+        }
+
+        function updateCarousel() {
+            const track = document.getElementById('carouselTrack');
+            track.style.transform = `translateX(-${currentCarouselIndex * 100}%)`;
+
+            // Mettre à jour les points
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentCarouselIndex);
+            });
+        }
+
+        function hideTableau() {
+            document.getElementById('verbTableau').classList.remove('show');
+        }
+
+        function startCurrentTableau() {
+            displayTableau(currentCarouselIndex);
+        }
+
+        // ====== AFFICHAGE DU TABLEAU ======
+        function displayTableau(tableauIndex) {
+            currentTableauIndex = tableauIndex;
+            const tableau = conjugaisons.tableaux[tableauIndex];
+
+            // En-tête
+            document.getElementById('tableauInfo').textContent = `${tableau.type} (${tableau.conjugaisons.length} Verben)`;
+            document.getElementById('navTitle').textContent = tableau.type;
+
+            // Images
+            const imagesContainer = document.getElementById('imagesContainer');
+            if (tableau.images && Array.isArray(tableau.images) && tableau.images.length > 0) {
+                imagesContainer.innerHTML = tableau.images.map(image => `
+                    <img src="${image}" alt="Scan - ${tableau.type}" title="${tableau.type}">
+                `).join('');
+            } else {
+                imagesContainer.innerHTML = '';
+            }
+
+            // Règles
+            const reglesSection = document.getElementById('reglesSection');
+            let reglesHTML = `<h3>📋 Règles</h3>`;
+            
+            if (tableau.regles.definition) {
+                reglesHTML += `<p><strong>Définition:</strong> ${tableau.regles.definition}</p>`;
+            }
+
+            if (tableau.regles.terminaisons) {
+                reglesHTML += `<h4>Terminaisons:</h4><div class="terminaisons">`;
+                for (const [pronom, terminaison] of Object.entries(tableau.regles.terminaisons)) {
+                    reglesHTML += `<div class="terminaison"><strong>${pronom}:</strong> ${terminaison}</div>`;
+                }
+                reglesHTML += `</div>`;
+            }
+
+            if (tableau.regles.exceptions) {
+                reglesHTML += `<p style="margin-top: 15px;"><strong>Exceptions:</strong> ${tableau.regles.exceptions}</p>`;
+            }
+
+            reglesSection.innerHTML = reglesHTML;
+
+            // Verbes
+            const verbesContainer = document.getElementById('verbesContainer');
+            verbesContainer.innerHTML = tableau.conjugaisons.map(verbe => `
+                <div class="verbe-card">
+                    <div class="verbe-infinitif">${verbe.infinitif}</div>
+                    <div class="verbe-traduction">${verbe.traduction_fr}</div>
+                    <div class="verbe-conjugaisons">
+                        ${Object.entries(verbe.formes).map(([pronom, forme]) => `
+                            <div class="verbe-forme">
+                                <strong>${pronom}:</strong> ${forme}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Afficher le tableau
+            document.getElementById('tableauSelection').style.display = 'none';
+            document.getElementById('verbTableau').classList.add('show');
+        }
+
+        // Retourner aux tableaux
+        function backToTableaux() {
+            currentTableauIndex = -1;
+            document.getElementById('tableauSelection').style.display = 'flex';
+            document.getElementById('verbTableau').classList.remove('show');
+            document.getElementById('navTitle').textContent = 'Verben Training';
+        }
+
+        // Charger les données au démarrage
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

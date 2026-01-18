@@ -3,6 +3,9 @@
     {
       "numero": "1",
       "type": "verbes auxiliaires",
+      "images": [
+        "Lektion/CONJ01.jpg"
+      ],
       "regles": {
         "definition": "Ces 3 verbes sont irréguliers à tous les pronoms et peuvent être utilisés comme verbe ou comme auxiliaire (au passé-composé, au plus-que-parfait, au futur)."
       },
@@ -48,6 +51,10 @@
     {
       "numero": "2",
       "type": "verbes faibles",
+      "images": [
+        "Lektion/CONJ02.jpg",
+        "Lektion/CONJ02_1.jpg"
+      ],
       "regles": {
         "definition": "Un verbe FAIBLE est un verbe RÉGULIER à tous les TEMPS et à toutes les PERSONNES. Pour le conjuguer, il faut ENLEVER EN et ajouter les TERMINAISONS.",
         "terminaisons": {
@@ -114,6 +121,10 @@
     {
       "numero": "2-A",
       "type": "verbes faibles",
+      "images": [
+        "Lektion/CONJ02.jpg",
+        "Lektion/CONJ02_1.jpg"
+      ],
       "regles": {
         "definition": "Un verbe FAIBLE est un verbe RÉGULIER à tous les TEMPS et à toutes les PERSONNES. Pour le conjuguer, il faut ENLEVER EN et ajouter les TERMINAISONS.",
         "terminaisons": {
