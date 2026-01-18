@@ -742,8 +742,16 @@
             // Récupérer le nombre de questions
             maxQuestions = parseInt(document.getElementById('numQuestions').value);
             
+            // Limiter à 5 verbes maximum
+            const verbesDisponibles = tableau.conjugaisons.slice(0, 5);
+            
+            // Si moins de verbes que de questions demandées, adapter
+            if (verbesDisponibles.length < maxQuestions) {
+                maxQuestions = verbesDisponibles.length * 6; // 6 pronoms par verbe
+            }
+            
             // Générer les questions aléatoires
-            currentQuestions = generateQuestions(tableau, maxQuestions);
+            currentQuestions = generateQuestions(verbesDisponibles, maxQuestions);
             
             currentQuestionIndex = 0;
             score = 0;
@@ -757,11 +765,11 @@
             displayQuestion();
         }
 
-        function generateQuestions(tableau, count) {
+        function generateQuestions(verbesDisponibles, count) {
             const questions = [];
             
             for (let i = 0; i < count; i++) {
-                const randomVerbe = tableau.conjugaisons[Math.floor(Math.random() * tableau.conjugaisons.length)];
+                const randomVerbe = verbesDisponibles[Math.floor(Math.random() * verbesDisponibles.length)];
                 const randomPronom = pronoms[Math.floor(Math.random() * pronoms.length)];
                 
                 questions.push({
@@ -790,16 +798,16 @@
             document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
             document.getElementById('totalQuestions').textContent = currentQuestions.length;
 
-            // Générer les options
-            const allFormes = getAllFormes(conjugaisons.tableaux[currentTableauIndex]);
+            // Générer les options uniquement du même verbe
+            const verbeFormes = getVerbeFormes(question.verbe);
             const options = [correctAnswer];
             
-            // Ajouter 3 autres options différentes
+            // Ajouter 3 autres options différentes du même verbe
             const maxAttempts = 100;
             let attempts = 0;
             
             while (options.length < 4 && attempts < maxAttempts) {
-                const randomForme = allFormes[Math.floor(Math.random() * allFormes.length)];
+                const randomForme = verbeFormes[Math.floor(Math.random() * verbeFormes.length)];
                 if (!options.includes(randomForme)) {
                     options.push(randomForme);
                 }
@@ -836,16 +844,9 @@
             document.getElementById('feedback').classList.remove('show', 'correct', 'incorrect');
         }
 
-        function getAllFormes(tableau) {
-            const formes = [];
-            tableau.conjugaisons.forEach(verbe => {
-                Object.values(verbe.formes).forEach(forme => {
-                    if (!formes.includes(forme)) {
-                        formes.push(forme);
-                    }
-                });
-            });
-            return formes;
+        function getVerbeFormes(verbe) {
+            // Retourne toutes les formes de conjugaison d'un verbe spécifique
+            return Object.values(verbe.formes);
         }
 
         // Sélectionner une option
