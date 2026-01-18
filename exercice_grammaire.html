@@ -318,18 +318,45 @@
 
         .feedback {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
             font-size: 1.1em;
             font-weight: 600;
-            min-height: 24px;
+            min-height: 60px;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.02);
         }
 
         .feedback.correct {
             color: #4CAF50;
+            border-left: 4px solid #4CAF50;
         }
 
         .feedback.incorrect {
             color: #f44336;
+            border-left: 4px solid #f44336;
+        }
+
+        .feedback-message {
+            margin-bottom: 12px;
+        }
+
+        .feedback-question {
+            font-size: 0.95em;
+            color: var(--text-medium);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding-top: 12px;
+            margin-top: 12px;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .feedback-question strong {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            font-style: normal;
         }
 
         .next-btn {
@@ -704,15 +731,28 @@
 
             selectedAnswer = selected;
             const isCorrect = selected === correct;
+            const question = currentQuestions[currentQuestionIndex];
 
             if (isCorrect) {
                 correctAnswers++;
                 button.classList.add('correct');
-                document.getElementById('feedback').textContent = '✓ Correct !';
+                document.getElementById('feedback').innerHTML = `
+                    <div class="feedback-message">✓ Correct !</div>
+                    <div class="feedback-question">
+                        <strong>Question complète :</strong>
+                        ${question.question}
+                    </div>
+                `;
                 document.getElementById('feedback').className = 'feedback correct';
             } else {
                 button.classList.add('incorrect');
-                document.getElementById('feedback').textContent = '✗ Incorrect. La bonne réponse est: ' + correct;
+                document.getElementById('feedback').innerHTML = `
+                    <div class="feedback-message">✗ Incorrect. La bonne réponse est: ${correct}</div>
+                    <div class="feedback-question">
+                        <strong>Question complète :</strong>
+                        ${question.question}
+                    </div>
+                `;
                 document.getElementById('feedback').className = 'feedback incorrect';
                 // Highlight correct answer
                 document.querySelectorAll('.option-btn').forEach(btn => {
